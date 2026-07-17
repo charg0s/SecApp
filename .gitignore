@@ -1,0 +1,38 @@
+# Operating-system and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Generated output
+/build/
+/dist/
+/out/
+/tmp/
+/logs/
+/evidence/
+/collections/
+/results/
+/reports/
+*.dmp
+*.mem
+*.raw
+*.evtx
+
+# Packaged backend or application binaries
+velociraptor*.exe
+velociraptor*.zip
+*.dll
+*.msi
