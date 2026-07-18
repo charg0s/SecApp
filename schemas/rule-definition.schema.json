@@ -1,0 +1,596 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/rule-definition.schema.json",
+  "title": "SecApp RuleDefinition",
+  "description": "Versioned declarative rule using a bounded, non-recursive expression graph.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "rule_id",
+    "version",
+    "title",
+    "description",
+    "input_areas",
+    "expression",
+    "finding_template",
+    "not_tested_behavior",
+    "provenance",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "rule_id": {
+      "type": "string",
+      "pattern": "^rule:[a-z0-9][a-z0-9._-]{0,63}:[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "input_areas": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/observationArea"
+      }
+    },
+    "expression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_predicate_id",
+        "predicates",
+        "evaluation_order",
+        "missing_semantics",
+        "null_semantics",
+        "type_mismatch_semantics",
+        "maximum_depth"
+      ],
+      "properties": {
+        "root_predicate_id": {
+          "$ref": "#/$defs/predicateId"
+        },
+        "predicates": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/predicate"
+          }
+        },
+        "evaluation_order": {
+          "const": "ArrayOrderShortCircuit"
+        },
+        "missing_semantics": {
+          "const": "MissingIsUnknown"
+        },
+        "null_semantics": {
+          "const": "NullIsValue"
+        },
+        "type_mismatch_semantics": {
+          "const": "TypeMismatchIsUnknown"
+        },
+        "maximum_depth": {
+          "const": 8
+        }
+      }
+    },
+    "finding_template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "summary",
+        "severity",
+        "confidence",
+        "privacy_class"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low",
+            "Info"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "Confirmed",
+            "Likely",
+            "Possible",
+            "Not detected",
+            "Not tested"
+          ]
+        },
+        "privacy_class": {
+          "$ref": "#/$defs/privacyClass"
+        }
+      }
+    },
+    "not_tested_behavior": {
+      "const": "EmitCoverageFinding"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_name",
+        "source_version",
+        "source_content_digest"
+      ],
+      "properties": {
+        "source_name": {
+          "type": "string",
+          "pattern": "^rule:[a-z0-9][a-z0-9._-]{0,63}:[a-z0-9][a-z0-9._-]{0,127}$"
+        },
+        "source_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "source_content_digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "integrity": {
+      "$ref": "#/$defs/objectIntegrity"
+    }
+  },
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "predicateId": {
+      "type": "string",
+      "pattern": "^p:[a-z][a-z0-9_-]{0,62}$"
+    },
+    "scalarValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4096
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "predicate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "predicate_id",
+            "kind",
+            "field",
+            "operator"
+          ],
+          "properties": {
+            "predicate_id": {
+              "$ref": "#/$defs/predicateId"
+            },
+            "kind": {
+              "const": "Compare"
+            },
+            "field": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*$"
+            },
+            "operator": {
+              "type": "string",
+              "enum": [
+                "Equals",
+                "NotEquals",
+                "GreaterThan",
+                "AtLeast",
+                "LessThan",
+                "AtMost",
+                "Contains",
+                "In",
+                "Exists"
+              ]
+            },
+            "value": {}
+          },
+          "allOf": [
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "const": "Exists"
+                  }
+                },
+                "required": [
+                  "operator"
+                ]
+              },
+              "then": {
+                "not": {
+                  "type": "object",
+                  "properties": {
+                    "value": true
+                  },
+                  "required": [
+                    "value"
+                  ]
+                }
+              },
+              "else": {
+                "type": "object",
+                "properties": {
+                  "value": true
+                },
+                "required": [
+                  "value"
+                ]
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "enum": [
+                      "GreaterThan",
+                      "AtLeast",
+                      "LessThan",
+                      "AtMost"
+                    ]
+                  }
+                },
+                "required": [
+                  "operator"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "const": "Contains"
+                  }
+                },
+                "required": [
+                  "operator"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "maxLength": 4096
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "const": "In"
+                  }
+                },
+                "required": [
+                  "operator"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 64,
+                    "items": {
+                      "$ref": "#/$defs/scalarValue"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "enum": [
+                      "Equals",
+                      "NotEquals"
+                    ]
+                  }
+                },
+                "required": [
+                  "operator"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "$ref": "#/$defs/scalarValue"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "predicate_id",
+            "kind",
+            "child_ids"
+          ],
+          "properties": {
+            "predicate_id": {
+              "$ref": "#/$defs/predicateId"
+            },
+            "kind": {
+              "enum": [
+                "All",
+                "Any"
+              ]
+            },
+            "child_ids": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/predicateId"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "predicate_id",
+            "kind",
+            "child_id"
+          ],
+          "properties": {
+            "predicate_id": {
+              "$ref": "#/$defs/predicateId"
+            },
+            "kind": {
+              "const": "Not"
+            },
+            "child_id": {
+              "$ref": "#/$defs/predicateId"
+            }
+          }
+        }
+      ]
+    },
+    "observationArea": {
+      "type": "string",
+      "enum": [
+        "WindowsPlatform",
+        "Updates",
+        "PendingReboot",
+        "Defender",
+        "Firewall",
+        "SecureBoot",
+        "TPM",
+        "BitLocker",
+        "UAC",
+        "VBS",
+        "LocalAccounts",
+        "PasswordPolicy",
+        "NetworkState",
+        "Startup",
+        "WMI",
+        "ScheduledTasks",
+        "Services",
+        "Drivers",
+        "Authenticode",
+        "FileACL",
+        "RemoteManagement",
+        "PowerShell",
+        "NameResolution",
+        "InstalledSoftware",
+        "WindowsEvents",
+        "Recovery",
+        "DefenderOffline"
+      ]
+    },
+    "privacyClass": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "SystemMetadata",
+        "PersonalMetadata",
+        "NetworkMetadata",
+        "SensitiveSecurityData",
+        "Secret",
+        "MemoryContent"
+      ]
+    },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "algorithm",
+        "canonicalization",
+        "encoding",
+        "excluded_fields",
+        "object_digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "ObjectDigest"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "canonicalization": {
+          "const": "JCS-RFC8785"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "excluded_fields": {
+          "const": [
+            "integrity.object_digest"
+          ]
+        },
+        "object_digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "rule_id": "rule:secapp:no-listeners-observed",
+      "version": "1.0.0",
+      "title": "No listening ports were observed",
+      "description": "Synthetic declarative example for bounded expression validation.",
+      "input_areas": [
+        "NetworkState"
+      ],
+      "expression": {
+        "root_predicate_id": "p:listener_count",
+        "predicates": [
+          {
+            "predicate_id": "p:listener_count",
+            "kind": "Compare",
+            "field": "data.listener_count",
+            "operator": "Equals",
+            "value": 0
+          }
+        ],
+        "evaluation_order": "ArrayOrderShortCircuit",
+        "missing_semantics": "MissingIsUnknown",
+        "null_semantics": "NullIsValue",
+        "type_mismatch_semantics": "TypeMismatchIsUnknown",
+        "maximum_depth": 8
+      },
+      "finding_template": {
+        "title": "Network-state coverage requires review",
+        "summary": "The synthetic observation contains no listeners.",
+        "severity": "Info",
+        "confidence": "Possible",
+        "privacy_class": "NetworkMetadata"
+      },
+      "not_tested_behavior": "EmitCoverageFinding",
+      "provenance": {
+        "source_name": "rule:secapp:no-listeners-observed",
+        "source_version": "1.0.0",
+        "source_content_digest": "780c1c593d16f1c45af134eee3c2374e02308d5bad90c950a5445253f0f63b4e"
+      },
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": [
+          "integrity.object_digest"
+        ],
+        "object_digest": "87fe3f5779906b6012e0837929af7db8cbe378b437debe033ac9cec2ecaa533d"
+      }
+    }
+  ],
+  "x-numeric-operator-cases": [
+    {
+      "value": 7,
+      "expected_valid": true
+    },
+    {
+      "value": 7.5,
+      "expected_valid": true
+    },
+    {
+      "value": "7",
+      "expected_valid": false
+    },
+    {
+      "value": null,
+      "expected_valid": false
+    },
+    {
+      "value": false,
+      "expected_valid": false
+    }
+  ],
+  "x-negative-tests": [
+    {
+      "name": "duplicate-predicate-id",
+      "expected_error": "RULE_PREDICATE_ID_DUPLICATE"
+    },
+    {
+      "name": "unknown-child-reference",
+      "expected_error": "RULE_PREDICATE_REFERENCE_UNKNOWN"
+    },
+    {
+      "name": "cycle",
+      "expected_error": "RULE_PREDICATE_CYCLE"
+    },
+    {
+      "name": "depth-nine",
+      "expected_error": "RULE_PREDICATE_DEPTH_EXCEEDED"
+    },
+    {
+      "name": "exists-with-value",
+      "expected_error": "RULE_EXISTS_VALUE_FORBIDDEN"
+    }
+  ]
+}

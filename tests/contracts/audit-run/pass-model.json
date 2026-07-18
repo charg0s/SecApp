@@ -1,0 +1,2329 @@
+{
+  "fixture_model": "Each vector contains complete AuditRun and AuditPass schema instances plus application-only relationship context. Schema validation precedes exactly one named application rule.",
+  "vectors": [
+    {
+      "vector_id": "RUN_STANDARD_ONLY_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "42580e663bd02a3c279a4e4c59069f0e905f384eed261980dfc4cf71059f7752"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": []
+      }
+    },
+    {
+      "vector_id": "RUN_STANDARD_ELEVATED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "49637ac5d23c70fe3122101865e3fda9873bc210e80eeae84a204101f48ce27f",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000012",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000012.json",
+                "object_digest": "b63fe01f58ed68f72a5f225c8c126a002f8401fbe7a57f40205736dc439a2e77",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "execution_references": [
+              {
+                "object_id": "50000000-0000-4000-8000-000000000201",
+                "object_digest": "02d440ee8851ba7b68fac117d9a63cf02a8e2efa143553ffedf2afe80cc6fc15"
+              },
+              {
+                "object_id": "50000000-0000-4000-8000-000000000202",
+                "object_digest": "3f9bed43c376a19dac5c6e34f06407e2b261571664c4b470b3fe3ff214681031"
+              }
+            ],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "5b9c60f7debda35e311470fef694d97102eebdc747d33dfb6c8888437b78c2f5"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "Completed",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": false,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [
+              "50000000-0000-4000-8000-000000000201"
+            ],
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:01Z",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "49637ac5d23c70fe3122101865e3fda9873bc210e80eeae84a204101f48ce27f"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "Completed",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": false,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "collector_execution_ids": [
+              "50000000-0000-4000-8000-000000000202"
+            ],
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:01Z",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "b63fe01f58ed68f72a5f225c8c126a002f8401fbe7a57f40205736dc439a2e77"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000012"
+        ],
+        "execution_bindings": [
+          {
+            "execution_id": "50000000-0000-4000-8000-000000000201",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "privilege_class": "StandardUser"
+          },
+          {
+            "execution_id": "50000000-0000-4000-8000-000000000202",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "privilege_class": "Elevated"
+          }
+        ],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000101",
+            "consent_type": "Administrative",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "action_id": "50000000-0000-4000-8000-000000000301",
+            "collector_id": "collector:windows:privileged-read",
+            "operation_code": "CollectPrivilegedReadOnly"
+          }
+        ]
+      }
+    },
+    {
+      "vector_id": "RUN_REBOOT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "d2406088f2f7ced294780431ff05ef2fdcacc3099b66b98ef71573ecf57abcbc",
+                "reboot_planned": true
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000013",
+                "kind": "RebootContinuation",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000013.json",
+                "object_digest": "cd9b90a462c507fee567ba8c5919d820615aecb3fc7e8347645cdb95722cfcb4",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000014",
+                "kind": "PostReboot",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000014.json",
+                "object_digest": "dd1d3a92eeb19079c60664d5ce9a525d000d9c83505df3dc0e9cf4af8b20e61b",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000102"
+            ],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "c0402b89b91870845ebb66438c8eb35cd0851a89f157175deaf50bd5f7465aef"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": true,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "d2406088f2f7ced294780431ff05ef2fdcacc3099b66b98ef71573ecf57abcbc"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000013",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "RebootContinuation",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000102"
+            ],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cd9b90a462c507fee567ba8c5919d820615aecb3fc7e8347645cdb95722cfcb4"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000014",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "PostReboot",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000013"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "dd1d3a92eeb19079c60664d5ce9a525d000d9c83505df3dc0e9cf4af8b20e61b"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000013",
+          "50000000-0000-4000-8000-000000000014"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000102",
+            "consent_type": "Reboot",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000013",
+            "action_id": "50000000-0000-4000-8000-000000000302",
+            "workflow_id": "workflow:synthetic-reboot",
+            "stage": "Continue",
+            "operation_code": "PerformRebootContinuation"
+          }
+        ]
+      }
+    },
+    {
+      "vector_id": "RUN_NO_STANDARD_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000012",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000012.json",
+                "object_digest": "0bd6b3f1ff6c9e9335eb85f5befb6ac4d1cb3eef97c246d1c671d2a82b64cf93",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "4437d24a0b8cd5ae20615696f7513bd37988a179141abe4a9d71566604330d82"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "0bd6b3f1ff6c9e9335eb85f5befb6ac4d1cb3eef97c246d1c671d2a82b64cf93"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000012"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": []
+      },
+      "rule_id": "PASS-001",
+      "expected_error_code": "PASS_CARDINALITY_INVALID",
+      "single_fault": "no Standard pass; PASS-003 is not evaluated until PASS-001 succeeds"
+    },
+    {
+      "vector_id": "RUN_TWO_STANDARD_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000015",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000015.json",
+                "object_digest": "ce537165bc8712c7b6701a5cdd9b16f48b9f1a55909df12f142f0120550f1353",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "ea1777fc2ec78d9c4348606a13176597b22fc164c1bb202ca66caeeb4b32f8a3"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000015",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "ce537165bc8712c7b6701a5cdd9b16f48b9f1a55909df12f142f0120550f1353"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000015"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": []
+      },
+      "rule_id": "PASS-001",
+      "expected_error_code": "PASS_CARDINALITY_INVALID",
+      "single_fault": "second Standard pass"
+    },
+    {
+      "vector_id": "RUN_TWO_ELEVATED_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000012",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000012.json",
+                "object_digest": "9d8c90a8e85a6216443da9412c3c8ee6d6ff075cc362aee517d42e814e828d29",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000016",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000016.json",
+                "object_digest": "6c5c3265b698bf59860936ded85b9eeb35fd847d9784e2b2617a40494fefccad",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "8cb17812389143d6e68f750ae861ea9fff18fe9c3cd2d4d4956f8c7f42739b28"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "9d8c90a8e85a6216443da9412c3c8ee6d6ff075cc362aee517d42e814e828d29"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000016",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "6c5c3265b698bf59860936ded85b9eeb35fd847d9784e2b2617a40494fefccad"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000012",
+          "50000000-0000-4000-8000-000000000016"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000101",
+            "consent_type": "Administrative",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "action_id": "50000000-0000-4000-8000-000000000301",
+            "collector_id": "collector:windows:privileged-read",
+            "operation_code": "CollectPrivilegedReadOnly"
+          },
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000101",
+            "consent_type": "Administrative",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000016",
+            "action_id": "50000000-0000-4000-8000-000000000301",
+            "collector_id": "collector:windows:privileged-read",
+            "operation_code": "CollectPrivilegedReadOnly"
+          }
+        ]
+      },
+      "rule_id": "PASS-002",
+      "expected_error_code": "PASS_KIND_DUPLICATE",
+      "single_fault": "second optional Elevated kind"
+    },
+    {
+      "vector_id": "RUN_STANDARD_NOT_FIRST_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000012",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000012.json",
+                "object_digest": "c74b34d8ff1ee9e34c4d20eab6697e10cb0686cd8213898b616096bffd4e4c38",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "1ca3d11c8acb06f32fe35c0c1a2955cfdcebfd2335e529dcf4a746c2e26b0b67"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "c74b34d8ff1ee9e34c4d20eab6697e10cb0686cd8213898b616096bffd4e4c38"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000012",
+          "50000000-0000-4000-8000-000000000011"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000101",
+            "consent_type": "Administrative",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "action_id": "50000000-0000-4000-8000-000000000301",
+            "collector_id": "collector:windows:privileged-read",
+            "operation_code": "CollectPrivilegedReadOnly"
+          }
+        ]
+      },
+      "rule_id": "PASS-003",
+      "expected_error_code": "PASS_ORDER_INVALID",
+      "single_fault": "Standard is not first; declared prerequisite lists are otherwise valid"
+    },
+    {
+      "vector_id": "RUN_ELEVATED_EXECUTION_IN_STANDARD_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "49637ac5d23c70fe3122101865e3fda9873bc210e80eeae84a204101f48ce27f",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [],
+            "execution_references": [
+              {
+                "object_id": "50000000-0000-4000-8000-000000000201",
+                "object_digest": "02d440ee8851ba7b68fac117d9a63cf02a8e2efa143553ffedf2afe80cc6fc15"
+              }
+            ],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "319ad1760e224507f7957c232eb905b90f279a208ea3b2c583c0f6b0d2ef0103"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "Completed",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": false,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [
+              "50000000-0000-4000-8000-000000000201"
+            ],
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:01Z",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "49637ac5d23c70fe3122101865e3fda9873bc210e80eeae84a204101f48ce27f"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011"
+        ],
+        "execution_bindings": [
+          {
+            "execution_id": "50000000-0000-4000-8000-000000000201",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "privilege_class": "Elevated"
+          }
+        ],
+        "consent_bindings": []
+      },
+      "rule_id": "PASS-004",
+      "expected_error_code": "PASS_PRIVILEGE_MISMATCH",
+      "single_fault": "one execution privilege differs from Standard pass"
+    },
+    {
+      "vector_id": "RUN_STANDARD_EXECUTION_IN_ELEVATED_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000012",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000012.json",
+                "object_digest": "b63fe01f58ed68f72a5f225c8c126a002f8401fbe7a57f40205736dc439a2e77",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "execution_references": [
+              {
+                "object_id": "50000000-0000-4000-8000-000000000202",
+                "object_digest": "3f9bed43c376a19dac5c6e34f06407e2b261571664c4b470b3fe3ff214681031"
+              }
+            ],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "35de210726edf1b21b9654fbda0bb4e04c223d59225aef41875eaf58a9d64219"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "Completed",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": false,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "collector_execution_ids": [
+              "50000000-0000-4000-8000-000000000202"
+            ],
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:01Z",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "b63fe01f58ed68f72a5f225c8c126a002f8401fbe7a57f40205736dc439a2e77"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000012"
+        ],
+        "execution_bindings": [
+          {
+            "execution_id": "50000000-0000-4000-8000-000000000202",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "privilege_class": "StandardUser"
+          }
+        ],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000101",
+            "consent_type": "Administrative",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "action_id": "50000000-0000-4000-8000-000000000301",
+            "collector_id": "collector:windows:privileged-read",
+            "operation_code": "CollectPrivilegedReadOnly"
+          }
+        ]
+      },
+      "rule_id": "PASS-004",
+      "expected_error_code": "PASS_PRIVILEGE_MISMATCH",
+      "single_fault": "one execution privilege differs from Elevated pass"
+    },
+    {
+      "vector_id": "RUN_REBOOT_WITHOUT_CONSENT_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "d2406088f2f7ced294780431ff05ef2fdcacc3099b66b98ef71573ecf57abcbc",
+                "reboot_planned": true
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000013",
+                "kind": "RebootContinuation",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000013.json",
+                "object_digest": "15ad8f412b1f15e9fa1b555d813ac59685cc79c964edfc6e4984b2c866601aee",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "43f902523ce0362678e91e505d095234de92cd52c6640cf19e93fda3d5dbab3d"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": true,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "d2406088f2f7ced294780431ff05ef2fdcacc3099b66b98ef71573ecf57abcbc"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000013",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "RebootContinuation",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "15ad8f412b1f15e9fa1b555d813ac59685cc79c964edfc6e4984b2c866601aee"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000013"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": []
+      },
+      "rule_id": "PASS-005",
+      "expected_error_code": "PASS_CONSENT_BINDING_INVALID",
+      "single_fault": "RebootContinuation has no Reboot or DefenderOffline receipt"
+    },
+    {
+      "vector_id": "RUN_ELEVATED_WRONG_PASS_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000012",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000012.json",
+                "object_digest": "9d8c90a8e85a6216443da9412c3c8ee6d6ff075cc362aee517d42e814e828d29",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "b827b177c52e7a3f6ff9a97d9b34df3764cc9104c9571f942bb105e249a2b109"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000012",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "9d8c90a8e85a6216443da9412c3c8ee6d6ff075cc362aee517d42e814e828d29"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000012"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000101",
+            "consent_type": "Administrative",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "action_id": "50000000-0000-4000-8000-000000000301",
+            "collector_id": "collector:windows:privileged-read",
+            "operation_code": "CollectPrivilegedReadOnly"
+          }
+        ]
+      },
+      "rule_id": "PASS-005",
+      "expected_error_code": "PASS_CONSENT_BINDING_INVALID",
+      "single_fault": "Administrative receipt is bound to Standard instead of Elevated pass"
+    },
+    {
+      "vector_id": "RUN_POST_REBOOT_WITHOUT_CONTINUATION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000014",
+                "kind": "PostReboot",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000014.json",
+                "object_digest": "3d2579fd4a04dacb2bbf22f9b97890cae4e3ec0aa49133f05c4e222167b95941",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "69ef601f6e5ae75fd70b1088ab87465edf46d0f6c7727b278aa296ec268489d8"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000014",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "PostReboot",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000011"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "3d2579fd4a04dacb2bbf22f9b97890cae4e3ec0aa49133f05c4e222167b95941"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000014"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": []
+      },
+      "rule_id": "PASS-006",
+      "expected_error_code": "PASS_PREREQUISITE_INVALID",
+      "single_fault": "PostReboot follows Standard without RebootContinuation"
+    },
+    {
+      "vector_id": "RUN_REBOOT_UNKNOWN_PREREQUISITE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "d2406088f2f7ced294780431ff05ef2fdcacc3099b66b98ef71573ecf57abcbc",
+                "reboot_planned": true
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000013",
+                "kind": "RebootContinuation",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000013.json",
+                "object_digest": "acf87c5f8ede99813be0ff6dd4845b291061cbf71ed5a12eda17b09cbae7f5cd",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000102"
+            ],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "433ca63b48333ce90da6a42f5cf933ecf30e1b0be2af574fb805a3f54e730d65"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": true,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "d2406088f2f7ced294780431ff05ef2fdcacc3099b66b98ef71573ecf57abcbc"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000013",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "RebootContinuation",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [
+              "50000000-0000-4000-8000-000000000999"
+            ],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000102"
+            ],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "acf87c5f8ede99813be0ff6dd4845b291061cbf71ed5a12eda17b09cbae7f5cd"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000013"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000102",
+            "consent_type": "Reboot",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000013",
+            "action_id": "50000000-0000-4000-8000-000000000302",
+            "workflow_id": "workflow:synthetic-reboot",
+            "stage": "Continue",
+            "operation_code": "PerformRebootContinuation"
+          }
+        ]
+      },
+      "rule_id": "PASS-006",
+      "expected_error_code": "PASS_PREREQUISITE_INVALID",
+      "single_fault": "one prerequisite ID is absent from the run"
+    },
+    {
+      "vector_id": "RUN_DUPLICATE_PASS_ID_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_instances": [
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "audit_profile": {
+              "profile_id": "audit:arch-fix3-synthetic",
+              "profile_version": "1.0.0",
+              "profile_digest": "7e516a7b233d27f65cfa8106ea7615586aa321b16f034ab04a8b00a7ddde4021"
+            },
+            "state": "Completed",
+            "network_policy": "Forbidden",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:02Z",
+            "pass_references": [
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Standard",
+                "privilege_class": "StandardUser",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4",
+                "reboot_planned": false
+              },
+              {
+                "pass_id": "50000000-0000-4000-8000-000000000011",
+                "kind": "Elevated",
+                "privilege_class": "Elevated",
+                "logical_path": "passes/50000000-0000-4000-8000-000000000011.json",
+                "object_digest": "09dc2b7229e892ebeb9faf6939d2da745cad621acbc474e2ce2a775b495cf835",
+                "reboot_planned": false
+              }
+            ],
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "execution_references": [],
+            "observation_references": [],
+            "evidence_references": [],
+            "finding_references": [],
+            "inline_summaries": [],
+            "package_limits": {
+              "max_serialized_audit_run_bytes": 4194304,
+              "max_pass_references": 4,
+              "max_execution_references": 4096,
+              "max_observation_references": 10000,
+              "max_evidence_references": 10000,
+              "max_finding_references": 5000,
+              "max_inline_summaries": 256,
+              "max_inline_summary_bytes": 2048,
+              "max_decompressed_run_bytes": 2147483648,
+              "max_audit_package_bytes": 4294967296,
+              "max_zip_entries": 10000,
+              "max_zip_total_expanded_bytes": 1073741824,
+              "max_zip_entry_expanded_bytes": 268435456,
+              "max_compression_ratio": 100,
+              "max_logical_paths": 100000,
+              "max_imported_records": 1000000,
+              "max_json_nesting_depth": 64,
+              "max_raw_stdout_bytes": 1073741824,
+              "max_raw_stderr_bytes": 1073741824,
+              "arithmetic": "CheckedUnsignedSafeInteger"
+            },
+            "errors": [],
+            "action_log_reference": {
+              "action_log_id": "50000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "log_digest": "bc44f87d9b7c71b2d1d688c4621ae185d3424b4350064fe025ed146a4b3b5773"
+            },
+            "manifest_reference": {
+              "manifest_id": "50000000-0000-4000-8000-000000000501",
+              "logical_path": "manifest.json"
+            },
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "adce3295d25f54d4609b428b6a8d613db2ecff934b8b963baecccc1872d02724"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Standard",
+            "privilege_class": "StandardUser",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "cc41a480840b5ffbf5490628ea65f71a83d211d5cbb33253ce62cc371503a0d4"
+            }
+          }
+        },
+        {
+          "schema_id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+          "instance": {
+            "schema_version": "1.0.0",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "kind": "Elevated",
+            "privilege_class": "Elevated",
+            "state": "NotTested",
+            "prerequisite_pass_ids": [],
+            "reboot_planned": false,
+            "coverage_only": true,
+            "consent_receipt_ids": [
+              "50000000-0000-4000-8000-000000000101"
+            ],
+            "collector_execution_ids": [],
+            "coverage_reason_code": "NoEligibleCollectors",
+            "integrity": {
+              "digest_kind": "ObjectDigest",
+              "algorithm": "SHA-256",
+              "canonicalization": "JCS-RFC8785",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "integrity.object_digest"
+              ],
+              "object_digest": "09dc2b7229e892ebeb9faf6939d2da745cad621acbc474e2ce2a775b495cf835"
+            }
+          }
+        }
+      ],
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "application_graph": {
+        "pass_order": [
+          "50000000-0000-4000-8000-000000000011",
+          "50000000-0000-4000-8000-000000000011"
+        ],
+        "execution_bindings": [],
+        "consent_bindings": [
+          {
+            "receipt_id": "50000000-0000-4000-8000-000000000101",
+            "consent_type": "Administrative",
+            "run_id": "50000000-0000-4000-8000-000000000001",
+            "pass_id": "50000000-0000-4000-8000-000000000011",
+            "action_id": "50000000-0000-4000-8000-000000000301",
+            "collector_id": "collector:windows:privileged-read",
+            "operation_code": "CollectPrivilegedReadOnly"
+          }
+        ]
+      },
+      "rule_id": "PASS-002",
+      "expected_error_code": "PASS_KIND_DUPLICATE",
+      "single_fault": "two schema-valid pass objects share one pass_id"
+    }
+  ]
+}

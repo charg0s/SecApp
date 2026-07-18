@@ -1,0 +1,128 @@
+{
+  "schema_ids": [
+    "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+    "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+    "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+    "https://schemas.secapp.dev/v1/audit-run.schema.json"
+  ],
+  "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[\\\\:\\u0000-\\u001F\\u007F])(?:[A-Za-z0-9][A-Za-z0-9._-]{0,127})(?:/[A-Za-z0-9][A-Za-z0-9._-]{0,127})*$",
+  "vectors": [
+    {
+      "vector_id": "PATH_VALID_SINGLE",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": true,
+      "expected_application_valid": null,
+      "path": "run.json"
+    },
+    {
+      "vector_id": "PATH_VALID_NESTED",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": true,
+      "expected_application_valid": null,
+      "path": "runs/synthetic-1/passes/pass_1.json"
+    },
+    {
+      "vector_id": "PATH_VALID_SEGMENT_DOTS",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": true,
+      "expected_application_valid": null,
+      "path": "schemas/v1.0/object-name_1.json"
+    },
+    {
+      "vector_id": "PATH_INVALID_DOT_PREFIX",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": ".hidden/member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_UNDERSCORE_PREFIX",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "_private/member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_HYPHEN_PREFIX",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "-private/member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_PARENT",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "runs/../member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_CURRENT",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "runs/./member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_REPEATED_SLASH",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "runs//member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_TRAILING_SLASH",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "runs/member/",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_ABSOLUTE",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "/runs/member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_DRIVE",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "C:/runs/member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_BACKSLASH",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "runs\\member.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_NON_ASCII",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "runs/synthГ©tic.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    },
+    {
+      "vector_id": "PATH_INVALID_SEGMENT_TOO_LONG",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "path": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/file.json",
+      "expected_error_code": "PATH_CANONICAL_INVALID"
+    }
+  ]
+}

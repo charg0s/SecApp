@@ -1,0 +1,1512 @@
+{
+  "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+  "fixture_model": "Full objects have exact JCS ObjectDigest values. Schema-invalid union cases stop at schema validation; schema-valid negatives exercise exactly one application rule.",
+  "vectors": [
+    {
+      "vector_id": "CONSENT_ADMIN_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000101",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Administrative",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "CollectPrivilegedReadOnly",
+          "target_reference": "collector:windows:synthetic",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE",
+          "REGISTRY_READ"
+        ],
+        "approved_capabilities": [
+          "MACHINE_STATE",
+          "REGISTRY_READ"
+        ],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-01-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "ac9bbc06116446d86e206fa9006672a83466c0df299e4afbd1e271b1d37fd894"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_NETWORK_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000102",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "NetworkAccess",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "UseNetwork",
+          "target_reference": "destination:security-metadata",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "NETWORK"
+        ],
+        "approved_capabilities": [
+          "NETWORK"
+        ],
+        "requested_privacy_classes": [
+          "NetworkMetadata"
+        ],
+        "approved_privacy_classes": [
+          "NetworkMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-02-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "6e79af46608e2b8194a6f7735cc6af173ec414cd11dd9d4d18aea7c75f24e79e"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_DEFENDER_SCAN_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000103",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "DefenderScan",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "RunDefenderScan",
+          "target_reference": "defender:quick-scan",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "approved_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "requested_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "approved_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-03-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "0dfcb376cc6a7045dcf7fdf4619771c501756a8ab207c55c13e4a21f6679668d"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_DEFENDER_OFFLINE_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000104",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "DefenderOffline",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "ScheduleDefenderOffline",
+          "target_reference": "workflow:defender-offline",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "approved_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "requested_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "approved_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-04-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "886dd155da8c66d367b07493907f9d6cd9f9788d5796b9391e0bf9f16577c603"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_MEMORY_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000105",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "MemoryAcquisition",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "AcquireMemory",
+          "target_reference": "memory:physical",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MEMORY_READ"
+        ],
+        "approved_capabilities": [
+          "MEMORY_READ"
+        ],
+        "requested_privacy_classes": [
+          "MemoryContent"
+        ],
+        "approved_privacy_classes": [
+          "MemoryContent"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-05-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "1101f4b399756d90b80e39279e83e2ddaf6fb9b14309b83d3b138f3a46ee8944"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_SENSITIVE_DATA_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000106",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "SensitiveDataCollection",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "CollectSensitiveData",
+          "target_reference": "dataset:security-metadata",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "FILESYSTEM_READ"
+        ],
+        "approved_capabilities": [
+          "FILESYSTEM_READ"
+        ],
+        "requested_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "approved_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-06-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "85b7676a57157b949182cf920f335d36270428c313cbb55055b222a3b8870eff"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_EXPORT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000107",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Export",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "Export",
+          "target_reference": "export:synthetic-package",
+          "single_use": true
+        },
+        "requested_capabilities": [],
+        "approved_capabilities": [],
+        "requested_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "approved_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-07-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "d7189ea973aa957d31e85f726cf17a99617af65b1734fc54bc03d28c90c8b9d8"
+        },
+        "export_binding": {
+          "export_id": "60000000-0000-4000-8000-000000000501",
+          "redaction_profile_digest": "8942f27ac2dc0a0db47a597f80793641822bf63c2b674aa35be1ef4994f0e321"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REMEDIATION_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000108",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Remediation",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "Remediate",
+          "target_reference": "setting:synthetic-control",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "approved_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "requested_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "approved_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-08-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "73db89b44e3fd218803a0d1bafcfb85a7b611c6e15cbe5642b4f4a4f9beaf0c0"
+        },
+        "action_binding": {
+          "action_id": "60000000-0000-4000-8000-000000000301",
+          "exact_target_reference": "setting:synthetic-control",
+          "finding_id": "60000000-0000-4000-8000-000000000401",
+          "related_collector_binding": {
+            "collector_id": "collector:windows:synthetic",
+            "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+          }
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REBOOT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "CONSENT-001",
+        "CONSENT-002",
+        "CONSENT-003",
+        "CONSENT-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000109",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Reboot",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "PerformRebootContinuation",
+          "target_reference": "workflow:synthetic-reboot",
+          "single_use": true
+        },
+        "requested_capabilities": [],
+        "approved_capabilities": [],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-09-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "4ab3b105061177862467a6a082e39bec0c1daeee5d8e2c05b7b10b38b6c5a0ca"
+        },
+        "reboot_binding": {
+          "workflow_id": "workflow:synthetic-reboot",
+          "stage": "Continue",
+          "planned_by_collector": {
+            "collector_id": "collector:windows:synthetic",
+            "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+          }
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_ADMIN_MISSING_COLLECTOR_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required collector_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000101",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Administrative",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "CollectPrivilegedReadOnly",
+          "target_reference": "collector:windows:synthetic",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE",
+          "REGISTRY_READ"
+        ],
+        "approved_capabilities": [
+          "MACHINE_STATE",
+          "REGISTRY_READ"
+        ],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-01-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "14feac08275fab0d319cd8acad1a5911e1eadf28891076181e860bffb02b4104"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_NETWORK_MISSING_COLLECTOR_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required collector_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000102",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "NetworkAccess",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "UseNetwork",
+          "target_reference": "destination:security-metadata",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "NETWORK"
+        ],
+        "approved_capabilities": [
+          "NETWORK"
+        ],
+        "requested_privacy_classes": [
+          "NetworkMetadata"
+        ],
+        "approved_privacy_classes": [
+          "NetworkMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-02-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "9a9a7c4526435c954a30772ea9b69ac0b062f20094c2cc4e88dd6af1fd48f8c8"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_DEFENDER_SCAN_MISSING_COLLECTOR_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required collector_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000103",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "DefenderScan",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "RunDefenderScan",
+          "target_reference": "defender:quick-scan",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "approved_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "requested_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "approved_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-03-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "11dcfdd33aee02b79f7cda62ca620d5910a6e0b4fe876c44ddfedb15fd70a092"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_DEFENDER_OFFLINE_MISSING_COLLECTOR_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required collector_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000104",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "DefenderOffline",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "ScheduleDefenderOffline",
+          "target_reference": "workflow:defender-offline",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "approved_capabilities": [
+          "MACHINE_STATE"
+        ],
+        "requested_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "approved_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-04-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "33f53471740853b4c71795624c92e81d0d1d0b17565990bf9af3f5d83328093c"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_MEMORY_MISSING_COLLECTOR_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required collector_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000105",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "MemoryAcquisition",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "AcquireMemory",
+          "target_reference": "memory:physical",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MEMORY_READ"
+        ],
+        "approved_capabilities": [
+          "MEMORY_READ"
+        ],
+        "requested_privacy_classes": [
+          "MemoryContent"
+        ],
+        "approved_privacy_classes": [
+          "MemoryContent"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-05-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "90d13fc24ebd6f504fe1139a303657b957fb70cda6e0e7afeaa66ba209d8e1ae"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_SENSITIVE_DATA_MISSING_COLLECTOR_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required collector_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000106",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "SensitiveDataCollection",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "CollectSensitiveData",
+          "target_reference": "dataset:security-metadata",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "FILESYSTEM_READ"
+        ],
+        "approved_capabilities": [
+          "FILESYSTEM_READ"
+        ],
+        "requested_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "approved_privacy_classes": [
+          "SensitiveSecurityData"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-06-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "c159d49438fd1feca530024b7c3f5d91272b6bfd66cb55c7f2d6b516f4bf8053"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_EXPORT_WITH_COLLECTOR_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "foreign collector_binding added to Export",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000107",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Export",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "Export",
+          "target_reference": "export:synthetic-package",
+          "single_use": true
+        },
+        "requested_capabilities": [],
+        "approved_capabilities": [],
+        "requested_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "approved_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-07-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "ccd28d0bdb8e95478c626b3b9ec83afafc3c97ac7fc2c02e94a33ca688f8879f"
+        },
+        "export_binding": {
+          "export_id": "60000000-0000-4000-8000-000000000501",
+          "redaction_profile_digest": "8942f27ac2dc0a0db47a597f80793641822bf63c2b674aa35be1ef4994f0e321"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REMEDIATION_MISSING_ACTION_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required action_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000108",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Remediation",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "Remediate",
+          "target_reference": "setting:synthetic-control",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "approved_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "requested_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "approved_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-08-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "b9944a1b36b5c532ae796acbc0592f8f553d2618c22d2c54fdc96bb3ec243fab"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REMEDIATION_RELATED_COLLECTOR_WITHOUT_FINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "related collector retained without finding_id",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000108",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Remediation",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "Remediate",
+          "target_reference": "setting:synthetic-control",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "approved_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "requested_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "approved_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-08-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "a726b8aa871ce9fe63e2c41fee230b12ed12aacb9850bacfd46d2f161e8506b9"
+        },
+        "action_binding": {
+          "action_id": "60000000-0000-4000-8000-000000000301",
+          "exact_target_reference": "setting:synthetic-control",
+          "related_collector_binding": {
+            "collector_id": "collector:windows:synthetic",
+            "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+          }
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REBOOT_MISSING_WORKFLOW_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "required reboot_binding removed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000109",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Reboot",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "PerformRebootContinuation",
+          "target_reference": "workflow:synthetic-reboot",
+          "single_use": true
+        },
+        "requested_capabilities": [],
+        "approved_capabilities": [],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-09-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "e0e3c678388b035b87a34e9858cf298356babd306effa36818ada5ecd7ce6c10"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_ADMIN_OPERATION_NETWORK_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-001",
+      "expected_error_code": "CONSENT_OPERATION_MISMATCH",
+      "single_fault": "only operation_code conflicts with Administrative discriminator",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000101",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Administrative",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "UseNetwork",
+          "target_reference": "collector:windows:synthetic",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE",
+          "REGISTRY_READ"
+        ],
+        "approved_capabilities": [
+          "MACHINE_STATE",
+          "REGISTRY_READ"
+        ],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-01-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "38408fdea342fcd27872199a8b64475c259611793ef820d9d62aa1823d0aa6ab"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_ADMIN_CAPABILITY_ESCALATION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-002",
+      "expected_error_code": "CONSENT_SCOPE_ESCALATION",
+      "single_fault": "EVENT_LOG_READ was not requested but is locally allowed for Administrative receipts",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000101",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Administrative",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "CollectPrivilegedReadOnly",
+          "target_reference": "collector:windows:synthetic",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "MACHINE_STATE",
+          "REGISTRY_READ"
+        ],
+        "approved_capabilities": [
+          "REGISTRY_READ",
+          "EVENT_LOG_READ"
+        ],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-01-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "9aba6517302990e97e74cf9540f4d5a1890520bd1ee220b9c0bca21a91654259"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REMEDIATION_TARGET_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "action binding target differs from exact_scope target",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000108",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Remediation",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "Remediate",
+          "target_reference": "setting:synthetic-control",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "approved_capabilities": [
+          "REGISTRY_WRITE"
+        ],
+        "requested_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "approved_privacy_classes": [
+          "SystemMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-08-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "010ab73465da5e5074f564e8cadeeca56902a1bd1e42d3ea323f3d28a9acebeb"
+        },
+        "action_binding": {
+          "action_id": "60000000-0000-4000-8000-000000000301",
+          "exact_target_reference": "setting:different-control",
+          "finding_id": "60000000-0000-4000-8000-000000000401",
+          "related_collector_binding": {
+            "collector_id": "collector:windows:synthetic",
+            "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+          }
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REBOOT_WORKFLOW_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-004",
+      "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID",
+      "single_fault": "reboot workflow differs from exact_scope target",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000109",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Reboot",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "PerformRebootContinuation",
+          "target_reference": "workflow:synthetic-reboot",
+          "single_use": true
+        },
+        "requested_capabilities": [],
+        "approved_capabilities": [],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-09-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "7fe74520c94b8fe0267c11eb68e867426d6826a7a3bf8aa7fe1d3a257dd491ea"
+        },
+        "reboot_binding": {
+          "workflow_id": "workflow:different-reboot",
+          "stage": "Continue",
+          "planned_by_collector": {
+            "collector_id": "collector:windows:synthetic",
+            "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+          }
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_EXPIRED_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-003",
+      "expected_error_code": "CONSENT_RECEIPT_INVALID",
+      "single_fault": "expires_at precedes validation time",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000109",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "Reboot",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "PerformRebootContinuation",
+          "target_reference": "workflow:synthetic-reboot",
+          "single_use": true
+        },
+        "requested_capabilities": [],
+        "approved_capabilities": [],
+        "requested_privacy_classes": [],
+        "approved_privacy_classes": [],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2025-12-31T23:59:59Z",
+        "nonce": "synthetic-consent-nonce-09-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "803acf76d8a40190d1a914d06ac688a5cb6adad7b9344615d922bb4851600226"
+        },
+        "reboot_binding": {
+          "workflow_id": "workflow:synthetic-reboot",
+          "stage": "Continue",
+          "planned_by_collector": {
+            "collector_id": "collector:windows:synthetic",
+            "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+          }
+        }
+      }
+    },
+    {
+      "vector_id": "CONSENT_REPLAY_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "rule_id": "CONSENT-003",
+      "expected_error_code": "CONSENT_RECEIPT_INVALID",
+      "single_fault": "validation_context marks nonce as already consumed",
+      "instance": {
+        "schema_version": "1.0.0",
+        "receipt_id": "60000000-0000-4000-8000-000000000102",
+        "audit_run_id": "60000000-0000-4000-8000-000000000001",
+        "consent_type": "NetworkAccess",
+        "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+        "exact_scope": {
+          "pass_id": "60000000-0000-4000-8000-000000000011",
+          "authorized_action_id": "60000000-0000-4000-8000-000000000301",
+          "operation_code": "UseNetwork",
+          "target_reference": "destination:security-metadata",
+          "single_use": true
+        },
+        "requested_capabilities": [
+          "NETWORK"
+        ],
+        "approved_capabilities": [
+          "NETWORK"
+        ],
+        "requested_privacy_classes": [
+          "NetworkMetadata"
+        ],
+        "approved_privacy_classes": [
+          "NetworkMetadata"
+        ],
+        "consent_text_version": "consent-text:1.0.0",
+        "presented_at": "2026-01-01T00:00:00Z",
+        "accepted_at": "2026-01-01T00:00:01Z",
+        "expires_at": "2026-01-01T01:00:00Z",
+        "nonce": "synthetic-consent-nonce-02-xxxxxxxxxxxxxxxx",
+        "user_presence": true,
+        "application_version": "0.1.0",
+        "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+        "revocation": {
+          "state": "Active"
+        },
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "6e79af46608e2b8194a6f7735cc6af173ec414cd11dd9d4d18aea7c75f24e79e"
+        },
+        "collector_binding": {
+          "collector_id": "collector:windows:synthetic",
+          "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"
+        }
+      },
+      "validation_context": {
+        "validation_time": "2026-01-01T00:10:00Z",
+        "consumed_nonces": [
+          "synthetic-consent-nonce-02-xxxxxxxxxxxxxxxx"
+        ]
+      }
+    }
+  ]
+}

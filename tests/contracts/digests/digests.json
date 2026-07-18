@@ -1,0 +1,219 @@
+{
+  "canonicalization": "JCS-RFC8785",
+  "algorithm": "SHA-256",
+  "encoding": "LowerHex",
+  "jcs_conformance_vectors": [
+    {
+      "case_id": "JCS_RFC8785_SERIALIZATION_SAMPLE",
+      "source": "RFC 8785 section 3.2.2",
+      "input": {
+        "numbers": [333333333.33333329, 1e30, 4.50, 2e-3, 1e-27],
+        "string": "€$\u000f\nA'B\"\\\\\"/",
+        "literals": [null, true, false]
+      },
+      "expected_canonical": "{\"literals\":[null,true,false],\"numbers\":[333333333.3333333,1e+30,4.5,0.002,1e-27],\"string\":\"€$\\u000f\\nA'B\\\"\\\\\\\\\\\"/\"}",
+      "expected_digest": "2d5e01a318d0f0879ab568c4be289c8b1f64ef8921a53c6277d5e069978baacb"
+    },
+    {
+      "case_id": "JCS_RFC8785_PROPERTY_ORDER_SAMPLE",
+      "source": "RFC 8785 section 3.2.3",
+      "input": {
+        "€": "Euro Sign",
+        "\r": "Carriage Return",
+        "דּ": "Hebrew Letter Dalet With Dagesh",
+        "1": "One",
+        "😀": "Emoji: Grinning Face",
+        "": "Control",
+        "ö": "Latin Small Letter O With Diaeresis"
+      },
+      "expected_canonical": "{\"\\r\":\"Carriage Return\",\"1\":\"One\",\"\":\"Control\",\"ö\":\"Latin Small Letter O With Diaeresis\",\"€\":\"Euro Sign\",\"😀\":\"Emoji: Grinning Face\",\"דּ\":\"Hebrew Letter Dalet With Dagesh\"}",
+      "expected_digest": "5e321556d22018a9656991a9e94f77ec175fa193e52a2429d312f8419ec8b08c"
+    },
+    { "case_id": "JCS_NUMBER_POSITIVE_ZERO", "source": "RFC 8785 section 3.2.2.3 / ECMAScript Number serialization", "input": 0, "expected_canonical": "0", "expected_digest": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9" },
+    { "case_id": "JCS_NUMBER_NEGATIVE_ZERO", "source": "RFC 8785 Appendix B", "input": -0, "expected_canonical": "0", "expected_digest": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9" },
+    { "case_id": "JCS_NUMBER_MAX_SAFE_INTEGER", "source": "RFC 8785 section 3.2.2.3 / ECMAScript Number serialization", "input": 9007199254740991, "expected_canonical": "9007199254740991", "expected_digest": "f40b423c2dd95ff2b2f027e22208f438cf7242862e5e746860e697308c9add26" },
+    { "case_id": "JCS_NUMBER_FRACTION", "source": "RFC 8785 section 3.2.2", "input": 4.50, "expected_canonical": "4.5", "expected_digest": "32209ccbf8a8e509b9027698cc173343a2695e8ecdbe899bf5335a3100c956fc" },
+    { "case_id": "JCS_NUMBER_EXPONENT", "source": "RFC 8785 section 3.2.2", "input": 1e30, "expected_canonical": "1e+30", "expected_digest": "7412d94bdf30adfa71080e057185e1a8de86e2e99a8350b011df8ac41ed5a6e3" },
+    { "case_id": "JCS_NUMBER_FIXED_THRESHOLD", "source": "RFC 8785 section 3.2.2.3 / ECMAScript Number serialization", "input": 0.000001, "expected_canonical": "0.000001", "expected_digest": "159fb29a827ad04b260aa6c8ab6d8637f8f2b38af5c4f3cb49d6a21205e040f8" },
+    { "case_id": "JCS_NUMBER_EXPONENT_THRESHOLD", "source": "RFC 8785 section 3.2.2.3 / ECMAScript Number serialization", "input": 1e-7, "expected_canonical": "1e-7", "expected_digest": "5b33e02f2c5103a05d32f6ba9cb058294452bfbf393967f68bb30c1bdcbbab22" },
+    { "case_id": "JCS_NUMBER_LARGE_THRESHOLD", "source": "RFC 8785 section 3.2.2.3 / ECMAScript Number serialization", "input": 1e21, "expected_canonical": "1e+21", "expected_digest": "241c4643fa70b1dcde1205b71be4e3bebb17e9f880c8e1a33d0ead6c27271d3c" },
+    { "case_id": "JCS_NUMBER_MAX_FINITE", "source": "RFC 8785 Appendix B", "input": 1.7976931348623157e308, "expected_canonical": "1.7976931348623157e+308", "expected_digest": "c2784e1abd6317452708f3fbf9641c16b959561bc621a1d408c23a20aa2cb585" },
+    { "case_id": "JCS_NUMBER_ROUNDING", "source": "RFC 8785 section 3.2.2", "input": 333333333.33333329, "expected_canonical": "333333333.3333333", "expected_digest": "6bd9be1c141028789cc35db62f1b43e80d5d4ee24d6d542e775deb16799ff4c7" },
+    { "case_id": "JCS_STRING_EMPTY", "source": "RFC 8785 section 3.2.2.2", "input": "", "expected_canonical": "\"\"", "expected_digest": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126" },
+    { "case_id": "JCS_STRING_BMP", "source": "RFC 8785 section 3.2.2.2", "input": "€ö", "expected_canonical": "\"€ö\"", "expected_digest": "beb87a99fa0971c5eb4803a6eee64f40510922cc312e7a803dbc72f0446a29c3" },
+    { "case_id": "JCS_STRING_SUPPLEMENTARY", "source": "RFC 8785 sections 3.2.2.2 and 3.2.3", "input": "😀", "expected_canonical": "\"😀\"", "expected_digest": "7a0c50b92434b015545fe93ab723db2d4b2cdd14a441405624a9ce8be29f1d5a" },
+    { "case_id": "JCS_STRING_COMPOSED", "source": "RFC 8785 section 3.1; Unicode normalization forbidden", "input": "é", "expected_canonical": "\"é\"", "expected_digest": "f2886017e9c7abacf804b54d64787dce2b611c9544ba21f3affdd126a6e50086" },
+    { "case_id": "JCS_STRING_DECOMPOSED", "source": "RFC 8785 section 3.1; Unicode normalization forbidden", "input": "é", "expected_canonical": "\"é\"", "expected_digest": "3d68ce21f2899a475713cdbe7562ba9bdb6b1dfde8af1f221bdff4a0935b53b2" },
+    { "case_id": "JCS_STRING_ESCAPES_CONTROLS", "source": "RFC 8785 section 3.2.2.2", "input": "\b\t\n\f\r\u0000\u001f\"\\/", "expected_canonical": "\"\\b\\t\\n\\f\\r\\u0000\\u001f\\\"\\\\/\"", "expected_digest": "11bf4c4e5e2007f7a205d06958071f106aea4fe85084651d69d18d442fba0588" },
+    {
+      "case_id": "JCS_PROPERTY_ORDER_ADVERSARIAL",
+      "source": "RFC 8785 section 3.2.3 raw UTF-16 code-unit ordering",
+      "input": { "a_a": 5, "a.a": 4, "a": 3, "A": 2, "\r": 1, "דּ": 10, "😀": 9, "é": 8, "é": 7 },
+      "expected_canonical": "{\"\\r\":1,\"A\":2,\"a\":3,\"a.a\":4,\"a_a\":5,\"é\":7,\"é\":8,\"😀\":9,\"דּ\":10}",
+      "expected_digest": "63428b76381e17d48694e20c6f256cc3f9a19d69feeeca10f476dca261212ee6"
+    }
+  ],
+  "jcs_direct_api_positive_cases": [
+    "null", "boolean", "finite-number", "valid-unicode", "dense-array", "plain-object", "null-prototype-object", "shared-noncyclic-object"
+  ],
+  "jcs_direct_api_negative_cases": [
+    "high-lone-surrogate-value", "low-lone-surrogate-value", "surrogate-property-name", "undefined-value", "function-value", "symbol-value", "bigint", "nan", "positive-infinity", "negative-infinity", "sparse-array", "cyclic-object", "date", "map", "set", "typed-array", "getter", "non-enumerable-property", "symbol-key", "array-extra-property", "proxy"
+  ],
+  "profile_digest_cases": [
+    {
+      "case_id": "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A",
+      "profile": {
+        "schema_version": "1.0.0",
+        "profile_id": "redaction:public-jcs-test",
+        "version": "1.0.0",
+        "title": "Synthetic public JCS profile",
+        "export_scope": "Public",
+        "execution_location": "LocalHostOnly",
+        "unknown_field_behavior": "RejectExport",
+        "precedence": "ClassFloorThenMoreRestrictiveFieldRule",
+        "class_actions": { "Public": "Include", "SystemMetadata": "Redact", "PersonalMetadata": "Exclude", "NetworkMetadata": "Exclude", "SensitiveSecurityData": "Exclude", "Secret": "Exclude", "MemoryContent": "Exclude" },
+        "field_rules": [
+          { "field": "a_a", "privacy_class": "SystemMetadata", "action": "Redact" },
+          { "field": "a.a", "privacy_class": "Public", "action": "Include" }
+        ],
+        "composition_policy": { "policy_id": "composition:public-jcs-test", "policy_digest": "a08d845d933caca68461cbd2100d2e2e90286599377a29184d87d30659bf0f6a", "on_unassessed_combination": "RejectExport" },
+        "profile_digest": { "digest_kind": "ProfileDigest", "logical_content": "RedactionProfileObject", "canonicalization": "JCS-RFC8785", "algorithm": "SHA-256", "encoding": "LowerHex", "excluded_fields": ["profile_digest.digest"], "digest": "51a2332ed30d612fcb2b917d4c22417ff217b88627eecdd14acdf627adbc42b9" }
+      },
+      "expected_digest": "51a2332ed30d612fcb2b917d4c22417ff217b88627eecdd14acdf627adbc42b9",
+      "permutation_invariant": true,
+      "mutations": [
+        { "name": "action", "op": "replace", "path": "/field_rules/0/action", "value": "Exclude", "expected_digest": "28043f1717fbecaab4404a2de369440a7d1967a0bd70a7670255656a0fc5453e" },
+        { "name": "path", "op": "replace", "path": "/field_rules/0/field", "value": "a_b", "expected_digest": "854dc4c8e0080de1fc3b746372fd78b673d2d831569303e030ac5ef843833c73" },
+        { "name": "class", "op": "replace", "path": "/field_rules/0/privacy_class", "value": "Public", "expected_digest": "223ea497dab4054562a04b95f28d2943683faf14ba4a3a93d09580a4b7ce9f86" },
+        { "name": "key", "op": "add", "path": "/pseudonymization_key_id", "value": "key:jcs-test", "expected_digest": "2fba382a9aa9ad3b514d3579de2897e185e37ef2919e838e72511ca4ee7f11b0" },
+        { "name": "public-private", "op": "replace", "path": "/export_scope", "value": "Private", "expected_digest": "c062ef4f6e3afa0a41fa9a95c4a6a9dc0b2978cce52e5e43fd72a4304f489158" }
+      ]
+    },
+    {
+      "case_id": "PROFILE_PRIVATE_NONEMPTY",
+      "profile": {
+        "schema_version": "1.0.0",
+        "profile_id": "redaction:private-jcs-test",
+        "version": "1.0.0",
+        "title": "Synthetic private JCS profile",
+        "export_scope": "Private",
+        "execution_location": "LocalHostOnly",
+        "unknown_field_behavior": "RejectExport",
+        "precedence": "ClassFloorThenMoreRestrictiveFieldRule",
+        "class_actions": { "Public": "Include", "SystemMetadata": "Include", "PersonalMetadata": "Include", "NetworkMetadata": "Include", "SensitiveSecurityData": "Include", "Secret": "Exclude", "MemoryContent": "Exclude" },
+        "field_rules": [
+          { "field": "z.z", "privacy_class": "Secret", "action": "Exclude" },
+          { "field": "b_b", "privacy_class": "PersonalMetadata", "action": "Redact" }
+        ],
+        "composition_policy": { "policy_id": "composition:private-jcs-test", "policy_digest": "1f85911c876840fff4040b05991a333896b9883e466711a407fc814fd74b968e", "on_unassessed_combination": "RejectExport" },
+        "profile_digest": { "digest_kind": "ProfileDigest", "logical_content": "RedactionProfileObject", "canonicalization": "JCS-RFC8785", "algorithm": "SHA-256", "encoding": "LowerHex", "excluded_fields": ["profile_digest.digest"], "digest": "53d2698719944ed849c516c2b53eb0faf9923d8a87d490f05f5dbd3aafefd97f" }
+      },
+      "expected_digest": "53d2698719944ed849c516c2b53eb0faf9923d8a87d490f05f5dbd3aafefd97f",
+      "permutation_invariant": true,
+      "mutations": []
+    }
+  ],
+  "file_digest_cases": [
+    { "case_id": "FILE_EMPTY", "source_bytes": { "encoding": "Hex", "data": "" }, "expected_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "expected_mutation_digest": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d" },
+    { "case_id": "FILE_ASCII", "source_bytes": { "encoding": "Hex", "data": "536563417070" }, "expected_digest": "19fa578f987ca0963d22c34c814aba3f85687de093590a95996db4e0992f4c53", "expected_mutation_digest": "82cea35849b1e9d3959d9a0f04570ec29df2c8295f552a5119a3f200292bd4d8" },
+    { "case_id": "FILE_UTF8", "source_bytes": { "encoding": "Base64", "data": "0J/RgNC40LLQtdGC" }, "expected_digest": "dd679c0b9fd408a04148aa7d30c9df393f67b7227f65693fffe0ed6d0f0ade59", "expected_mutation_digest": "58d3beda4d2bcdb97f72f66acff7330a68ef73361e3fee6ff69d18bcdf039d3c" },
+    { "case_id": "FILE_UTF8_BOM", "source_bytes": { "encoding": "Hex", "data": "efbbbf616263" }, "expected_digest": "1c28dc3f1f804a1ad9c9b4b4cf5e2658d16ad4ed08e3020d04a8d2865018947c", "expected_mutation_digest": "1d0378abbfe4823b39b22e9c70f83c5b763da220083b2b3e2048a827d9004997" },
+    { "case_id": "FILE_LF", "source_bytes": { "encoding": "Hex", "data": "610a62" }, "expected_digest": "7e18f737311b2dc3b2f269dd78396b0351f14fb66efa879f768cb23181883c78", "expected_mutation_digest": "5ebf2d53996f7598136cde8770269a721d36fc0380819e9c12c9affbb0972d20" },
+    { "case_id": "FILE_CRLF", "source_bytes": { "encoding": "Hex", "data": "610d0a62" }, "expected_digest": "18745f36a05e29072709042d6062ce54f1b08ff36c27ba80c39f81fb010c8ce2", "expected_mutation_digest": "35c8d743b871a096284da730748026eb11e6bbb55a7e4bb06cedb5f078361668" },
+    { "case_id": "FILE_FINAL_LF", "source_bytes": { "encoding": "Hex", "data": "6162630a" }, "expected_digest": "edeaaff3f1774ad2888673770c6d64097e391bc362d7d6fb34982ddf0efd18cb", "expected_mutation_digest": "98251cbf41f4c842c90921487c4d42fe123d23f8c67a2832740df3da792d8de2" },
+    { "case_id": "FILE_NO_FINAL_LF", "source_bytes": { "encoding": "Hex", "data": "616263" }, "expected_digest": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", "expected_mutation_digest": "fe8eb58c9ae042ebe2a7968d0a113f87fa13d991814c260758b03f9d04da5a2c" },
+    { "case_id": "FILE_NUL", "source_bytes": { "encoding": "Hex", "data": "610062" }, "expected_digest": "59b271ae1bbcb1d31d41929817f4b16fb439eb4f31520b5ad1d5ce98920a7138", "expected_mutation_digest": "723f2a93fc1aa6c29b797f061ad4c566c9a4291b57e6a120606e2618bfa4a929" },
+    { "case_id": "FILE_BYTE_BOUNDARIES", "source_bytes": { "encoding": "Hex", "data": "007f80ff" }, "expected_digest": "89273d2f70b93285bb7ddb4bcee86a5347ca7159352e3cbdd20c23e9d1e507d3", "expected_mutation_digest": "236f0334f562f402c677471ea49b7a1fcc92510ad15eb1905202b45ce425ade2" },
+    { "case_id": "FILE_ARBITRARY_BINARY", "source_bytes": { "encoding": "Base64", "data": "AAECAwQFBgcICfr7/P3+/w==" }, "expected_digest": "373aa04fe64287df9e407406545728b1682144dcf1f0b727b172ee4f77990f1c", "expected_mutation_digest": "ee7a0b89104899d37685a2a483ca267b88326233047af0e09e547109665f2db3" },
+    { "case_id": "FILE_INVALID_HEX", "source_bytes": { "encoding": "Hex", "data": "0g" }, "expected_error": "DIGEST_BYTE_ENCODING_INVALID" },
+    { "case_id": "FILE_ODD_HEX", "source_bytes": { "encoding": "Hex", "data": "abc" }, "expected_error": "DIGEST_BYTE_ENCODING_INVALID" },
+    { "case_id": "FILE_INVALID_BASE64", "source_bytes": { "encoding": "Base64", "data": "AA=A" }, "expected_error": "DIGEST_BYTE_ENCODING_INVALID" },
+    { "case_id": "FILE_UNSUPPORTED_ENCODING", "source_bytes": { "encoding": "Utf16", "data": "YQ==" }, "expected_error": "DIGEST_BYTE_SOURCE_UNSUPPORTED" }
+  ],
+  "content_digest_cases": [
+    { "case_id": "CONTENT_EMPTY", "source_bytes": { "encoding": "Hex", "data": "" }, "canonical_hex": "0a", "expected_digest": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b" },
+    { "case_id": "CONTENT_ASCII_NO_FINAL_LF", "source_bytes": { "encoding": "Hex", "data": "616263" }, "canonical_hex": "6162630a", "expected_digest": "edeaaff3f1774ad2888673770c6d64097e391bc362d7d6fb34982ddf0efd18cb" },
+    { "case_id": "CONTENT_CRLF", "source_bytes": { "encoding": "Hex", "data": "610d0a620d0a" }, "canonical_hex": "610a620a", "expected_digest": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2" },
+    { "case_id": "CONTENT_CR", "source_bytes": { "encoding": "Hex", "data": "610d62" }, "canonical_hex": "610a620a", "expected_digest": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2" },
+    { "case_id": "CONTENT_BOM", "source_bytes": { "encoding": "Hex", "data": "efbbbf616263" }, "canonical_hex": "6162630a", "expected_digest": "edeaaff3f1774ad2888673770c6d64097e391bc362d7d6fb34982ddf0efd18cb" },
+    { "case_id": "CONTENT_FINAL_LF", "source_bytes": { "encoding": "Hex", "data": "6162630a" }, "canonical_hex": "6162630a", "expected_digest": "edeaaff3f1774ad2888673770c6d64097e391bc362d7d6fb34982ddf0efd18cb" },
+    { "case_id": "CONTENT_UTF8", "source_bytes": { "encoding": "Base64", "data": "0J/RgNC40LLQtdGC" }, "canonical_hex": "d09fd180d0b8d0b2d0b5d1820a", "expected_digest": "dfeeecc1163e26fe6d1bc09cec65868b6c5dc9e4bb4f01ff2f6f5d0d3b0b7166" },
+    { "case_id": "CONTENT_COMPOSED", "source_bytes": { "encoding": "Hex", "data": "c3a9" }, "canonical_hex": "c3a90a", "expected_digest": "edd3a863872a04239eb29ad4bc12fc892b3d4ae57cc7e786a3697816f8e141c2" },
+    { "case_id": "CONTENT_DECOMPOSED", "source_bytes": { "encoding": "Hex", "data": "65cc81" }, "canonical_hex": "65cc810a", "expected_digest": "f979a211b00b61497349a7c753652a3d173550a368711a9f9f9845e6383db7cb" },
+    { "case_id": "CONTENT_SUPPLEMENTARY", "source_bytes": { "encoding": "Hex", "data": "f09f9880" }, "canonical_hex": "f09f98800a", "expected_digest": "d744e0ee836148320d73e0d69631b60cc9eb4ec732cf9d78afd0d70661fcff31" },
+    { "case_id": "CONTENT_NUL", "source_bytes": { "encoding": "Hex", "data": "610062" }, "canonical_hex": "6100620a", "expected_digest": "3a100994c4e38751871e6e8eef9adad2b20177fdeaf650daacdcd74f4c9421e3" },
+    { "case_id": "CONTENT_INVALID_UTF8", "source_bytes": { "encoding": "Hex", "data": "80" }, "expected_error": "DIGEST_CONTENT_UTF8_INVALID" }
+  ],
+  "vectors": [
+    {
+      "vector_id": "DIGEST_ACTION_FULL_OBJECT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "source": { "file": "../action-log/actions.json", "vector_id": "ACTION_NETWORK_VALID", "instance_pointer": "/instance" },
+      "expected_entry_digest": "905c084a3fed49a348aed8c4aac28e50a681d18c69d9a98f691c21d0a8f5c550",
+      "expected_log_digest": "c2982506a9e7035e0f99dcc66626d70c848d45e8665782fb2f66e7d48fd4a4b9"
+    },
+    {
+      "vector_id": "DIGEST_MANIFEST_FULL_OBJECT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "source": { "file": "../audit-manifest/membership.json", "vector_id": "MANIFEST_MINIMUM_VALID", "instance_pointer": "/instance" },
+      "expected_manifest_digest": "8b329b234f9204ad907353e6a53221245422a188417c15ad174330be61dac815"
+    },
+    {
+      "vector_id": "DIGEST_ACTION_CHAIN_VALID",
+      "fixture_kind": "DigestProjection",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "entries": [
+        {
+          "logical_entry_without_entry_digest": { "action_id": "00000000-0000-4000-8000-000000000901", "audit_run_id": "00000000-0000-4000-8000-000000000001", "previous_entry_digest": null, "sequence_number": 0 },
+          "expected_canonical_utf8": "{\"action_id\":\"00000000-0000-4000-8000-000000000901\",\"audit_run_id\":\"00000000-0000-4000-8000-000000000001\",\"previous_entry_digest\":null,\"sequence_number\":0}",
+          "expected_entry_digest": "8847ceb463c5f08d640c3b07dd843787c6064e4e493b3bb496f4ff6d17682312"
+        },
+        {
+          "logical_entry_without_entry_digest": { "action_id": "00000000-0000-4000-8000-000000000902", "audit_run_id": "00000000-0000-4000-8000-000000000001", "previous_entry_digest": "8847ceb463c5f08d640c3b07dd843787c6064e4e493b3bb496f4ff6d17682312", "sequence_number": 1 },
+          "expected_canonical_utf8": "{\"action_id\":\"00000000-0000-4000-8000-000000000902\",\"audit_run_id\":\"00000000-0000-4000-8000-000000000001\",\"previous_entry_digest\":\"8847ceb463c5f08d640c3b07dd843787c6064e4e493b3bb496f4ff6d17682312\",\"sequence_number\":1}",
+          "expected_entry_digest": "14db945f717885ec6a8b98b91732264798fa77470496031c9a70efef29e16d7a"
+        }
+      ]
+    },
+    { "vector_id": "DIGEST_ACTION_GAP_INVALID", "fixture_kind": "DigestProjection", "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json", "expected_schema_valid": null, "expected_application_valid": false, "rule_id": "ACTION-003", "expected_error_code": "ACTION_LOG_CHAIN_INVALID", "sequence_numbers": [0, 2] },
+    { "vector_id": "DIGEST_ACTION_DUP_SEQUENCE_INVALID", "fixture_kind": "DigestProjection", "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json", "expected_schema_valid": null, "expected_application_valid": false, "rule_id": "ACTION-003", "expected_error_code": "ACTION_LOG_CHAIN_INVALID", "sequence_numbers": [0, 1, 1] },
+    { "vector_id": "DIGEST_ACTION_PREVIOUS_MISMATCH_INVALID", "fixture_kind": "DigestProjection", "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json", "expected_schema_valid": null, "expected_application_valid": false, "rule_id": "ACTION-003", "expected_error_code": "ACTION_LOG_CHAIN_INVALID", "previous_entry_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff" },
+    { "vector_id": "DIGEST_ACTION_CROSS_RUN_INVALID", "fixture_kind": "DigestProjection", "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json", "expected_schema_valid": null, "expected_application_valid": false, "rule_id": "ACTION-003", "expected_error_code": "ACTION_LOG_CHAIN_INVALID", "log_run_id": "00000000-0000-4000-8000-000000000001", "entry_run_id": "00000000-0000-4000-8000-000000000002" },
+    {
+      "vector_id": "DIGEST_MANIFEST_PERMUTATION_VALID",
+      "fixture_kind": "DigestProjection",
+      "schema_id": "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "input_arrays": [
+        [{ "logical_path": "runs/synthetic/b.json", "member_id": "member:b" }, { "logical_path": "runs/synthetic/a.json", "member_id": "member:a" }],
+        [{ "logical_path": "runs/synthetic/a.json", "member_id": "member:a" }, { "logical_path": "runs/synthetic/b.json", "member_id": "member:b" }]
+      ],
+      "canonical_object_after_exclusion_and_sort": { "entries": [{ "logical_path": "runs/synthetic/a.json", "member_id": "member:a" }, { "logical_path": "runs/synthetic/b.json", "member_id": "member:b" }], "manifest_digest": { "algorithm": "SHA-256" } },
+      "expected_digest": "4cc34f9c17e1276a4b0115b1822c3027218b8b973f38e32c92df6b4e36ad34ea"
+    },
+    {
+      "vector_id": "DIGEST_EXPORT_PERMUTATION_VALID",
+      "fixture_kind": "DigestProjection",
+      "schema_id": "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "input_orders": ["reverse", "sorted"],
+      "canonical_object_after_exclusion_and_sort": {
+        "entries": [{ "export_logical_path": "exports/synthetic/a.json", "source_member_id": "member:a" }, { "export_logical_path": "exports/synthetic/b.json", "source_member_id": "member:b" }],
+        "omissions": [{ "omission_id": "omission:a", "source_logical_path": "runs/synthetic/a.json" }, { "omission_id": "omission:b", "source_logical_path": "runs/synthetic/b.json" }],
+        "warnings": [{ "warning_code": "WARNING_A", "subject_path": "exports/synthetic/a.json" }, { "warning_code": "WARNING_B", "subject_path": "exports/synthetic/b.json" }],
+        "manifest_digest": { "algorithm": "SHA-256" }
+      },
+      "expected_digest": "cedf21dc823c724ddd4c73ef8ae83f510b8a203e6b1275ec9d872ac2d00c5989"
+    }
+  ]
+}

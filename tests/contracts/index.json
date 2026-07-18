@@ -1,0 +1,3681 @@
+{
+  "format_version": "1.0.0",
+  "status": "SCHEMA-VALIDATION1 plus mandatory XOBJ-GRAPH1 and JCS-DIGEST1 gates",
+  "evaluation_order": [
+    "strict JSON parse and duplicate-key rejection",
+    "schema evaluation for every FullContractInstance constituent",
+    "object-local application rules",
+    "bounded immutable graph materialization",
+    "XOBJ cross-object rules in numeric order",
+    "digest and integrity checks"
+  ],
+  "fixture_kinds": {
+    "FullContractInstance": "Complete contract instance(s) with real nonzero digests where the contract defines them.",
+    "DigestProjection": "Bounded canonicalization, ordering, graph, path, or aggregate measurement; not a complete schema instance.",
+    "ShapeOnly": "Local schema boundary only; never counted as an application-valid positive."
+  },
+  "digest_gate_coverage": {
+    "catalog_digest_vectors": 9,
+    "jcs_conformance_cases": 19,
+    "jcs_direct_api_positive_cases": 8,
+    "jcs_direct_api_negative_cases": 21,
+    "profile_digest_cases": 11,
+    "byte_backed_file_digest_cases": 15,
+    "byte_backed_content_digest_cases": 12,
+    "structurally_only_digest_cases": 7,
+    "unsupported_digest_cases": 0,
+    "skipped_digest_cases": 0
+  },
+  "counts": {
+    "total_vectors": 201,
+    "by_fixture_kind": {
+      "FullContractInstance": 135,
+      "ShapeOnly": 1,
+      "DigestProjection": 65
+    },
+    "by_expected_schema_valid": {
+      "true": 111,
+      "false": 40,
+      "null": 50
+    },
+    "by_expected_application_valid": {
+      "true": 80,
+      "false": 97,
+      "null": 24
+    },
+    "application_valid_positive_excluding_shape_only": 80,
+    "schema_valid_full_contract_positives": 55,
+    "schema_valid_application_negatives": 53,
+    "schema_invalid_vectors": 40
+  },
+  "invariants": [
+    "Every vector has exactly one fixture_kind.",
+    "ShapeOnly is excluded from application-valid positive counts.",
+    "Schema-invalid vectors do not proceed to application evaluation.",
+    "Every application-invalid vector names exactly one rule_id and one exact error code.",
+    "Full positive ActionLog, AuditManifest, AuditRun, AuditPass, CollectorExecution, and ConsentReceipt objects use nonzero contract digests."
+  ],
+  "sources": [
+    {
+      "file": "tests/contracts/action-log/actions.json",
+      "vector_count": 16,
+      "vectors": [
+        {
+          "vector_id": "ACTION_START_COLLECTOR_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/0/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_NETWORK_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/1/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_ELEVATION_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/2/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_REBOOT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/3/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_DEFENDER_SCAN_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/4/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_MEMORY_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/5/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_REMEDIATION_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/6/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_EXPORT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/7/instance",
+          "rule_ids": [
+            "ACTION-001",
+            "ACTION-003",
+            "ACTION-004"
+          ]
+        },
+        {
+          "vector_id": "ACTION_START_WITH_NETWORK_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/8",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/8/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        },
+        {
+          "vector_id": "ACTION_NETWORK_WITH_REBOOT_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/9",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/9/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        },
+        {
+          "vector_id": "ACTION_ELEVATION_WITH_MEMORY_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/10",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/10/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        },
+        {
+          "vector_id": "ACTION_REBOOT_WITH_EXPORT_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/11",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/11/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        },
+        {
+          "vector_id": "ACTION_DEFENDER_WITH_REMEDIATION_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/12",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/12/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        },
+        {
+          "vector_id": "ACTION_MEMORY_WITH_ELEVATION_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/13",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/13/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        },
+        {
+          "vector_id": "ACTION_REMEDIATION_WITH_NETWORK_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/14",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/14/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        },
+        {
+          "vector_id": "ACTION_EXPORT_WITH_COLLECTOR_AUTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/action-log/actions.json",
+          "json_pointer": "/vectors/15",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "instance_pointer": "/vectors/15/instance",
+          "rule_ids": [
+            "ACTION-004"
+          ],
+          "expected_error_code": "ACTION_EFFECT_CONFLICT"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/audit-manifest/membership.json",
+      "vector_count": 8,
+      "vectors": [
+        {
+          "vector_id": "MANIFEST_MINIMUM_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "instance_pointer": "/vectors/0/instance"
+        },
+        {
+          "vector_id": "MANIFEST_BACKEND_NOT_FOUND_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "instance_pointer": "/vectors/1/instance"
+        },
+        {
+          "vector_id": "MANIFEST_MISSING_ACTION_LOG_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "instance_pointer": "/vectors/2/instance",
+          "rule_ids": [
+            "MANIFEST-001"
+          ],
+          "expected_error_code": "MANIFEST_REQUIRED_ROLE_MISSING"
+        },
+        {
+          "vector_id": "MANIFEST_MISSING_PASS_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "instance_pointer": "/vectors/3/instance",
+          "rule_ids": [
+            "MANIFEST-001"
+          ],
+          "expected_error_code": "MANIFEST_REQUIRED_ROLE_MISSING"
+        },
+        {
+          "vector_id": "MANIFEST_MISSING_RUN_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "instance_pointer": "/vectors/4/instance",
+          "rule_ids": [
+            "MANIFEST-001"
+          ],
+          "expected_error_code": "MANIFEST_REQUIRED_ROLE_MISSING"
+        },
+        {
+          "vector_id": "MANIFEST_BACKEND_NOT_TESTED_WITH_OBSERVED_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "instance_pointer": "/vectors/5/instance",
+          "rule_ids": [
+            "MANIFEST-003"
+          ],
+          "expected_error_code": "BACKEND_IDENTITY_STATE_CONFLICT"
+        },
+        {
+          "vector_id": "MANIFEST_DUPLICATE_PATH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "instance_pointer": "/vectors/6/instance",
+          "rule_ids": [
+            "MANIFEST-002"
+          ],
+          "expected_error_code": "MANIFEST_ORDER_OR_DIGEST_INVALID"
+        },
+        {
+          "vector_id": "MANIFEST_EMPTY_INVALID",
+          "fixture_kind": "ShapeOnly",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/audit-manifest/membership.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ],
+          "expected_error_code": "SCHEMA_MIN_ITEMS"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/audit-run/pass-model.json",
+      "vector_count": 14,
+      "vectors": [
+        {
+          "vector_id": "RUN_STANDARD_ONLY_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/0/schema_instances"
+        },
+        {
+          "vector_id": "RUN_STANDARD_ELEVATED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/1/schema_instances"
+        },
+        {
+          "vector_id": "RUN_REBOOT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/2/schema_instances"
+        },
+        {
+          "vector_id": "RUN_NO_STANDARD_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/3/schema_instances",
+          "rule_ids": [
+            "PASS-001"
+          ],
+          "expected_error_code": "PASS_CARDINALITY_INVALID"
+        },
+        {
+          "vector_id": "RUN_TWO_STANDARD_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/4/schema_instances",
+          "rule_ids": [
+            "PASS-001"
+          ],
+          "expected_error_code": "PASS_CARDINALITY_INVALID"
+        },
+        {
+          "vector_id": "RUN_TWO_ELEVATED_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/5/schema_instances",
+          "rule_ids": [
+            "PASS-002"
+          ],
+          "expected_error_code": "PASS_KIND_DUPLICATE"
+        },
+        {
+          "vector_id": "RUN_STANDARD_NOT_FIRST_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/6/schema_instances",
+          "rule_ids": [
+            "PASS-003"
+          ],
+          "expected_error_code": "PASS_ORDER_INVALID"
+        },
+        {
+          "vector_id": "RUN_ELEVATED_EXECUTION_IN_STANDARD_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/7/schema_instances",
+          "rule_ids": [
+            "PASS-004"
+          ],
+          "expected_error_code": "PASS_PRIVILEGE_MISMATCH"
+        },
+        {
+          "vector_id": "RUN_STANDARD_EXECUTION_IN_ELEVATED_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/8",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/8/schema_instances",
+          "rule_ids": [
+            "PASS-004"
+          ],
+          "expected_error_code": "PASS_PRIVILEGE_MISMATCH"
+        },
+        {
+          "vector_id": "RUN_REBOOT_WITHOUT_CONSENT_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/9",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/9/schema_instances",
+          "rule_ids": [
+            "PASS-005"
+          ],
+          "expected_error_code": "PASS_CONSENT_BINDING_INVALID"
+        },
+        {
+          "vector_id": "RUN_ELEVATED_WRONG_PASS_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/10",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/10/schema_instances",
+          "rule_ids": [
+            "PASS-005"
+          ],
+          "expected_error_code": "PASS_CONSENT_BINDING_INVALID"
+        },
+        {
+          "vector_id": "RUN_POST_REBOOT_WITHOUT_CONTINUATION_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/11",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/11/schema_instances",
+          "rule_ids": [
+            "PASS-006"
+          ],
+          "expected_error_code": "PASS_PREREQUISITE_INVALID"
+        },
+        {
+          "vector_id": "RUN_REBOOT_UNKNOWN_PREREQUISITE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/12",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/12/schema_instances",
+          "rule_ids": [
+            "PASS-006"
+          ],
+          "expected_error_code": "PASS_PREREQUISITE_INVALID"
+        },
+        {
+          "vector_id": "RUN_DUPLICATE_PASS_ID_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/audit-run/pass-model.json",
+          "json_pointer": "/vectors/13",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json"
+          ],
+          "instance_pointer": "/vectors/13/schema_instances",
+          "rule_ids": [
+            "PASS-002"
+          ],
+          "expected_error_code": "PASS_KIND_DUPLICATE"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/collector-execution/states.json",
+      "vector_count": 19,
+      "vectors": [
+        {
+          "vector_id": "EXEC_PLANNED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/0/instance"
+        },
+        {
+          "vector_id": "EXEC_NOT_TESTED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/1/instance"
+        },
+        {
+          "vector_id": "EXEC_BACKEND_NOT_FOUND_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/2/instance"
+        },
+        {
+          "vector_id": "EXEC_CONSENT_DENIED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/3/instance"
+        },
+        {
+          "vector_id": "EXEC_POLICY_REJECTED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/4/instance"
+        },
+        {
+          "vector_id": "EXEC_RUNNING_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/5/instance"
+        },
+        {
+          "vector_id": "EXEC_SUCCEEDED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/6/instance"
+        },
+        {
+          "vector_id": "EXEC_FAILED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/7/instance"
+        },
+        {
+          "vector_id": "EXEC_TIMED_OUT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/8",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/8/instance"
+        },
+        {
+          "vector_id": "EXEC_CANCELLED_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/9",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/9/instance"
+        },
+        {
+          "vector_id": "EXEC_PARTIAL_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/10",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/10/instance"
+        },
+        {
+          "vector_id": "EXEC_SUCCEEDED_TIMEOUT_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/11",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/11/instance",
+          "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT"
+        },
+        {
+          "vector_id": "EXEC_SUCCEEDED_CANCEL_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/12",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/12/instance",
+          "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT"
+        },
+        {
+          "vector_id": "EXEC_SUCCEEDED_PARTIAL_REASON_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/13",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/13/instance",
+          "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT"
+        },
+        {
+          "vector_id": "EXEC_PRE_BACKEND_PROCESS_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/14",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/14/instance",
+          "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT"
+        },
+        {
+          "vector_id": "EXEC_TIMEOUT_CANCEL_SOURCE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/15",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/15/instance",
+          "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT"
+        },
+        {
+          "vector_id": "EXEC_CANCEL_TIMEOUT_SOURCE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/16",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/16/instance",
+          "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT"
+        },
+        {
+          "vector_id": "EXEC_PARTIAL_REASON_MISSING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/17",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/17/instance",
+          "expected_error_code": "EXECUTION_PARTIAL_REASON_REQUIRED"
+        },
+        {
+          "vector_id": "EXEC_RUNNING_ENDED_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/collector-execution/states.json",
+          "json_pointer": "/vectors/18",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json"
+          ],
+          "instance_pointer": "/vectors/18/instance",
+          "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/consent-receipt/consent.json",
+      "vector_count": 25,
+      "vectors": [
+        {
+          "vector_id": "CONSENT_ADMIN_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/0/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_NETWORK_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/1/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_DEFENDER_SCAN_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/2/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_DEFENDER_OFFLINE_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/3/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_MEMORY_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/4/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_SENSITIVE_DATA_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/5/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_EXPORT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/6/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_REMEDIATION_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/7/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_REBOOT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/8",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/8/instance",
+          "rule_ids": [
+            "CONSENT-001",
+            "CONSENT-002",
+            "CONSENT-003",
+            "CONSENT-004"
+          ]
+        },
+        {
+          "vector_id": "CONSENT_ADMIN_MISSING_COLLECTOR_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/9",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/9/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_NETWORK_MISSING_COLLECTOR_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/10",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/10/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_DEFENDER_SCAN_MISSING_COLLECTOR_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/11",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/11/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_DEFENDER_OFFLINE_MISSING_COLLECTOR_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/12",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/12/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_MEMORY_MISSING_COLLECTOR_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/13",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/13/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_SENSITIVE_DATA_MISSING_COLLECTOR_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/14",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/14/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_EXPORT_WITH_COLLECTOR_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/15",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/15/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_REMEDIATION_MISSING_ACTION_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/16",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/16/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_REMEDIATION_RELATED_COLLECTOR_WITHOUT_FINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/17",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/17/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_REBOOT_MISSING_WORKFLOW_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/18",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/18/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_ADMIN_OPERATION_NETWORK_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": false,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/19",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/19/instance",
+          "rule_ids": [
+            "CONSENT-001"
+          ],
+          "expected_error_code": "CONSENT_OPERATION_MISMATCH"
+        },
+        {
+          "vector_id": "CONSENT_ADMIN_CAPABILITY_ESCALATION_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/20",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/20/instance",
+          "rule_ids": [
+            "CONSENT-002"
+          ],
+          "expected_error_code": "CONSENT_SCOPE_ESCALATION"
+        },
+        {
+          "vector_id": "CONSENT_REMEDIATION_TARGET_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/21",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/21/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_REBOOT_WORKFLOW_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/22",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/22/instance",
+          "rule_ids": [
+            "CONSENT-004"
+          ],
+          "expected_error_code": "CONSENT_BINDING_VARIANT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_EXPIRED_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/23",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/23/instance",
+          "rule_ids": [
+            "CONSENT-003"
+          ],
+          "expected_error_code": "CONSENT_RECEIPT_INVALID"
+        },
+        {
+          "vector_id": "CONSENT_REPLAY_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/consent-receipt/consent.json",
+          "json_pointer": "/vectors/24",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json"
+          ],
+          "instance_pointer": "/vectors/24/instance",
+          "rule_ids": [
+            "CONSENT-003"
+          ],
+          "expected_error_code": "CONSENT_RECEIPT_INVALID"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/digests/digests.json",
+      "vector_count": 9,
+      "vectors": [
+        {
+          "vector_id": "DIGEST_ACTION_FULL_OBJECT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ]
+        },
+        {
+          "vector_id": "DIGEST_MANIFEST_FULL_OBJECT_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ]
+        },
+        {
+          "vector_id": "DIGEST_ACTION_CHAIN_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ]
+        },
+        {
+          "vector_id": "DIGEST_ACTION_GAP_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "rule_ids": [
+            "ACTION-003"
+          ],
+          "expected_error_code": "ACTION_LOG_CHAIN_INVALID"
+        },
+        {
+          "vector_id": "DIGEST_ACTION_DUP_SEQUENCE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "rule_ids": [
+            "ACTION-003"
+          ],
+          "expected_error_code": "ACTION_LOG_CHAIN_INVALID"
+        },
+        {
+          "vector_id": "DIGEST_ACTION_PREVIOUS_MISMATCH_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "rule_ids": [
+            "ACTION-003"
+          ],
+          "expected_error_code": "ACTION_LOG_CHAIN_INVALID"
+        },
+        {
+          "vector_id": "DIGEST_ACTION_CROSS_RUN_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/action-log.schema.json"
+          ],
+          "rule_ids": [
+            "ACTION-003"
+          ],
+          "expected_error_code": "ACTION_LOG_CHAIN_INVALID"
+        },
+        {
+          "vector_id": "DIGEST_MANIFEST_PERMUTATION_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json"
+          ]
+        },
+        {
+          "vector_id": "DIGEST_EXPORT_PERMUTATION_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/digests/digests.json",
+          "json_pointer": "/vectors/8",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/export-manifest/ordering.json",
+      "vector_count": 3,
+      "vectors": [
+        {
+          "vector_id": "EXPORT_ORDER_A_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/export-manifest/ordering.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json"
+          ]
+        },
+        {
+          "vector_id": "EXPORT_ORDER_B_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/export-manifest/ordering.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json"
+          ]
+        },
+        {
+          "vector_id": "EXPORT_DUPLICATE_PATH_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/export-manifest/ordering.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json"
+          ],
+          "rule_ids": [
+            "MANIFEST-002"
+          ],
+          "expected_error_code": "MANIFEST_ORDER_OR_DIGEST_INVALID"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/limits/limits.json",
+      "vector_count": 41,
+      "vectors": [
+        {
+          "vector_id": "LIMIT_BASE_AUDIT_RUN_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/base_full_contract",
+          "instance_pointer": "/base_full_contract/instance",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_SERIALIZED_AUDIT_RUN_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_SERIALIZED_AUDIT_RUN_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_SERIALIZED_OBJECT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_PASS_REFERENCES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_PASS_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_EXECUTION_REFERENCES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_EXECUTION_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_OBSERVATION_REFERENCES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_OBSERVATION_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_EVIDENCE_REFERENCES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/8",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_EVIDENCE_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/9",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_FINDING_REFERENCES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/10",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_FINDING_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/11",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_INLINE_SUMMARY_COUNT_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/12",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_INLINE_SUMMARY_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/13",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_INLINE_SUMMARY_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/14",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_INLINE_SUMMARY_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/15",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_SERIALIZED_OBJECT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_DECOMPRESSED_RUN_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/16",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_DECOMPRESSED_RUN_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/17",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_DECOMPRESSED_BUDGET_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_AUDIT_PACKAGE_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/18",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_AUDIT_PACKAGE_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/19",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_PACKAGE_BUDGET_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_ZIP_ENTRY_COUNT_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/20",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_ZIP_ENTRY_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/21",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_ZIP_ENTRY_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_ZIP_TOTAL_EXPANDED_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/22",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_ZIP_TOTAL_EXPANDED_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/23",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_DECOMPRESSED_BUDGET_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_ZIP_SINGLE_ENTRY_EXPANDED_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/24",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_ZIP_SINGLE_ENTRY_EXPANDED_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/25",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_ZIP_ENTRY_SIZE_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_ZIP_COMPRESSION_RATIO_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/26",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_ZIP_COMPRESSION_RATIO_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/27",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_COMPRESSION_RATIO_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_LOGICAL_PATH_COUNT_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/28",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_LOGICAL_PATH_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/29",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_IMPORTED_RECORD_COUNT_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/30",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_IMPORTED_RECORD_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/31",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_JSON_NESTING_DEPTH_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/32",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_JSON_NESTING_DEPTH_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/33",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_NESTING_DEPTH_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_RAW_STDOUT_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/34",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_RAW_STDOUT_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/35",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_RAW_STREAM_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_RAW_STDERR_BYTES_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/36",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_RAW_STDERR_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/37",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_RAW_STREAM_EXCEEDED"
+        },
+        {
+          "vector_id": "LIMIT_INTEGER_MAX_SAFE_BOUNDARY_VALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": true,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/38",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ]
+        },
+        {
+          "vector_id": "LIMIT_INTEGER_OVERFLOW_INVALID",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": null,
+          "expected_application_valid": false,
+          "file": "tests/contracts/limits/limits.json",
+          "json_pointer": "/vectors/39",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json"
+          ],
+          "rule_ids": [
+            "LIMIT-001"
+          ],
+          "expected_error_code": "LIMIT_INTEGER_OVERFLOW"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/paths/paths.json",
+      "vector_count": 15,
+      "vectors": [
+        {
+          "vector_id": "PATH_VALID_SINGLE",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": true,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/0"
+        },
+        {
+          "vector_id": "PATH_VALID_NESTED",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": true,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/1"
+        },
+        {
+          "vector_id": "PATH_VALID_SEGMENT_DOTS",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": true,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/2"
+        },
+        {
+          "vector_id": "PATH_INVALID_DOT_PREFIX",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/3",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_UNDERSCORE_PREFIX",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/4",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_HYPHEN_PREFIX",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/5",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_PARENT",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/6",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_CURRENT",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/7",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_REPEATED_SLASH",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/8",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_TRAILING_SLASH",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/9",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_ABSOLUTE",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/10",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_DRIVE",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/11",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_BACKSLASH",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/12",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_NON_ASCII",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/13",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        },
+        {
+          "vector_id": "PATH_INVALID_SEGMENT_TOO_LONG",
+          "fixture_kind": "DigestProjection",
+          "expected_schema_valid": false,
+          "expected_application_valid": null,
+          "file": "tests/contracts/paths/paths.json",
+          "json_pointer": "/vectors/14",
+          "expected_error_code": "PATH_CANONICAL_INVALID"
+        }
+      ]
+    },
+    {
+      "file": "tests/contracts/xobj/materialized-graphs.json",
+      "vector_count": 51,
+      "vectors": [
+        {
+          "vector_id": "XOBJ_001_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/0",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-001"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_002_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/1",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-002"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_003_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/2",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-003"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_004_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/3",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-004"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_005_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/4",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-005"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_006_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/5",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-006"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_007_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/6",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-007"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_008_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/7",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-008"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_009_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/8",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-009"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_010_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/9",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-010"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_011_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/10",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-011"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_012_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/11",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-012"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_013_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/12",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-013"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_014_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/13",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-014"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_015_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/14",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-015"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_016_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/15",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-016"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_017_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/16",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-017"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_018_GRAPH_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/17",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-018"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_001_CROSS_RUN_FINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/18",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-001"
+          ],
+          "expected_error_code": "RUN_ID_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_002_DUPLICATE_OBSERVATION_ID_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/19",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-002"
+          ],
+          "expected_error_code": "EXECUTION_PASS_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_002_EXECUTION_PRIVILEGE_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/20",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-002"
+          ],
+          "expected_error_code": "EXECUTION_PASS_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_003_MISSING_EXECUTION_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/21",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-003"
+          ],
+          "expected_error_code": "OBSERVATION_EXECUTION_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_003_EXECUTION_OBSERVATION_RECIPROCAL_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/22",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-003"
+          ],
+          "expected_error_code": "OBSERVATION_EXECUTION_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_004_OBSERVATION_EVIDENCE_RECIPROCAL_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/23",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-004"
+          ],
+          "expected_error_code": "EVIDENCE_OBSERVATION_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_005_FINDING_UNKNOWN_OBSERVATION_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/24",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-005"
+          ],
+          "expected_error_code": "FINDING_REFERENCE_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_005_COVERAGE_EXECUTION_STATE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/25",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-005"
+          ],
+          "expected_error_code": "FINDING_REFERENCE_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_006_COLLECTOR_DIGEST_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/26",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-006"
+          ],
+          "expected_error_code": "COLLECTOR_DEFINITION_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_007_RULE_DIGEST_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/27",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-007"
+          ],
+          "expected_error_code": "RULE_DEFINITION_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_008_MISSING_MANIFEST_MEMBER_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/28",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-008"
+          ],
+          "expected_error_code": "MANIFEST_MEMBERSHIP_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_008_UNKNOWN_MANIFEST_MEMBER_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/29",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-008"
+          ],
+          "expected_error_code": "MANIFEST_MEMBERSHIP_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_009_SOURCE_MANIFEST_DIGEST_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/30",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-009"
+          ],
+          "expected_error_code": "EXPORT_SOURCE_MISMATCH"
+        },
+        {
+          "vector_id": "XOBJ_010_OBSERVATION_BEFORE_EXECUTION_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/31",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-010"
+          ],
+          "expected_error_code": "TIMESTAMP_ORDER_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_011_CONSENT_BINDING_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/32",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-011"
+          ],
+          "expected_error_code": "CONSENT_SCOPE_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_011_CONSENT_EXPIRED_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/33",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-011"
+          ],
+          "expected_error_code": "CONSENT_SCOPE_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_011_CONSENT_REVOKED_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/34",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-011"
+          ],
+          "expected_error_code": "CONSENT_SCOPE_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_011_CONSENT_REPLAY_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/35",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-011"
+          ],
+          "expected_error_code": "CONSENT_SCOPE_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_012_ACTION_SEQUENCE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/36",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-012"
+          ],
+          "expected_error_code": "ACTION_LOG_CHAIN_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_012_ACTION_PREVIOUS_DIGEST_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/37",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-012"
+          ],
+          "expected_error_code": "ACTION_LOG_CHAIN_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_012_ACTION_CROSS_RUN_ENTRY_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/38",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-012"
+          ],
+          "expected_error_code": "ACTION_LOG_CHAIN_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_013_REBOOT_NONCE_REPLAY_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/39",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-013"
+          ],
+          "expected_error_code": "REBOOT_STATE_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_013_REBOOT_SEQUENCE_ROLLBACK_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/40",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-013"
+          ],
+          "expected_error_code": "REBOOT_STATE_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_013_REBOOT_STALE_BUILD_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/41",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-013"
+          ],
+          "expected_error_code": "REBOOT_STATE_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_014_RULE_CYCLE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/42",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-014"
+          ],
+          "expected_error_code": "RULE_GRAPH_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_014_RULE_UNREACHABLE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/43",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-014"
+          ],
+          "expected_error_code": "RULE_GRAPH_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_014_RULE_DEPTH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/44",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-014"
+          ],
+          "expected_error_code": "RULE_GRAPH_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_014_COST_BOUNDARY_VALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": true,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/45",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-014"
+          ]
+        },
+        {
+          "vector_id": "XOBJ_015_REDACTION_PRECEDENCE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/46",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-015"
+          ],
+          "expected_error_code": "REDACTION_POLICY_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_015_DUPLICATE_FIELD_PATH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/47",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-015"
+          ],
+          "expected_error_code": "REDACTION_POLICY_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_016_DUPLICATE_CANONICAL_PATH_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/48",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-016"
+          ],
+          "expected_error_code": "PATH_SET_INVALID"
+        },
+        {
+          "vector_id": "XOBJ_017_AUDIT_PACKAGE_SIZE_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/49",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-017"
+          ],
+          "expected_error_code": "SIZE_LIMIT_EXCEEDED"
+        },
+        {
+          "vector_id": "XOBJ_018_TRANSITIVE_CAPABILITY_INVALID",
+          "fixture_kind": "FullContractInstance",
+          "expected_schema_valid": true,
+          "expected_application_valid": false,
+          "file": "tests/contracts/xobj/materialized-graphs.json",
+          "json_pointer": "/vectors/50",
+          "schema_ids": [
+            "https://schemas.secapp.dev/v1/audit-run.schema.json",
+            "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+            "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+            "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+            "https://schemas.secapp.dev/v1/observation.schema.json",
+            "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+            "https://schemas.secapp.dev/v1/finding.schema.json",
+            "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+            "https://schemas.secapp.dev/v1/action-log.schema.json",
+            "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+            "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+            "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+            "https://schemas.secapp.dev/v1/rule-definition.schema.json"
+          ],
+          "rule_ids": [
+            "XOBJ-018"
+          ],
+          "expected_error_code": "TRANSITIVE_CAPABILITY_MISMATCH"
+        }
+      ]
+    }
+  ]
+}

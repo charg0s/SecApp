@@ -11,3 +11,39 @@ These instructions apply to the entire repository.
 - Use only synthetic, non-sensitive test data.
 - The project is currently in the design stage. Do not add executable application code or placeholder implementations unless a later task explicitly authorizes that work.
 - Keep text files in UTF-8 with LF line endings and a final newline.
+- Treat backend output, artifact definitions, rules, reports, and imported containers as untrusted input.
+- Pin Velociraptor capability claims to an official document or an exact upstream source revision; distinguish confirmed facts, SecApp proposals, and open questions.
+- Do not download, vendor, execute, repackage, fork, or add a submodule for Velociraptor without a later task that explicitly authorizes the exact action.
+- Do not add project dependencies, services, administrative operations, network access, reboot actions, scans, memory acquisition, remediation, commits, or pushes without explicit authorization.
+- Keep JSON contracts on Draft 2020-12 with stable identifiers, explicit schema versions, strict enums, UTC RFC 3339 timestamps, privacy classification, provenance, and integrity fields.
+- Reject unsupported or failed collection as `Not tested`; never convert missing coverage into a safe result.
+- Preserve severity, confidence, and finding status as independent dimensions.
+- Do not accept a security-relevant schema change without a positive case and a targeted negative case that proves the unsafe state is rejected.
+- Validate schemas with a full Draft 2020-12 implementation before an architecture baseline is accepted; label any purpose-built checker as subset validation.
+- Treat a fail_with_blockers architecture review as a runtime-development stop condition until the blockers are fixed and independently rechecked.
+- Review every built-in and custom artifact transitively: imports, artifact calls, VQL functions, optional branches, and pinned parameter values determine capabilities. Declared or implied permissions are not a sandbox boundary.
+- Pin capability claims to an official release tag resolved to an exact source commit. Keep the source/research pin distinct from the separately verified runtime binary version, signer, and digest.
+- Never treat a mutable branch URL as a schema identifier. Published schema IDs and schema documents are immutable and versioned.
+- Apply the compatibility and migration policy in docs/schema-compatibility.md; unknown major versions and failed migrations are rejected fail-closed.
+- Apply every cross-object, digest, path, consent, lifecycle, and size rule in docs/integrity-model.md in addition to local JSON Schema validation.
+- Keep AuditPass a standalone manifest member while passes/<pass-id>.json is part of the logical layout; AuditRun remains a bounded index/summary.
+- Treat consent types as disjoint exact authorities bound to run, pass, action, operation, target, and single use; never infer one authority from another.
+- Use only structured, registry-backed ActionLog operations and redacted parameters; never record original sensitive parameter values.
+- Normalize AuditManifest and ExportManifest arrays by their own documented keys before JCS hashing, and reject duplicates before digest computation.
+- Treat every ActionLog effect/authorization structure as action-type-exclusive; a foreign structure is rejected even when the required structure is present.
+- Keep PASS-004 privilege-only, PASS-005 consent/binding-only, and PASS-006 prerequisite/order-chain-only; application negatives must remain schema-valid and isolate one rule.
+- Treat backend availability/observed-identity agreement as MANIFEST-003 after structural schema validation.
+- Use only `FullContractInstance`, `DigestProjection`, or `ShapeOnly` fixture kinds; never count ShapeOnly as an application-valid positive, and never use zero digest placeholders in a positive full object.
+- Apply the exact AuditRun package limits with checked unsigned safe-integer arithmetic; reject overflow before allocation.
+- Keep SCHEMA-VALIDATION1 development-only, version-pinned and lock-file-pinned for identical local/CI execution; do not add it as a runtime dependency or claim the gate before it runs.
+- Run `npm ci --ignore-scripts` for a clean validator install and `npm test` for the complete SCHEMA-VALIDATION1 gate; dependency updates require metadata review, exact versions, a reviewed lockfile diff, and the complete deterministic gate.
+- Keep Ajv in dedicated Draft 2020-12 strict mode with remote schema loading disabled. The only registered no-op annotations are `x-application-limits`, `x-application-rules`, `x-negative-tests`, `x-numeric-operator-cases`, `x-scalar-validation-cases`, and `x-state-contract`; unknown custom keywords fail the gate.
+- Treat the validator result as a design-contract gate, not proof that schemas, SecApp runtime behavior, Velociraptor compatibility, or provenance are production-ready.
+- Keep XOBJ-GRAPH1 development/reference-only. Its materialized graph must remain synthetic, bounded, deeply immutable to the evaluator, free of absolute paths and executable fixture content, and separate from production schemas/runtime code.
+- Execute XOBJ-001 through XOBJ-018 only after constituent schema validation and bounded graph materialization, in numeric order through the target rule; preserve each rule's exact primary error code and use `XOBJ_GRAPH_INPUT_MISSING` only for absent required graph input.
+- Fail the application gate unless registered, executable, and covered XOBJ rule sets are identical and every registered rule has executed schema-valid positive and negative vectors with zero skipped XOBJ vectors.
+- Preserve duplicate graph IDs through materialization so XOBJ-002 can reject them deterministically; never collapse duplicates by last-write-wins indexing.
+- Keep JCS-DIGEST1 strict and dependency-free: accept only finite I-JSON primitives, dense arrays, and safe plain data objects; reject lone surrogates in values and property names, non-JSON values, cycles, proxies, accessors, symbol keys, sparse arrays, and non-plain objects with the controlled `JCS_INPUT_INVALID` error.
+- Use raw UTF-16 code-unit ordering for RFC 8785 property names and the shared bytewise UTF-8 comparator only for contract arrays that explicitly require it. Never use locale-aware comparison in deterministic validation or report output.
+- Compute ProfileDigest from the complete RedactionProfile after removing only `profile_digest.digest`; sort only `field_rules` by the exact `field` member, reject duplicates, and never fall back to legacy field names.
+- Keep permanent byte-backed FileDigest and ContentDigest fixtures. FileDigest hashes exact materialized bytes; ContentDigest decodes strict UTF-8, removes one leading BOM, normalizes CRLF/CR to LF, requires a final LF, and never normalizes Unicode.

@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/consent-receipt.schema.json",
+  "title": "SecApp ConsentReceipt",
+  "description": "Single-use receipt bound to one run, pass, action, operation code, target, and approved scope.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "audit_run_id",
+    "consent_type",
+    "purpose_code",
+    "exact_scope",
+    "requested_capabilities",
+    "approved_capabilities",
+    "requested_privacy_classes",
+    "approved_privacy_classes",
+    "consent_text_version",
+    "presented_at",
+    "accepted_at",
+    "expires_at",
+    "nonce",
+    "user_presence",
+    "application_version",
+    "host_binding_digest",
+    "revocation",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "receipt_id": { "type": "string", "format": "uuid" },
+    "audit_run_id": { "type": "string", "format": "uuid" },
+    "consent_type": {
+      "type": "string",
+      "enum": [
+        "Administrative",
+        "NetworkAccess",
+        "Reboot",
+        "DefenderScan",
+        "DefenderOffline",
+        "MemoryAcquisition",
+        "Remediation",
+        "SensitiveDataCollection",
+        "Export"
+      ]
+    },
+    "purpose_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" },
+    "sanitized_display_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\u0000-\\u001F\\u007F]*$"
+    },
+    "exact_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authorized_action_id", "operation_code", "target_reference", "single_use"],
+      "properties": {
+        "pass_id": { "type": "string", "format": "uuid" },
+        "authorized_action_id": { "type": "string", "format": "uuid" },
+        "operation_code": {
+          "type": "string",
+          "enum": [
+            "CollectPrivilegedReadOnly",
+            "UseNetwork",
+            "OnlineLookup",
+            "ScheduleRebootContinuation",
+            "PerformRebootContinuation",
+            "RunDefenderScan",
+            "ScheduleDefenderOffline",
+            "PerformDefenderOffline",
+            "AcquireMemory",
+            "Remediate",
+            "CollectSensitiveData",
+            "Export"
+          ]
+        },
+        "target_reference": { "$ref": "#/$defs/targetReference" },
+        "single_use": { "const": true }
+      }
+    },
+    "collector_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collector_id", "collector_definition_digest"],
+      "properties": {
+        "collector_id": { "type": "string", "pattern": "^collector:[a-z0-9][a-z0-9._-]{0,63}:[a-z0-9][a-z0-9._-]{0,127}$" },
+        "collector_definition_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "export_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["export_id", "redaction_profile_digest"],
+      "properties": {
+        "export_id": { "type": "string", "format": "uuid" },
+        "redaction_profile_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "action_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_id", "exact_target_reference"],
+      "properties": {
+        "action_id": { "type": "string", "format": "uuid" },
+        "exact_target_reference": { "$ref": "#/$defs/targetReference" },
+        "finding_id": { "type": "string", "format": "uuid" },
+        "related_collector_binding": { "$ref": "#/$defs/collectorBinding" }
+      },
+      "dependentRequired": { "related_collector_binding": ["finding_id"] }
+    },
+    "reboot_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workflow_id", "stage"],
+      "properties": {
+        "workflow_id": { "$ref": "#/$defs/targetReference" },
+        "stage": { "type": "string", "enum": ["Schedule", "Perform", "Continue"] },
+        "planned_by_collector": { "$ref": "#/$defs/collectorBinding" }
+      }
+    },
+    "requested_capabilities": { "$ref": "#/$defs/capabilitySet" },
+    "approved_capabilities": { "$ref": "#/$defs/capabilitySet" },
+    "requested_privacy_classes": { "$ref": "#/$defs/privacyClassSet" },
+    "approved_privacy_classes": { "$ref": "#/$defs/privacyClassSet" },
+    "consent_text_version": { "type": "string", "pattern": "^consent-text:(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+    "presented_at": { "$ref": "#/$defs/timestamp" },
+    "accepted_at": { "$ref": "#/$defs/timestamp" },
+    "expires_at": { "$ref": "#/$defs/timestamp" },
+    "nonce": { "type": "string", "pattern": "^[A-Za-z0-9_-]{43}$" },
+    "user_presence": { "const": true },
+    "application_version": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+    "host_binding_digest": { "$ref": "#/$defs/sha256" },
+    "revocation": { "$ref": "#/$defs/revocation" },
+    "integrity": { "$ref": "#/$defs/objectIntegrity" }
+  },
+  "allOf": [
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "enum": ["Administrative", "NetworkAccess", "DefenderScan", "DefenderOffline", "MemoryAcquisition", "SensitiveDataCollection"] } }, "required": ["consent_type"] },
+      "then": {
+        "type": "object",
+        "required": ["collector_binding"],
+        "properties": { "collector_binding": true, "exact_scope": { "type": "object", "properties": { "pass_id": true }, "required": ["pass_id"] } },
+        "not": { "anyOf": [{ "type": "object", "properties": { "export_binding": true }, "required": ["export_binding"] }, { "type": "object", "properties": { "action_binding": true }, "required": ["action_binding"] }, { "type": "object", "properties": { "reboot_binding": true }, "required": ["reboot_binding"] }] }
+      }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "Administrative" } }, "required": ["consent_type"] },
+      "then": {
+        "type": "object",
+        "properties": {
+          "exact_scope": { "type": "object", "properties": { "operation_code": { "const": "CollectPrivilegedReadOnly" } } },
+          "approved_capabilities": { "not": { "type": "array", "contains": { "enum": ["NETWORK", "MEMORY_READ", "FILESYSTEM_WRITE", "REGISTRY_WRITE", "PROCESS_CONTROL", "SERVICE_CONTROL", "SYSTEM_CONFIGURATION_WRITE"] } } }
+        }
+      }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "NetworkAccess" } }, "required": ["consent_type"] },
+      "then": { "type": "object", "properties": { "exact_scope": { "type": "object", "properties": { "operation_code": { "enum": ["UseNetwork", "OnlineLookup"] } } }, "approved_capabilities": { "type": "array", "contains": { "const": "NETWORK" } } } }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "DefenderScan" } }, "required": ["consent_type"] },
+      "then": { "type": "object", "properties": { "exact_scope": { "type": "object", "properties": { "operation_code": { "const": "RunDefenderScan" } } } } }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "DefenderOffline" } }, "required": ["consent_type"] },
+      "then": { "type": "object", "properties": { "exact_scope": { "type": "object", "properties": { "operation_code": { "enum": ["ScheduleDefenderOffline", "PerformDefenderOffline"] } } } } }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "MemoryAcquisition" } }, "required": ["consent_type"] },
+      "then": { "type": "object", "properties": { "exact_scope": { "type": "object", "properties": { "operation_code": { "const": "AcquireMemory" } } }, "approved_capabilities": { "type": "array", "contains": { "const": "MEMORY_READ" } }, "approved_privacy_classes": { "type": "array", "contains": { "const": "MemoryContent" } } } }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "SensitiveDataCollection" } }, "required": ["consent_type"] },
+      "then": { "type": "object", "properties": { "exact_scope": { "type": "object", "properties": { "operation_code": { "const": "CollectSensitiveData" } } }, "approved_privacy_classes": { "type": "array", "minItems": 1, "items": { "enum": ["PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData", "Secret"] } } } }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "Export" } }, "required": ["consent_type"] },
+      "then": {
+        "type": "object",
+        "required": ["export_binding"],
+        "properties": { "export_binding": true, "exact_scope": { "type": "object", "properties": { "operation_code": { "const": "Export" } }, "not": { "type": "object", "properties": { "pass_id": true }, "required": ["pass_id"] } }, "approved_capabilities": { "type": "array", "maxItems": 0 } },
+        "not": { "anyOf": [{ "type": "object", "properties": { "collector_binding": true }, "required": ["collector_binding"] }, { "type": "object", "properties": { "action_binding": true }, "required": ["action_binding"] }, { "type": "object", "properties": { "reboot_binding": true }, "required": ["reboot_binding"] }] }
+      }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "Remediation" } }, "required": ["consent_type"] },
+      "then": {
+        "type": "object",
+        "required": ["action_binding"],
+        "properties": {
+          "action_binding": true,
+          "exact_scope": { "type": "object", "required": ["pass_id"], "properties": { "pass_id": true, "operation_code": { "const": "Remediate" } } },
+          "approved_capabilities": { "type": "array", "contains": { "enum": ["FILESYSTEM_WRITE", "REGISTRY_WRITE", "PROCESS_CONTROL", "SERVICE_CONTROL", "SYSTEM_CONFIGURATION_WRITE"] } }
+        },
+        "not": { "anyOf": [{ "type": "object", "properties": { "collector_binding": true }, "required": ["collector_binding"] }, { "type": "object", "properties": { "export_binding": true }, "required": ["export_binding"] }, { "type": "object", "properties": { "reboot_binding": true }, "required": ["reboot_binding"] }] }
+      }
+    },
+    {
+      "if": { "type": "object", "properties": { "consent_type": { "const": "Reboot" } }, "required": ["consent_type"] },
+      "then": {
+        "type": "object",
+        "required": ["reboot_binding"],
+        "properties": { "reboot_binding": true, "exact_scope": { "type": "object", "required": ["pass_id"], "properties": { "pass_id": true, "operation_code": { "enum": ["ScheduleRebootContinuation", "PerformRebootContinuation"] } } }, "approved_capabilities": { "type": "array", "maxItems": 0 } },
+        "not": { "anyOf": [{ "type": "object", "properties": { "collector_binding": true }, "required": ["collector_binding"] }, { "type": "object", "properties": { "export_binding": true }, "required": ["export_binding"] }, { "type": "object", "properties": { "action_binding": true }, "required": ["action_binding"] }] }
+      }
+    }
+  ],
+  "$defs": {
+    "timestamp": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "targetReference": { "type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]*$" },
+    "collectorBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collector_id", "collector_definition_digest"],
+      "properties": {
+        "collector_id": { "type": "string", "pattern": "^collector:[a-z0-9][a-z0-9._-]{0,63}:[a-z0-9][a-z0-9._-]{0,127}$" },
+        "collector_definition_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "capabilitySet": {
+      "type": "array",
+      "maxItems": 18,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["MACHINE_STATE", "FILESYSTEM_READ", "REGISTRY_READ", "EVENT_LOG_READ", "EXECVE", "NETWORK", "MEMORY_READ", "FILESYSTEM_WRITE", "REGISTRY_WRITE", "PROCESS_CONTROL", "SERVICE_CONTROL", "SYSTEM_CONFIGURATION_WRITE"]
+      }
+    },
+    "privacyClassSet": {
+      "type": "array",
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": { "type": "string", "enum": ["Public", "SystemMetadata", "PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData", "Secret", "MemoryContent"] }
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": { "type": "string", "enum": ["Active", "Revoked"] },
+        "revoked_at": { "$ref": "#/$defs/timestamp" },
+        "reason_code": { "type": "string", "enum": ["UserRevoked", "PolicyRevoked", "ScopeChanged", "HostBindingChanged"] }
+      },
+      "allOf": [
+        {
+          "if": { "type": "object", "properties": { "state": { "const": "Revoked" } }, "required": ["state"] },
+          "then": { "type": "object", "properties": { "revoked_at": true, "reason_code": true }, "required": ["revoked_at", "reason_code"] },
+          "else": { "not": { "anyOf": [{ "type": "object", "properties": { "revoked_at": true }, "required": ["revoked_at"] }, { "type": "object", "properties": { "reason_code": true }, "required": ["reason_code"] }] } }
+        }
+      ]
+    },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "algorithm", "canonicalization", "encoding", "excluded_fields", "object_digest"],
+      "properties": {
+        "digest_kind": { "const": "ObjectDigest" },
+        "algorithm": { "const": "SHA-256" },
+        "canonicalization": { "const": "JCS-RFC8785" },
+        "encoding": { "const": "LowerHex" },
+        "excluded_fields": { "const": ["integrity.object_digest"] },
+        "object_digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "x-application-rules": ["CONSENT-001", "CONSENT-002", "CONSENT-003", "CONSENT-004"],
+  "examples": [
+    {"schema_version":"1.0.0","receipt_id":"60000000-0000-4000-8000-000000000109","audit_run_id":"60000000-0000-4000-8000-000000000001","consent_type":"Reboot","purpose_code":"SYNTHETIC_CONTRACT_TEST","exact_scope":{"pass_id":"60000000-0000-4000-8000-000000000011","authorized_action_id":"60000000-0000-4000-8000-000000000301","operation_code":"PerformRebootContinuation","target_reference":"workflow:synthetic-reboot","single_use":true},"requested_capabilities":[],"approved_capabilities":[],"requested_privacy_classes":[],"approved_privacy_classes":[],"consent_text_version":"consent-text:1.0.0","presented_at":"2026-01-01T00:00:00Z","accepted_at":"2026-01-01T00:00:01Z","expires_at":"2026-01-01T01:00:00Z","nonce":"synthetic-consent-nonce-09-xxxxxxxxxxxxxxxx","user_presence":true,"application_version":"0.1.0","host_binding_digest":"413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5","revocation":{"state":"Active"},"integrity":{"digest_kind":"ObjectDigest","algorithm":"SHA-256","canonicalization":"JCS-RFC8785","encoding":"LowerHex","excluded_fields":["integrity.object_digest"],"object_digest":"4ab3b105061177862467a6a082e39bec0c1daeee5d8e2c05b7b10b38b6c5a0ca"},"reboot_binding":{"workflow_id":"workflow:synthetic-reboot","stage":"Continue","planned_by_collector":{"collector_id":"collector:windows:synthetic","collector_definition_digest":"f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3"}}}
+  ]
+}

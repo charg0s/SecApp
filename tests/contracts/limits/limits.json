@@ -1,0 +1,674 @@
+{
+  "schema_id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+  "fixture_model": "DigestProjection vectors are application-limit measurements, not substitutes for schema instances. The base full contract proves the normative package_limits object and digest shape.",
+  "materialization_contract": {
+    "counts": "Generate distinct synthetic references lazily; reject boundary+1 before allocating the excess element.",
+    "bytes": "Measure UTF-8/JCS or archive counters with checked unsigned safe-integer arithmetic.",
+    "ratio": "Compute expanded_bytes / max(stored_bytes, 1) with checked operands; reject before extraction."
+  },
+  "normative_package_limits": {
+    "max_serialized_audit_run_bytes": 4194304,
+    "max_pass_references": 4,
+    "max_execution_references": 4096,
+    "max_observation_references": 10000,
+    "max_evidence_references": 10000,
+    "max_finding_references": 5000,
+    "max_inline_summaries": 256,
+    "max_inline_summary_bytes": 2048,
+    "max_decompressed_run_bytes": 2147483648,
+    "max_audit_package_bytes": 4294967296,
+    "max_zip_entries": 10000,
+    "max_zip_total_expanded_bytes": 1073741824,
+    "max_zip_entry_expanded_bytes": 268435456,
+    "max_compression_ratio": 100,
+    "max_logical_paths": 100000,
+    "max_imported_records": 1000000,
+    "max_json_nesting_depth": 64,
+    "max_raw_stdout_bytes": 1073741824,
+    "max_raw_stderr_bytes": 1073741824,
+    "arithmetic": "CheckedUnsignedSafeInteger"
+  },
+  "base_full_contract": {
+    "fixture_kind": "FullContractInstance",
+    "expected_schema_valid": true,
+    "expected_application_valid": true,
+    "instance": {
+      "schema_version": "1.0.0",
+      "run_id": "70000000-0000-4000-8000-000000000001",
+      "audit_profile": {
+        "profile_id": "audit:limits-synthetic",
+        "profile_version": "1.0.0",
+        "profile_digest": "a5c15b9c5fe931bccd76a2072addf2ed73a179030f82af65749ff114f25ef343"
+      },
+      "state": "Completed",
+      "network_policy": "Forbidden",
+      "started_at": "2026-01-01T00:00:00Z",
+      "ended_at": "2026-01-01T00:00:01Z",
+      "pass_references": [
+        {
+          "pass_id": "70000000-0000-4000-8000-000000000011",
+          "kind": "Standard",
+          "privilege_class": "StandardUser",
+          "logical_path": "passes/70000000-0000-4000-8000-000000000011.json",
+          "object_digest": "9d918c161ae0a9314c353ea8988107efeb6a959f5119ed70ca3a164554dafdb4",
+          "reboot_planned": false
+        }
+      ],
+      "consent_receipt_ids": [],
+      "execution_references": [],
+      "observation_references": [],
+      "evidence_references": [],
+      "finding_references": [],
+      "inline_summaries": [],
+      "package_limits": {
+        "max_serialized_audit_run_bytes": 4194304,
+        "max_pass_references": 4,
+        "max_execution_references": 4096,
+        "max_observation_references": 10000,
+        "max_evidence_references": 10000,
+        "max_finding_references": 5000,
+        "max_inline_summaries": 256,
+        "max_inline_summary_bytes": 2048,
+        "max_decompressed_run_bytes": 2147483648,
+        "max_audit_package_bytes": 4294967296,
+        "max_zip_entries": 10000,
+        "max_zip_total_expanded_bytes": 1073741824,
+        "max_zip_entry_expanded_bytes": 268435456,
+        "max_compression_ratio": 100,
+        "max_logical_paths": 100000,
+        "max_imported_records": 1000000,
+        "max_json_nesting_depth": 64,
+        "max_raw_stdout_bytes": 1073741824,
+        "max_raw_stderr_bytes": 1073741824,
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      },
+      "errors": [],
+      "action_log_reference": {
+        "action_log_id": "70000000-0000-4000-8000-000000000900",
+        "logical_path": "action-log/action-log.json",
+        "log_digest": "cfd578e0ba5870bc36ee8a367f3c1887cb8a598e6318b9760e0458dbe56c95b8"
+      },
+      "manifest_reference": {
+        "manifest_id": "70000000-0000-4000-8000-000000000501",
+        "logical_path": "manifest.json"
+      },
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": [
+          "integrity.object_digest"
+        ],
+        "object_digest": "6b7db0a65cd3b49a4c974cc7bdef57cb85d637c514149d5512293f08de9c0a42"
+      }
+    }
+  },
+  "vectors": [
+    {
+      "vector_id": "LIMIT_SERIALIZED_AUDIT_RUN_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "SERIALIZED_AUDIT_RUN_BYTES",
+        "value": 4194304,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_SERIALIZED_AUDIT_RUN_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_SERIALIZED_OBJECT_EXCEEDED",
+      "single_fault": "SERIALIZED_AUDIT_RUN_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "SERIALIZED_AUDIT_RUN_BYTES",
+        "value": 4194305,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_PASS_REFERENCES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "PASS_REFERENCES",
+        "value": 4,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_PASS_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "PASS_REFERENCES is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "PASS_REFERENCES",
+        "value": 5,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_EXECUTION_REFERENCES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "EXECUTION_REFERENCES",
+        "value": 4096,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_EXECUTION_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "EXECUTION_REFERENCES is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "EXECUTION_REFERENCES",
+        "value": 4097,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_OBSERVATION_REFERENCES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "OBSERVATION_REFERENCES",
+        "value": 10000,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_OBSERVATION_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "OBSERVATION_REFERENCES is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "OBSERVATION_REFERENCES",
+        "value": 10001,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_EVIDENCE_REFERENCES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "EVIDENCE_REFERENCES",
+        "value": 10000,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_EVIDENCE_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "EVIDENCE_REFERENCES is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "EVIDENCE_REFERENCES",
+        "value": 10001,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_FINDING_REFERENCES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "FINDING_REFERENCES",
+        "value": 5000,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_FINDING_REFERENCES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "FINDING_REFERENCES is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "FINDING_REFERENCES",
+        "value": 5001,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_INLINE_SUMMARY_COUNT_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "INLINE_SUMMARY_COUNT",
+        "value": 256,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_INLINE_SUMMARY_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "INLINE_SUMMARY_COUNT is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "INLINE_SUMMARY_COUNT",
+        "value": 257,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_INLINE_SUMMARY_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "INLINE_SUMMARY_BYTES",
+        "value": 2048,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_INLINE_SUMMARY_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_SERIALIZED_OBJECT_EXCEEDED",
+      "single_fault": "INLINE_SUMMARY_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "INLINE_SUMMARY_BYTES",
+        "value": 2049,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_DECOMPRESSED_RUN_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "DECOMPRESSED_RUN_BYTES",
+        "value": 2147483648,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_DECOMPRESSED_RUN_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_DECOMPRESSED_BUDGET_EXCEEDED",
+      "single_fault": "DECOMPRESSED_RUN_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "DECOMPRESSED_RUN_BYTES",
+        "value": 2147483649,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_AUDIT_PACKAGE_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "AUDIT_PACKAGE_BYTES",
+        "value": 4294967296,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_AUDIT_PACKAGE_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_PACKAGE_BUDGET_EXCEEDED",
+      "single_fault": "AUDIT_PACKAGE_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "AUDIT_PACKAGE_BYTES",
+        "value": 4294967297,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_ENTRY_COUNT_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "ZIP_ENTRY_COUNT",
+        "value": 10000,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_ENTRY_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_ZIP_ENTRY_COUNT_EXCEEDED",
+      "single_fault": "ZIP_ENTRY_COUNT is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "ZIP_ENTRY_COUNT",
+        "value": 10001,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_TOTAL_EXPANDED_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "ZIP_TOTAL_EXPANDED_BYTES",
+        "value": 1073741824,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_TOTAL_EXPANDED_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_DECOMPRESSED_BUDGET_EXCEEDED",
+      "single_fault": "ZIP_TOTAL_EXPANDED_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "ZIP_TOTAL_EXPANDED_BYTES",
+        "value": 1073741825,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_SINGLE_ENTRY_EXPANDED_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "ZIP_SINGLE_ENTRY_EXPANDED_BYTES",
+        "value": 268435456,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_SINGLE_ENTRY_EXPANDED_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_ZIP_ENTRY_SIZE_EXCEEDED",
+      "single_fault": "ZIP_SINGLE_ENTRY_EXPANDED_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "ZIP_SINGLE_ENTRY_EXPANDED_BYTES",
+        "value": 268435457,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_COMPRESSION_RATIO_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "ZIP_COMPRESSION_RATIO",
+        "value": 100,
+        "unit": "ratio",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_ZIP_COMPRESSION_RATIO_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_COMPRESSION_RATIO_EXCEEDED",
+      "single_fault": "ZIP_COMPRESSION_RATIO is exactly one ratio above its normative limit",
+      "measurement": {
+        "dimension": "ZIP_COMPRESSION_RATIO",
+        "value": 101,
+        "unit": "ratio",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_LOGICAL_PATH_COUNT_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "LOGICAL_PATH_COUNT",
+        "value": 100000,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_LOGICAL_PATH_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "LOGICAL_PATH_COUNT is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "LOGICAL_PATH_COUNT",
+        "value": 100001,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_IMPORTED_RECORD_COUNT_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "IMPORTED_RECORD_COUNT",
+        "value": 1000000,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_IMPORTED_RECORD_COUNT_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_REFERENCE_COUNT_EXCEEDED",
+      "single_fault": "IMPORTED_RECORD_COUNT is exactly one count above its normative limit",
+      "measurement": {
+        "dimension": "IMPORTED_RECORD_COUNT",
+        "value": 1000001,
+        "unit": "count",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_JSON_NESTING_DEPTH_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "JSON_NESTING_DEPTH",
+        "value": 64,
+        "unit": "depth",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_JSON_NESTING_DEPTH_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_NESTING_DEPTH_EXCEEDED",
+      "single_fault": "JSON_NESTING_DEPTH is exactly one depth above its normative limit",
+      "measurement": {
+        "dimension": "JSON_NESTING_DEPTH",
+        "value": 65,
+        "unit": "depth",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_RAW_STDOUT_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "RAW_STDOUT_BYTES",
+        "value": 1073741824,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_RAW_STDOUT_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_RAW_STREAM_EXCEEDED",
+      "single_fault": "RAW_STDOUT_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "RAW_STDOUT_BYTES",
+        "value": 1073741825,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_RAW_STDERR_BYTES_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "RAW_STDERR_BYTES",
+        "value": 1073741824,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_RAW_STDERR_BYTES_BOUNDARY_PLUS_ONE_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_RAW_STREAM_EXCEEDED",
+      "single_fault": "RAW_STDERR_BYTES is exactly one bytes above its normative limit",
+      "measurement": {
+        "dimension": "RAW_STDERR_BYTES",
+        "value": 1073741825,
+        "unit": "bytes",
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_INTEGER_MAX_SAFE_BOUNDARY_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "rule_id": "LIMIT-001",
+      "measurement": {
+        "dimension": "CHECKED_UNSIGNED_ADDITION",
+        "operands": [
+          9007199254740990,
+          1
+        ],
+        "expected": 9007199254740991,
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    },
+    {
+      "vector_id": "LIMIT_INTEGER_OVERFLOW_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "LIMIT-001",
+      "expected_error_code": "LIMIT_INTEGER_OVERFLOW",
+      "single_fault": "checked addition exceeds the maximum safe unsigned integer",
+      "measurement": {
+        "dimension": "CHECKED_UNSIGNED_ADDITION",
+        "operands": [
+          9007199254740991,
+          1
+        ],
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      }
+    }
+  ]
+}

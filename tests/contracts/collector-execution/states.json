@@ -1,0 +1,1055 @@
+{
+  "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+  "fixture_model": "Every vector is a fully materialized CollectorExecution instance with an exact JCS ObjectDigest; no inheritance remains implicit.",
+  "vectors": [
+    {
+      "vector_id": "EXEC_PLANNED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Planned",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "084b8b991c22e5535f92bfefdda88872ad313ee20ebc1a0dc637820ade87c74e"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_NOT_TESTED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "NotTested",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "9e80aa565688f191433c3dce02bdeb25fe6946b21d460feeaa74a9cc66f0b372"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_BACKEND_NOT_FOUND_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "BackendNotFound",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [
+          {
+            "schema_version": "1.0.0",
+            "error_id": "00000000-0000-4000-8000-000000000991",
+            "code": "BackendNotFound",
+            "stage": "Prepare",
+            "message": "The approved backend identity was not available.",
+            "retryable": true,
+            "details_redacted": true
+          }
+        ],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "53659b6dff41217e2ce1b47cd0757731d5eb29477972f1ca9b875eb97c481961"
+        },
+        "expected_backend": {
+          "name": "Velociraptor",
+          "source_release": "v0.77.1",
+          "source_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_CONSENT_DENIED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "ConsentDenied",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "55cdd754dc3c06be006e66b4d4f530f7dbb032008056f61eb46db915584985d8"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_POLICY_REJECTED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "PolicyRejected",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "6b9ecb025df535d7fdbaa3f22dd0f017a2d9087467f3ec4986e56c70abd0dfca"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_RUNNING_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Running",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "59fb2cab6685f57085b8d5fcda4e194201d2bbca1f03ca41daea57794508422e"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_SUCCEEDED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Succeeded",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "b61d8c49ee72c29228e2018a6386159c87c3ed409c2d6cffb20934b9e96dff69"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z",
+        "exit_code": 0,
+        "output_digests": {
+          "raw_stdout_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "994b70a2313bccc9c30081175376d3217160ed6fd01d020c56f7726bdb02a96b"
+          },
+          "raw_stderr_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "a0cfa6968f22a91d7957ea019d8fbb01245dc7600442a3b41cf8c8d7f48f4bb6"
+          }
+        },
+        "parser_result": {
+          "status": "Succeeded"
+        },
+        "import_result": {
+          "status": "Succeeded"
+        },
+        "record_count": 0
+      }
+    },
+    {
+      "vector_id": "EXEC_FAILED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Failed",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [
+          {
+            "schema_version": "1.0.0",
+            "error_id": "00000000-0000-4000-8000-000000000992",
+            "code": "ParseError",
+            "stage": "Import",
+            "message": "Synthetic parser failure.",
+            "retryable": false,
+            "details_redacted": true
+          }
+        ],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "8bd3d0a805b8baa37da18a196fadd9d36dd20424e90e3a504e616e40a2b2f6bc"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z",
+        "exit_code": 2,
+        "failure": {
+          "schema_version": "1.0.0",
+          "error_id": "00000000-0000-4000-8000-000000000992",
+          "code": "ParseError",
+          "stage": "Import",
+          "message": "Synthetic parser failure.",
+          "retryable": false,
+          "details_redacted": true
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_TIMED_OUT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "TimedOut",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "3c8a358644ec865c40a2e20aff25293272983883afd38225f6bfd7cb72658ddd"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:01:00Z",
+        "timeout_source": "Orchestrator"
+      }
+    },
+    {
+      "vector_id": "EXEC_CANCELLED_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Cancelled",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "aa2ed536c88d8526102803c4d66b6c2afb8418bd3872cc96e3c39925db569994"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:10Z",
+        "cancellation_source": "User"
+      }
+    },
+    {
+      "vector_id": "EXEC_PARTIAL_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Partial",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "d05160b4297b43b8322d4bb66c3cdcca9689173df6fdfaef0301daea36870c8d"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z",
+        "output_digests": {
+          "raw_stdout_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "994b70a2313bccc9c30081175376d3217160ed6fd01d020c56f7726bdb02a96b"
+          },
+          "raw_stderr_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "a0cfa6968f22a91d7957ea019d8fbb01245dc7600442a3b41cf8c8d7f48f4bb6"
+          }
+        },
+        "parser_result": {
+          "status": "Partial",
+          "error_code": "OUTPUT_TRUNCATED"
+        },
+        "import_result": {
+          "status": "Succeeded"
+        },
+        "record_count": 100000,
+        "partial_reason": "OutputTruncated",
+        "truncation": {
+          "partial_output": true,
+          "is_truncated": true,
+          "limit_kind": "Records"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_SUCCEEDED_TIMEOUT_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Succeeded",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "5d71486f72a44e80293bf4991d5d94b6ab48091eed594d3b591bf9c981a3e921"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z",
+        "exit_code": 0,
+        "output_digests": {
+          "raw_stdout_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "994b70a2313bccc9c30081175376d3217160ed6fd01d020c56f7726bdb02a96b"
+          },
+          "raw_stderr_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "a0cfa6968f22a91d7957ea019d8fbb01245dc7600442a3b41cf8c8d7f48f4bb6"
+          }
+        },
+        "parser_result": {
+          "status": "Succeeded"
+        },
+        "import_result": {
+          "status": "Succeeded"
+        },
+        "record_count": 0,
+        "timeout_source": "Orchestrator"
+      }
+    },
+    {
+      "vector_id": "EXEC_SUCCEEDED_CANCEL_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Succeeded",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "4d2cb6970886c79ac5a7b64b1d2ed89fe08825e162340b6b83de87c1862685bc"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z",
+        "exit_code": 0,
+        "output_digests": {
+          "raw_stdout_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "994b70a2313bccc9c30081175376d3217160ed6fd01d020c56f7726bdb02a96b"
+          },
+          "raw_stderr_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "a0cfa6968f22a91d7957ea019d8fbb01245dc7600442a3b41cf8c8d7f48f4bb6"
+          }
+        },
+        "parser_result": {
+          "status": "Succeeded"
+        },
+        "import_result": {
+          "status": "Succeeded"
+        },
+        "record_count": 0,
+        "cancellation_source": "User"
+      }
+    },
+    {
+      "vector_id": "EXEC_SUCCEEDED_PARTIAL_REASON_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Succeeded",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "246745610ef426ebfa7cbc65c02c882f4bc21737283955e6b07ab092329c63dc"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z",
+        "exit_code": 0,
+        "output_digests": {
+          "raw_stdout_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "994b70a2313bccc9c30081175376d3217160ed6fd01d020c56f7726bdb02a96b"
+          },
+          "raw_stderr_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "a0cfa6968f22a91d7957ea019d8fbb01245dc7600442a3b41cf8c8d7f48f4bb6"
+          }
+        },
+        "parser_result": {
+          "status": "Succeeded"
+        },
+        "import_result": {
+          "status": "Succeeded"
+        },
+        "record_count": 0,
+        "partial_reason": "SourceFailure"
+      }
+    },
+    {
+      "vector_id": "EXEC_PRE_BACKEND_PROCESS_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Planned",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "84fd20759da10fbc42c539bc89487242e4d9284f57af7f82cadd9ffd872146e3"
+        },
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "6f44da434923d733ae7a2a33b27601efbfe1a571dfe755fea2d0fd2686e9a0cb",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "e2974c9449f73b6046f02b79d6773814bcf813c8d321156fd97b74e1b47eb907",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_TIMEOUT_CANCEL_SOURCE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "TimedOut",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "bc79a2ad687b0d11abd8ac4cf9ef92970fa53fb77ea965ec68036f71fbd5fdd8"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:01:00Z",
+        "timeout_source": "Orchestrator",
+        "cancellation_source": "User"
+      }
+    },
+    {
+      "vector_id": "EXEC_CANCEL_TIMEOUT_SOURCE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Cancelled",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "6a8b5547acd5b5b6351c5fb647a4a21a479dd82ee4a575f5013ec2cc73e59eed"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:10Z",
+        "cancellation_source": "User",
+        "timeout_source": "Orchestrator"
+      }
+    },
+    {
+      "vector_id": "EXEC_PARTIAL_REASON_MISSING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_PARTIAL_REASON_REQUIRED",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Partial",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "337f2413d5c465cdc716f62489a84a4f0fb995cff03a7a7b3edaec58654aad87"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z",
+        "output_digests": {
+          "raw_stdout_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "994b70a2313bccc9c30081175376d3217160ed6fd01d020c56f7726bdb02a96b"
+          },
+          "raw_stderr_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "a0cfa6968f22a91d7957ea019d8fbb01245dc7600442a3b41cf8c8d7f48f4bb6"
+          }
+        },
+        "parser_result": {
+          "status": "Partial",
+          "error_code": "OUTPUT_TRUNCATED"
+        },
+        "import_result": {
+          "status": "Succeeded"
+        },
+        "record_count": 100000,
+        "truncation": {
+          "partial_output": true,
+          "is_truncated": true,
+          "limit_kind": "Records"
+        }
+      }
+    },
+    {
+      "vector_id": "EXEC_RUNNING_ENDED_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": null,
+      "expected_error_code": "EXECUTION_STATE_FIELD_CONFLICT",
+      "instance": {
+        "schema_version": "1.0.0",
+        "execution_id": "00000000-0000-4000-8000-000000000101",
+        "run_id": "00000000-0000-4000-8000-000000000001",
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "collector_id": "collector:secapp:synthetic-readonly",
+        "collector_version": "1.0.0",
+        "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+        "state": "Running",
+        "privilege": "StandardUser",
+        "consent_receipt_ids": [],
+        "observation_ids": [],
+        "errors": [],
+        "integrity": {
+          "digest_kind": "ObjectDigest",
+          "algorithm": "SHA-256",
+          "canonicalization": "JCS-RFC8785",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "integrity.object_digest"
+          ],
+          "object_digest": "da0a312829c91409e2e18ed11e14aebf44e3914bc0857b115086fd0ff9448c32"
+        },
+        "started_at": "2026-01-01T00:00:00Z",
+        "applied_resource_limits": {
+          "timeout_seconds": 60,
+          "max_cpu_percent": 25,
+          "max_memory_bytes": 268435456,
+          "max_output_bytes": 16777216,
+          "max_records": 100000
+        },
+        "command_contract_id": "command-contract:synthetic-v1",
+        "backend_process": {
+          "name": "Velociraptor",
+          "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+          "runtime_version": "0.77.1",
+          "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+          "source_kind": "Artifact",
+          "source_name": "SecApp.Windows.SyntheticReadOnly"
+        },
+        "ended_at": "2026-01-01T00:00:01Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/audit-manifest.schema.json",
+  "title": "SecApp AuditManifest",
+  "description": "Exact non-empty membership and file-integrity inventory for one audit run.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "manifest_id", "run_id", "run_state", "generated_at", "backend", "entries", "action_log_reference", "manifest_digest"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "manifest_id": { "type": "string", "format": "uuid" },
+    "run_id": { "type": "string", "format": "uuid" },
+    "run_state": { "type": "string", "enum": ["Running", "Completed", "Partial", "Failed", "Cancelled", "RebootPending"] },
+    "generated_at": { "$ref": "#/$defs/timestamp" },
+    "backend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["availability_state", "expected_identity"],
+      "properties": {
+        "availability_state": { "type": "string", "enum": ["NotTested", "BackendNotFound", "Found", "Started"] },
+        "expected_identity": { "$ref": "#/$defs/expectedBackend" },
+        "observed_identity": { "$ref": "#/$defs/observedBackend" }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 100000,
+      "items": { "$ref": "#/$defs/entry" }
+    },
+    "action_log_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_log_id", "logical_path", "log_digest"],
+      "properties": {
+        "action_log_id": { "type": "string", "format": "uuid" },
+        "logical_path": { "$ref": "#/$defs/logicalPath" },
+        "log_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "manifest_digest": { "$ref": "#/$defs/manifestDigest" }
+  },
+  "$defs": {
+    "timestamp": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "logicalPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[\\\\:\\u0000-\\u001F\\u007F])(?:[A-Za-z0-9][A-Za-z0-9._-]{0,127})(?:/[A-Za-z0-9][A-Za-z0-9._-]{0,127})*$"
+    },
+    "privacyClass": {
+      "type": "string",
+      "enum": ["Public", "SystemMetadata", "PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData", "Secret", "MemoryContent"]
+    },
+    "expectedBackend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "source_release", "source_revision"],
+      "properties": {
+        "name": { "const": "Velociraptor" },
+        "source_release": { "type": "string", "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+        "source_revision": { "type": "string", "pattern": "^[a-f0-9]{40}$" }
+      }
+    },
+    "observedBackend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_version", "runtime_binary_digest"],
+      "properties": {
+        "runtime_version": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+        "runtime_binary_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "fileDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "logical_content", "canonicalization", "algorithm", "encoding", "digest"],
+      "properties": {
+        "digest_kind": { "const": "FileDigest" },
+        "logical_content": { "const": "StoredFileBytes" },
+        "canonicalization": { "const": "RawBytes" },
+        "algorithm": { "const": "SHA-256" },
+        "encoding": { "const": "LowerHex" },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "member_id", "logical_path", "media_type", "size_bytes", "file_digest", "privacy_class"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "AuditRun", "AuditPass", "CollectorDefinition", "RuleDefinition", "CollectorExecution",
+            "Observation", "Evidence", "Finding", "ConsentReceipt", "ActionLog", "RedactionProfile",
+            "ExportManifest", "RebootContinuationState", "Report", "Schema", "BackendOutput"
+          ]
+        },
+        "member_id": { "type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]*$" },
+        "logical_path": { "$ref": "#/$defs/logicalPath" },
+        "media_type": { "type": "string", "maxLength": 127, "pattern": "^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$" },
+        "size_bytes": { "type": "integer", "minimum": 0, "maximum": 1073741824 },
+        "file_digest": { "$ref": "#/$defs/fileDigest" },
+        "privacy_class": { "$ref": "#/$defs/privacyClass" }
+      }
+    },
+    "manifestDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "logical_content", "canonicalization", "algorithm", "encoding", "excluded_fields", "member_ordering", "digest"],
+      "properties": {
+        "digest_kind": { "const": "ManifestDigest" },
+        "logical_content": { "const": "AuditManifestObject" },
+        "canonicalization": { "const": "JCS-RFC8785" },
+        "algorithm": { "const": "SHA-256" },
+        "encoding": { "const": "LowerHex" },
+        "excluded_fields": { "const": ["manifest_digest.digest"] },
+        "member_ordering": { "const": "logical_path ascending, member_id ascending" },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "x-application-rules": ["MANIFEST-001", "MANIFEST-002", "MANIFEST-003"],
+  "examples": [
+    {"schema_version":"1.0.0","manifest_id":"40000000-0000-4000-8000-000000000501","run_id":"10000000-0000-4000-8000-000000000001","run_state":"Completed","generated_at":"2026-01-01T00:01:00Z","backend":{"availability_state":"Found","expected_identity":{"name":"Velociraptor","source_release":"v0.77.1","source_revision":"e76929f32215483a9747201de58567114d9e4eff"},"observed_identity":{"runtime_version":"0.77.1","runtime_binary_digest":"6f336c07bfac085873c61f20205823221d04c1dced579b9f76b40ca4c8832f9f"}},"entries":[{"role":"ActionLog","member_id":"action-log:synthetic","logical_path":"action-log/action-log.json","media_type":"application/json","size_bytes":178,"file_digest":{"digest_kind":"FileDigest","logical_content":"StoredFileBytes","canonicalization":"RawBytes","algorithm":"SHA-256","encoding":"LowerHex","digest":"bce13fa2d504d8ed54d928368133e28ed31871a40aa322170b440881c79a73c5"},"privacy_class":"SystemMetadata"},{"role":"AuditPass","member_id":"pass:standard","logical_path":"passes/10000000-0000-4000-8000-000000000011.json","media_type":"application/json","size_bytes":228,"file_digest":{"digest_kind":"FileDigest","logical_content":"StoredFileBytes","canonicalization":"RawBytes","algorithm":"SHA-256","encoding":"LowerHex","digest":"0fca32faa1977e46ce29ab2cc0e874232da3b381de3af6e918590a57bbcc83b0"},"privacy_class":"SystemMetadata"},{"role":"Report","member_id":"report:private","logical_path":"reports/private-report.json","media_type":"application/json","size_bytes":183,"file_digest":{"digest_kind":"FileDigest","logical_content":"StoredFileBytes","canonicalization":"RawBytes","algorithm":"SHA-256","encoding":"LowerHex","digest":"85252677ff918d46c6afefeb00b27d0985ed97fb7602f57413686826dbbb40f9"},"privacy_class":"SystemMetadata"},{"role":"AuditRun","member_id":"run:synthetic","logical_path":"run.json","media_type":"application/json","size_bytes":178,"file_digest":{"digest_kind":"FileDigest","logical_content":"StoredFileBytes","canonicalization":"RawBytes","algorithm":"SHA-256","encoding":"LowerHex","digest":"3f24c8d8a8ae8854aeb023e14f6c84887d4638401534696829f6275a81a50478"},"privacy_class":"SystemMetadata"},{"role":"Schema","member_id":"schema:audit-run","logical_path":"schemas/audit-run.schema.json","media_type":"application/json","size_bytes":181,"file_digest":{"digest_kind":"FileDigest","logical_content":"StoredFileBytes","canonicalization":"RawBytes","algorithm":"SHA-256","encoding":"LowerHex","digest":"82b1c5fe49cf56531f1655284c5b1696f586658b8b08da030645d2a09047a6dd"},"privacy_class":"SystemMetadata"}],"action_log_reference":{"action_log_id":"10000000-0000-4000-8000-000000000900","logical_path":"action-log/action-log.json","log_digest":"f341faf7361d4f8118d3dd776834afa7299508d289cef210856941049ce81f5e"},"manifest_digest":{"digest_kind":"ManifestDigest","logical_content":"AuditManifestObject","canonicalization":"JCS-RFC8785","algorithm":"SHA-256","encoding":"LowerHex","excluded_fields":["manifest_digest.digest"],"member_ordering":"logical_path ascending, member_id ascending","digest":"8b329b234f9204ad907353e6a53221245422a188417c15ad174330be61dac815"}}
+  ]
+}

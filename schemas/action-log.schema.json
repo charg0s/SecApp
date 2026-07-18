@@ -1,0 +1,459 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+  "title": "SecApp ActionLog",
+  "description": "Structured authorization record and hash-linked action sequence; local hashes are not tamper-proof against a compromised host or administrator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "action_log_id", "run_id", "created_at", "entries", "log_digest"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "action_log_id": { "type": "string", "format": "uuid" },
+    "run_id": { "type": "string", "format": "uuid" },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "entries": { "type": "array", "maxItems": 100000, "items": { "$ref": "#/$defs/entry" } },
+    "external_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchor_id", "anchor_kind", "chain_digest"],
+      "properties": {
+        "anchor_id": { "$ref": "#/$defs/targetReference" },
+        "anchor_kind": { "type": "string", "enum": ["ProtectedLocalStore", "DetachedSignature", "ExternalRecord"] },
+        "chain_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "log_digest": { "$ref": "#/$defs/logDigest" }
+  },
+  "$defs": {
+    "timestamp": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "targetReference": { "type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]*$" },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_code", "target_reference", "purpose_code"],
+      "properties": {
+        "operation_code": {
+          "type": "string",
+          "enum": [
+            "PlanCollector", "PresentConsent", "AcceptConsent", "RejectPolicy", "StartCollector",
+            "CancelCollector", "CompleteCollector", "ImportResults", "EvaluateRules", "CreateManifest",
+            "CollectPrivilegedReadOnly", "UseNetwork", "OnlineLookup", "ScheduleRebootContinuation",
+            "PerformRebootContinuation", "ScheduleDefenderOffline", "PerformDefenderOffline",
+            "RunDefenderScan", "AcquireMemory", "Remediate", "Export"
+          ]
+        },
+        "target_reference": { "$ref": "#/$defs/targetReference" },
+        "purpose_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" },
+        "sanitized_display_text": { "type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\u0000-\\u001F\\u007F]*$" }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timestamp", "sequence_number", "action_id", "action_type", "actor", "audit_run_id", "pass_id",
+        "operation", "consent_receipt_ids", "result", "privilege_level", "network_use",
+        "filesystem_mutation_class", "redacted_parameters", "previous_entry_digest", "entry_digest"
+      ],
+      "properties": {
+        "timestamp": { "$ref": "#/$defs/timestamp" },
+        "sequence_number": { "type": "integer", "minimum": 0, "maximum": 99999 },
+        "action_id": { "type": "string", "format": "uuid" },
+        "action_type": {
+          "type": "string",
+          "enum": [
+            "PlanCollector", "PresentConsent", "AcceptConsent", "RejectPolicy", "StartCollector",
+            "CancelCollector", "CompleteCollector", "ImportResults", "EvaluateRules", "CreateManifest",
+            "NetworkUse", "Elevation", "Reboot", "DefenderScan", "MemoryAcquisition", "Remediation", "Export"
+          ]
+        },
+        "actor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "actor_id"],
+          "properties": {
+            "kind": { "type": "string", "enum": ["User", "SecApp", "VelociraptorBackend"] },
+            "actor_id": { "type": "string", "pattern": "^[a-z][a-z0-9._:-]{0,127}$" }
+          }
+        },
+        "audit_run_id": { "type": "string", "format": "uuid" },
+        "pass_id": { "type": "string", "format": "uuid" },
+        "operation": { "$ref": "#/$defs/operation" },
+        "consent_receipt_ids": {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "type": "string", "format": "uuid" }
+        },
+        "result": { "type": "string", "enum": ["Planned", "Approved", "Denied", "Started", "Succeeded", "Failed", "Partial", "Cancelled", "TimedOut"] },
+        "collector_id": { "type": "string", "pattern": "^collector:[a-z0-9][a-z0-9._-]{0,63}:[a-z0-9][a-z0-9._-]{0,127}$" },
+        "execution_id": { "type": "string", "format": "uuid" },
+        "privilege_level": { "type": "string", "enum": ["StandardUser", "Elevated"] },
+        "network_use": { "type": "string", "enum": ["Forbidden", "NotUsed", "UsedWithConsent"] },
+        "filesystem_mutation_class": { "type": "string", "enum": ["None", "PrivateRunOutput", "ExportOutput", "RebootState", "Remediation"] },
+        "command_contract_id": { "type": "string", "pattern": "^command-contract:[a-z0-9][a-z0-9._-]{0,127}$" },
+        "collector_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["collector_definition_digest", "policy_decision_id"],
+          "properties": {
+            "collector_definition_digest": { "$ref": "#/$defs/sha256" },
+            "policy_decision_id": { "$ref": "#/$defs/targetReference" }
+          }
+        },
+        "network_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consent_receipt_id"],
+          "properties": {
+            "consent_receipt_id": { "type": "string", "format": "uuid" },
+            "destination_scope_reference": { "$ref": "#/$defs/targetReference" },
+            "policy_id": { "$ref": "#/$defs/targetReference" }
+          },
+          "oneOf": [
+            { "type": "object", "properties": { "consent_receipt_id": true, "destination_scope_reference": true }, "required": ["consent_receipt_id", "destination_scope_reference"], "not": { "type": "object", "properties": { "policy_id": true }, "required": ["policy_id"] } },
+            { "type": "object", "properties": { "consent_receipt_id": true, "policy_id": true }, "required": ["consent_receipt_id", "policy_id"], "not": { "type": "object", "properties": { "destination_scope_reference": true }, "required": ["destination_scope_reference"] } }
+          ]
+        },
+        "elevation_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consent_receipt_id", "privileged_operation"],
+          "properties": {
+            "consent_receipt_id": { "type": "string", "format": "uuid" },
+            "privileged_operation": { "const": "CollectPrivilegedReadOnly" }
+          }
+        },
+        "reboot_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consent_receipt_id", "continuation_state_reference", "next_stage"],
+          "properties": {
+            "consent_receipt_id": { "type": "string", "format": "uuid" },
+            "continuation_state_reference": { "$ref": "#/$defs/targetReference" },
+            "next_stage": { "type": "string", "enum": ["RebootContinuation", "PostReboot", "DefenderOffline"] }
+          }
+        },
+        "defender_scan_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consent_receipt_id", "scan_profile_id"],
+          "properties": {
+            "consent_receipt_id": { "type": "string", "format": "uuid" },
+            "scan_profile_id": { "$ref": "#/$defs/targetReference" }
+          }
+        },
+        "memory_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consent_receipt_id", "storage_policy_reference", "privacy_policy_reference", "output_destination_class", "expected_byte_limit"],
+          "properties": {
+            "consent_receipt_id": { "type": "string", "format": "uuid" },
+            "storage_policy_reference": { "$ref": "#/$defs/targetReference" },
+            "privacy_policy_reference": { "$ref": "#/$defs/targetReference" },
+            "output_destination_class": { "const": "PrivateMemoryEvidence" },
+            "expected_byte_limit": { "type": "integer", "minimum": 1048576, "maximum": 1073741824 }
+          }
+        },
+        "remediation_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consent_receipt_id", "exact_target_reference", "rollback_policy_id", "precondition_policy_id", "user_presence"],
+          "properties": {
+            "consent_receipt_id": { "type": "string", "format": "uuid" },
+            "exact_target_reference": { "$ref": "#/$defs/targetReference" },
+            "rollback_policy_id": { "$ref": "#/$defs/targetReference" },
+            "precondition_policy_id": { "$ref": "#/$defs/targetReference" },
+            "user_presence": { "const": true }
+          }
+        },
+        "export_authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consent_receipt_id", "redaction_profile_digest", "export_manifest_reference"],
+          "properties": {
+            "consent_receipt_id": { "type": "string", "format": "uuid" },
+            "redaction_profile_digest": { "$ref": "#/$defs/sha256" },
+            "export_manifest_reference": { "$ref": "#/$defs/targetReference" }
+          }
+        },
+        "redacted_parameters": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/redactedParameter" }
+        },
+        "previous_entry_digest": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "entry_digest": { "$ref": "#/$defs/entryDigest" }
+      },
+      "allOf": [
+        {
+          "if": { "type": "object", "properties": { "sequence_number": { "const": 0 } }, "required": ["sequence_number"] },
+          "then": { "type": "object", "properties": { "previous_entry_digest": { "type": "null" } } },
+          "else": { "type": "object", "properties": { "previous_entry_digest": { "$ref": "#/$defs/sha256" } } }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "StartCollector" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["collector_id", "execution_id", "command_contract_id", "collector_authorization"],
+            "properties": {
+              "collector_id": true,
+              "execution_id": true,
+              "command_contract_id": true,
+              "collector_authorization": true,
+              "operation": { "type": "object", "properties": { "operation_code": { "const": "StartCollector" } } },
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "filesystem_mutation_class": { "enum": ["None", "PrivateRunOutput"] }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] }, { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] },
+              { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] }, { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] },
+              { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] }, { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] },
+              { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "NetworkUse" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["collector_id", "execution_id", "command_contract_id", "network_authorization"],
+            "properties": {
+              "collector_id": true,
+              "execution_id": true,
+              "command_contract_id": true,
+              "network_authorization": true,
+              "consent_receipt_ids": { "type": "array", "minItems": 1 },
+              "network_use": { "const": "UsedWithConsent" },
+              "filesystem_mutation_class": { "enum": ["None", "PrivateRunOutput"] },
+              "operation": { "type": "object", "properties": { "operation_code": { "enum": ["UseNetwork", "OnlineLookup"] } } }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] },
+              { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] }, { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] },
+              { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] }, { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] },
+              { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "Elevation" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["elevation_authorization"],
+            "properties": {
+              "elevation_authorization": true,
+              "consent_receipt_ids": { "type": "array", "minItems": 1 },
+              "privilege_level": { "const": "Elevated" },
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "filesystem_mutation_class": { "enum": ["None", "PrivateRunOutput"] },
+              "operation": { "type": "object", "properties": { "operation_code": { "const": "CollectPrivilegedReadOnly" } } }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] },
+              { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] }, { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] },
+              { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] }, { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] },
+              { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "Reboot" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["reboot_authorization"],
+            "properties": {
+              "reboot_authorization": true,
+              "consent_receipt_ids": { "type": "array", "minItems": 1 },
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "filesystem_mutation_class": { "const": "RebootState" },
+              "operation": { "type": "object", "properties": { "operation_code": { "enum": ["ScheduleRebootContinuation", "PerformRebootContinuation", "ScheduleDefenderOffline", "PerformDefenderOffline"] } } }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] },
+              { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] }, { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] },
+              { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] }, { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] },
+              { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "DefenderScan" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["collector_id", "execution_id", "command_contract_id", "defender_scan_authorization"],
+            "properties": {
+              "collector_id": true,
+              "execution_id": true,
+              "command_contract_id": true,
+              "defender_scan_authorization": true,
+              "consent_receipt_ids": { "type": "array", "minItems": 1 },
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "filesystem_mutation_class": { "enum": ["None", "PrivateRunOutput"] },
+              "operation": { "type": "object", "properties": { "operation_code": { "const": "RunDefenderScan" } } }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] },
+              { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] }, { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] },
+              { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] }, { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] },
+              { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "MemoryAcquisition" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["memory_authorization"],
+            "properties": {
+              "memory_authorization": true,
+              "consent_receipt_ids": { "type": "array", "minItems": 1 },
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "filesystem_mutation_class": { "const": "PrivateRunOutput" },
+              "operation": { "type": "object", "properties": { "operation_code": { "const": "AcquireMemory" } } }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] },
+              { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] }, { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] },
+              { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] }, { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] },
+              { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "Remediation" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["command_contract_id", "remediation_authorization"],
+            "properties": {
+              "command_contract_id": true,
+              "remediation_authorization": true,
+              "consent_receipt_ids": { "type": "array", "minItems": 1 },
+              "filesystem_mutation_class": { "const": "Remediation" },
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "operation": { "type": "object", "properties": { "operation_code": { "const": "Remediate" } } }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] },
+              { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] }, { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] },
+              { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] }, { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] },
+              { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": { "type": "object", "properties": { "action_type": { "const": "Export" } }, "required": ["action_type"] },
+          "then": {
+            "type": "object",
+            "required": ["export_authorization"],
+            "properties": {
+              "export_authorization": true,
+              "consent_receipt_ids": { "type": "array", "minItems": 1 },
+              "filesystem_mutation_class": { "const": "ExportOutput" },
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "operation": { "type": "object", "properties": { "operation_code": { "const": "Export" } } }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] },
+              { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] }, { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] },
+              { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] }, { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] },
+              { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] }
+            ] }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": { "action_type": { "enum": ["PlanCollector", "PresentConsent", "AcceptConsent", "RejectPolicy", "CancelCollector", "CompleteCollector", "ImportResults", "EvaluateRules", "CreateManifest"] } },
+            "required": ["action_type"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "network_use": { "enum": ["Forbidden", "NotUsed"] },
+              "filesystem_mutation_class": { "enum": ["None", "PrivateRunOutput"] }
+            },
+            "not": { "anyOf": [
+              { "type": "object", "properties": { "collector_authorization": true }, "required": ["collector_authorization"] }, { "type": "object", "properties": { "network_authorization": true }, "required": ["network_authorization"] },
+              { "type": "object", "properties": { "elevation_authorization": true }, "required": ["elevation_authorization"] }, { "type": "object", "properties": { "reboot_authorization": true }, "required": ["reboot_authorization"] },
+              { "type": "object", "properties": { "defender_scan_authorization": true }, "required": ["defender_scan_authorization"] }, { "type": "object", "properties": { "memory_authorization": true }, "required": ["memory_authorization"] },
+              { "type": "object", "properties": { "remediation_authorization": true }, "required": ["remediation_authorization"] }, { "type": "object", "properties": { "export_authorization": true }, "required": ["export_authorization"] }
+            ] }
+          }
+        }
+      ]
+    },
+    "redactedParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_id", "privacy_class", "redaction_action"],
+      "properties": {
+        "field_id": { "type": "string", "pattern": "^field:[a-z0-9][a-z0-9._-]{0,127}$" },
+        "privacy_class": { "type": "string", "enum": ["Public", "SystemMetadata", "PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData", "Secret", "MemoryContent"] },
+        "redaction_action": { "type": "string", "enum": ["IncludeSanitized", "Redact", "Hash", "Omit"] },
+        "sanitized_value": {
+          "anyOf": [
+            { "type": "string", "maxLength": 256, "pattern": "^[^\\u0000-\\u001F\\u007F]*$" },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        },
+        "value_digest": { "$ref": "#/$defs/sha256" }
+      },
+      "allOf": [
+        {
+          "if": { "type": "object", "properties": { "redaction_action": { "const": "Hash" } }, "required": ["redaction_action"] },
+          "then": { "type": "object", "properties": { "value_digest": true }, "required": ["value_digest"], "not": { "type": "object", "properties": { "sanitized_value": true }, "required": ["sanitized_value"] } }
+        },
+        {
+          "if": { "type": "object", "properties": { "redaction_action": { "const": "Omit" } }, "required": ["redaction_action"] },
+          "then": { "not": { "anyOf": [{ "type": "object", "properties": { "sanitized_value": true }, "required": ["sanitized_value"] }, { "type": "object", "properties": { "value_digest": true }, "required": ["value_digest"] }] } }
+        },
+        {
+          "if": { "type": "object", "properties": { "redaction_action": { "enum": ["IncludeSanitized", "Redact"] } }, "required": ["redaction_action"] },
+          "then": { "type": "object", "properties": { "sanitized_value": true }, "required": ["sanitized_value"], "not": { "type": "object", "properties": { "value_digest": true }, "required": ["value_digest"] } }
+        },
+        {
+          "if": { "type": "object", "properties": { "privacy_class": { "enum": ["PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData", "Secret", "MemoryContent"] } }, "required": ["privacy_class"] },
+          "then": { "type": "object", "properties": { "redaction_action": { "enum": ["Redact", "Hash", "Omit"] } } }
+        }
+      ]
+    },
+    "entryDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "logical_content", "canonicalization", "algorithm", "encoding", "excluded_fields", "previous_digest_included", "digest"],
+      "properties": {
+        "digest_kind": { "const": "EntryDigest" },
+        "logical_content": { "const": "ActionLogEntryObject" },
+        "canonicalization": { "const": "JCS-RFC8785" },
+        "algorithm": { "const": "SHA-256" },
+        "encoding": { "const": "LowerHex" },
+        "excluded_fields": { "const": ["entry_digest"] },
+        "previous_digest_included": { "const": true },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "logDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "logical_content", "canonicalization", "algorithm", "encoding", "excluded_fields", "entry_ordering", "digest"],
+      "properties": {
+        "digest_kind": { "const": "ObjectDigest" },
+        "logical_content": { "const": "ActionLogObject" },
+        "canonicalization": { "const": "JCS-RFC8785" },
+        "algorithm": { "const": "SHA-256" },
+        "encoding": { "const": "LowerHex" },
+        "excluded_fields": { "const": ["log_digest.digest"] },
+        "entry_ordering": { "const": "sequence_number ascending" },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "x-application-rules": ["ACTION-001", "ACTION-002", "ACTION-003", "ACTION-004"],
+  "examples": [
+    {"schema_version":"1.0.0","action_log_id":"10000000-0000-4000-8000-000000000900","run_id":"10000000-0000-4000-8000-000000000001","created_at":"2026-01-01T00:00:00Z","entries":[{"timestamp":"2026-01-01T00:00:02Z","sequence_number":0,"action_id":"20000000-0000-4000-8000-000000000002","action_type":"NetworkUse","actor":{"kind":"SecApp","actor_id":"secapp:orchestrator"},"audit_run_id":"10000000-0000-4000-8000-000000000001","pass_id":"10000000-0000-4000-8000-000000000011","operation":{"operation_code":"UseNetwork","target_reference":"destination:security-metadata","purpose_code":"SYNTHETIC_CONTRACT_TEST"},"consent_receipt_ids":["10000000-0000-4000-8000-000000000101"],"result":"Started","privilege_level":"StandardUser","network_use":"UsedWithConsent","filesystem_mutation_class":"PrivateRunOutput","redacted_parameters":[],"previous_entry_digest":null,"entry_digest":{"digest_kind":"EntryDigest","logical_content":"ActionLogEntryObject","canonicalization":"JCS-RFC8785","algorithm":"SHA-256","encoding":"LowerHex","excluded_fields":["entry_digest"],"previous_digest_included":true,"digest":"905c084a3fed49a348aed8c4aac28e50a681d18c69d9a98f691c21d0a8f5c550"},"collector_id":"collector:windows:network-metadata","execution_id":"30000000-0000-4000-8000-000000000002","command_contract_id":"command-contract:synthetic-network","network_authorization":{"consent_receipt_id":"10000000-0000-4000-8000-000000000101","destination_scope_reference":"destination:security-metadata"}}],"log_digest":{"digest_kind":"ObjectDigest","logical_content":"ActionLogObject","canonicalization":"JCS-RFC8785","algorithm":"SHA-256","encoding":"LowerHex","excluded_fields":["log_digest.digest"],"entry_ordering":"sequence_number ascending","digest":"c2982506a9e7035e0f99dcc66626d70c848d45e8665782fb2f66e7d48fd4a4b9"}}
+  ]
+}

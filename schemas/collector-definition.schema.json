@@ -1,0 +1,909 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/collector-definition.schema.json",
+  "title": "SecApp CollectorDefinition",
+  "description": "Design-time definition of one bounded, fail-closed collection operation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "collector_id",
+    "version",
+    "title",
+    "description",
+    "backend",
+    "execution_context",
+    "default_profile_eligible",
+    "expected_observation_areas",
+    "privacy_classes",
+    "resource_limits",
+    "provenance",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "collector_id": {
+      "type": "string",
+      "pattern": "^collector:[a-z0-9][a-z0-9._-]{0,63}:[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "backend": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "artifact_name",
+            "parameters",
+            "capabilities"
+          ],
+          "properties": {
+            "kind": {
+              "const": "VelociraptorArtifact"
+            },
+            "artifact_name": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_.]{1,255}$"
+            },
+            "parameters": {
+              "$ref": "#/$defs/backendParameters"
+            },
+            "capabilities": {
+              "$ref": "#/$defs/capabilities"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "source_name",
+            "command_contract_id",
+            "parameters",
+            "capabilities"
+          ],
+          "properties": {
+            "kind": {
+              "const": "VelociraptorVQL"
+            },
+            "source_name": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_.-]{1,255}$"
+            },
+            "command_contract_id": {
+              "type": "string",
+              "pattern": "^command-contract:[a-z0-9][a-z0-9._-]{0,127}$"
+            },
+            "parameters": {
+              "$ref": "#/$defs/backendParameters"
+            },
+            "capabilities": {
+              "$ref": "#/$defs/capabilities"
+            }
+          }
+        }
+      ]
+    },
+    "execution_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "privilege",
+        "network_access",
+        "mutation_policy",
+        "reboot_policy",
+        "consent_requirements"
+      ],
+      "properties": {
+        "privilege": {
+          "type": "string",
+          "enum": [
+            "StandardUser",
+            "Elevated"
+          ]
+        },
+        "network_access": {
+          "type": "string",
+          "enum": [
+            "Forbidden",
+            "ConsentRequired"
+          ]
+        },
+        "mutation_policy": {
+          "type": "string",
+          "enum": [
+            "ReadOnly",
+            "ExplicitMutationConsentRequired"
+          ]
+        },
+        "reboot_policy": {
+          "type": "string",
+          "enum": [
+            "NotAllowed",
+            "SeparateConsentRequired"
+          ]
+        },
+        "consent_requirements": {
+          "type": "array",
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "Administrative",
+              "NetworkAccess",
+              "Reboot",
+              "DefenderScan",
+              "DefenderOffline",
+              "MemoryAcquisition",
+              "Remediation",
+              "SensitiveDataCollection",
+              "Export"
+            ]
+          }
+        }
+      }
+    },
+    "default_profile_eligible": {
+      "type": "boolean"
+    },
+    "expected_observation_areas": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/observationArea"
+      }
+    },
+    "privacy_classes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/privacyClass"
+      }
+    },
+    "resource_limits": {
+      "$ref": "#/$defs/resourceLimits"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "integrity": {
+      "$ref": "#/$defs/objectIntegrity"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "network_access": {
+                "const": "Forbidden"
+              }
+            },
+            "required": [
+              "network_access"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "object",
+            "properties": {
+              "capabilities": {
+                "not": {
+                  "type": "array",
+                  "contains": {
+                    "const": "NETWORK"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "network_access": {
+                "const": "ConsentRequired"
+              }
+            },
+            "required": [
+              "network_access"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "NetworkAccess"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "reboot_policy": {
+                "const": "SeparateConsentRequired"
+              }
+            },
+            "required": [
+              "reboot_policy"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "Reboot"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "mutation_policy": {
+                "const": "ExplicitMutationConsentRequired"
+              }
+            },
+            "required": [
+              "mutation_policy"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "Remediation"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "object",
+            "properties": {
+              "capabilities": {
+                "type": "array",
+                "contains": {
+                  "const": "EXECVE"
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "Administrative"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "object",
+            "properties": {
+              "capabilities": {
+                "type": "array",
+                "contains": {
+                  "enum": [
+                    "FILESYSTEM_WRITE",
+                    "REGISTRY_WRITE",
+                    "PROCESS_CONTROL",
+                    "SERVICE_CONTROL",
+                    "SYSTEM_CONFIGURATION_WRITE"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "Remediation"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "mutation_policy": {
+                "const": "ReadOnly"
+              }
+            },
+            "required": [
+              "mutation_policy"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "object",
+            "properties": {
+              "capabilities": {
+                "not": {
+                  "type": "array",
+                  "contains": {
+                    "enum": [
+                      "FILESYSTEM_WRITE",
+                      "REGISTRY_WRITE",
+                      "PROCESS_CONTROL",
+                      "SERVICE_CONTROL",
+                      "SYSTEM_CONFIGURATION_WRITE"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "privilege": {
+                "const": "Elevated"
+              }
+            },
+            "required": [
+              "privilege"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "Administrative"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "object",
+            "properties": {
+              "capabilities": {
+                "type": "array",
+                "contains": {
+                  "const": "MEMORY_READ"
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "MemoryAcquisition"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "privacy_classes": {
+            "type": "array",
+            "contains": {
+              "enum": [
+                "PersonalMetadata",
+                "NetworkMetadata",
+                "SensitiveSecurityData",
+                "Secret"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "SensitiveDataCollection"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "privacy_classes": {
+            "type": "array",
+            "contains": {
+              "const": "MemoryContent"
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "execution_context": {
+            "type": "object",
+            "properties": {
+              "consent_requirements": {
+                "type": "array",
+                "contains": {
+                  "const": "MemoryAcquisition"
+                }
+              }
+            }
+          },
+          "default_profile_eligible": {
+            "const": false
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "parameterValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4096
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        }
+      ]
+    },
+    "backendParameters": {
+      "type": "object",
+      "description": "Explicitly extensible binding to reviewed, allowlisted parameters.",
+      "maxProperties": 64,
+      "additionalProperties": {
+        "$ref": "#/$defs/parameterValue"
+      },
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 18,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "MACHINE_STATE",
+          "FILESYSTEM_READ",
+          "REGISTRY_READ",
+          "EVENT_LOG_READ",
+          "EXECVE",
+          "NETWORK",
+          "MEMORY_READ",
+          "FILESYSTEM_WRITE",
+          "REGISTRY_WRITE",
+          "PROCESS_CONTROL",
+          "SERVICE_CONTROL",
+          "SYSTEM_CONFIGURATION_WRITE"
+        ]
+      }
+    },
+    "resourceLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timeout_seconds",
+        "max_cpu_percent",
+        "max_memory_bytes",
+        "max_output_bytes",
+        "max_records"
+      ],
+      "properties": {
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 900
+        },
+        "max_cpu_percent": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "max_memory_bytes": {
+          "type": "integer",
+          "minimum": 1048576,
+          "maximum": 2147483648
+        },
+        "max_output_bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 1073741824
+        },
+        "max_records": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        }
+      }
+    },
+    "observationArea": {
+      "type": "string",
+      "enum": [
+        "WindowsPlatform",
+        "Updates",
+        "PendingReboot",
+        "Defender",
+        "Firewall",
+        "SecureBoot",
+        "TPM",
+        "BitLocker",
+        "UAC",
+        "VBS",
+        "LocalAccounts",
+        "PasswordPolicy",
+        "NetworkState",
+        "Startup",
+        "WMI",
+        "ScheduledTasks",
+        "Services",
+        "Drivers",
+        "Authenticode",
+        "FileACL",
+        "RemoteManagement",
+        "PowerShell",
+        "NameResolution",
+        "InstalledSoftware",
+        "WindowsEvents",
+        "Recovery",
+        "DefenderOffline"
+      ]
+    },
+    "privacyClass": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "SystemMetadata",
+        "PersonalMetadata",
+        "NetworkMetadata",
+        "SensitiveSecurityData",
+        "Secret",
+        "MemoryContent"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_kind",
+        "source_name",
+        "source_release",
+        "upstream_revision",
+        "source_content_digest"
+      ],
+      "properties": {
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "VelociraptorArtifact",
+            "VelociraptorVQL",
+            "SecAppRule",
+            "SecAppSystem"
+          ]
+        },
+        "source_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "source_release": {
+          "type": "string",
+          "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "upstream_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "source_content_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "algorithm",
+        "canonicalization",
+        "encoding",
+        "excluded_fields",
+        "object_digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "ObjectDigest"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "canonicalization": {
+          "const": "JCS-RFC8785"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "excluded_fields": {
+          "const": [
+            "integrity.object_digest"
+          ]
+        },
+        "object_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "collector_id": "collector:secapp:listening-ports",
+      "version": "1.0.0",
+      "title": "Listening ports",
+      "description": "Collect a bounded local listening-port snapshot.",
+      "backend": {
+        "kind": "VelociraptorArtifact",
+        "artifact_name": "Windows.Network.ListeningPorts",
+        "parameters": {},
+        "capabilities": [
+          "MACHINE_STATE"
+        ]
+      },
+      "execution_context": {
+        "privilege": "StandardUser",
+        "network_access": "Forbidden",
+        "mutation_policy": "ReadOnly",
+        "reboot_policy": "NotAllowed",
+        "consent_requirements": [
+          "SensitiveDataCollection"
+        ]
+      },
+      "default_profile_eligible": false,
+      "expected_observation_areas": [
+        "NetworkState"
+      ],
+      "privacy_classes": [
+        "NetworkMetadata"
+      ],
+      "resource_limits": {
+        "timeout_seconds": 60,
+        "max_cpu_percent": 25,
+        "max_memory_bytes": 268435456,
+        "max_output_bytes": 16777216,
+        "max_records": 100000
+      },
+      "provenance": {
+        "source_kind": "VelociraptorArtifact",
+        "source_name": "Windows.Network.ListeningPorts",
+        "source_release": "v0.77.1",
+        "upstream_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+        "source_content_digest": "1094400a044df58832efff8b11dcbf23ca475c61a073d4dae46d402e68ec2ab7"
+      },
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": [
+          "integrity.object_digest"
+        ],
+        "object_digest": "3a4182845b0c1394eac3a088f03d31095b57910a2ce03db837adc7ed1c80e597"
+      }
+    }
+  ],
+  "x-scalar-validation-cases": [
+    {
+      "name": "integer-is-a-number",
+      "instance": 7,
+      "expected_valid": true
+    },
+    {
+      "name": "non-integer-number",
+      "instance": 7.5,
+      "expected_valid": true
+    },
+    {
+      "name": "string",
+      "instance": "synthetic",
+      "expected_valid": true
+    },
+    {
+      "name": "null-rejected",
+      "instance": null,
+      "expected_valid": false
+    },
+    {
+      "name": "boolean",
+      "instance": false,
+      "expected_valid": true
+    }
+  ]
+}

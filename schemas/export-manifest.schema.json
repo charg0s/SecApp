@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+  "title": "SecApp ExportManifest",
+  "description": "Exact locally reconstructed export inventory with export-specific deterministic ordering.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "export_id", "run_id", "generated_at", "scope", "source_manifest_digest",
+    "redaction_profile_id", "redaction_profile_version", "redaction_profile_digest",
+    "composition_policy_digest", "local_redaction_confirmed", "entries", "omissions",
+    "excluded_counts", "warnings", "manifest_digest"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "export_id": { "type": "string", "format": "uuid" },
+    "run_id": { "type": "string", "format": "uuid" },
+    "generated_at": { "$ref": "#/$defs/timestamp" },
+    "scope": { "type": "string", "enum": ["Public", "Private"] },
+    "source_manifest_digest": { "$ref": "#/$defs/sha256" },
+    "redaction_profile_id": { "type": "string", "pattern": "^redaction:[a-z0-9][a-z0-9._-]{0,127}$" },
+    "redaction_profile_version": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+    "redaction_profile_digest": { "$ref": "#/$defs/sha256" },
+    "composition_policy_digest": { "$ref": "#/$defs/sha256" },
+    "local_redaction_confirmed": { "const": true },
+    "entries": { "type": "array", "maxItems": 100000, "items": { "$ref": "#/$defs/entry" } },
+    "omissions": { "type": "array", "maxItems": 10000, "items": { "$ref": "#/$defs/omission" } },
+    "excluded_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["Public", "SystemMetadata", "PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData", "Secret", "MemoryContent"],
+      "properties": {
+        "Public": { "$ref": "#/$defs/count" },
+        "SystemMetadata": { "$ref": "#/$defs/count" },
+        "PersonalMetadata": { "$ref": "#/$defs/count" },
+        "NetworkMetadata": { "$ref": "#/$defs/count" },
+        "SensitiveSecurityData": { "$ref": "#/$defs/count" },
+        "Secret": { "$ref": "#/$defs/count" },
+        "MemoryContent": { "$ref": "#/$defs/count" }
+      }
+    },
+    "warnings": { "type": "array", "maxItems": 256, "items": { "$ref": "#/$defs/warning" } },
+    "manifest_digest": { "$ref": "#/$defs/manifestDigest" }
+  },
+  "allOf": [
+    {
+      "if": { "type": "object", "properties": { "scope": { "const": "Public" } }, "required": ["scope"] },
+      "then": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                { "type": "object", "properties": { "privacy_class": { "enum": ["Public", "SystemMetadata", "PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData"] } } },
+                {
+                  "if": { "type": "object", "properties": { "privacy_class": { "enum": ["PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData"] } }, "required": ["privacy_class"] },
+                  "then": { "type": "object", "properties": { "action": { "enum": ["Redact", "Hash"] } } }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "timestamp": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "count": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+    "logicalPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[\\\\:\\u0000-\\u001F\\u007F])(?:[A-Za-z0-9][A-Za-z0-9._-]{0,127})(?:/[A-Za-z0-9][A-Za-z0-9._-]{0,127})*$"
+    },
+    "privacyClass": { "type": "string", "enum": ["Public", "SystemMetadata", "PersonalMetadata", "NetworkMetadata", "SensitiveSecurityData", "Secret", "MemoryContent"] },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_member_id", "source_logical_path", "export_logical_path", "privacy_class", "action", "file_digest", "size_bytes"],
+      "properties": {
+        "source_member_id": { "$ref": "#/$defs/memberId" },
+        "source_logical_path": { "$ref": "#/$defs/logicalPath" },
+        "export_logical_path": { "$ref": "#/$defs/logicalPath" },
+        "privacy_class": { "$ref": "#/$defs/privacyClass" },
+        "action": { "type": "string", "enum": ["Include", "Redact", "Hash"] },
+        "file_digest": { "$ref": "#/$defs/fileDigest" },
+        "size_bytes": { "type": "integer", "minimum": 0, "maximum": 1073741824 }
+      }
+    },
+    "omission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["omission_id", "source_member_id", "source_logical_path", "privacy_class", "reason"],
+      "properties": {
+        "omission_id": { "type": "string", "pattern": "^omission:[a-z0-9][a-z0-9._-]{0,127}$" },
+        "source_member_id": { "$ref": "#/$defs/memberId" },
+        "source_logical_path": { "$ref": "#/$defs/logicalPath" },
+        "privacy_class": { "$ref": "#/$defs/privacyClass" },
+        "reason": { "type": "string", "enum": ["ClassExcluded", "FieldUnknown", "CompositionRisk", "PolicyRejected", "SizeLimit"] }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["warning_code", "subject_path"],
+      "properties": {
+        "warning_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" },
+        "subject_path": { "$ref": "#/$defs/logicalPath" },
+        "message_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" }
+      }
+    },
+    "memberId": { "type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]*$" },
+    "fileDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "logical_content", "canonicalization", "algorithm", "encoding", "digest"],
+      "properties": {
+        "digest_kind": { "const": "FileDigest" },
+        "logical_content": { "const": "StoredFileBytes" },
+        "canonicalization": { "const": "RawBytes" },
+        "algorithm": { "const": "SHA-256" },
+        "encoding": { "const": "LowerHex" },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "manifestDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "logical_content", "canonicalization", "algorithm", "encoding", "excluded_fields", "entry_ordering", "omission_ordering", "warning_ordering", "digest"],
+      "properties": {
+        "digest_kind": { "const": "ManifestDigest" },
+        "logical_content": { "const": "ExportManifestObject" },
+        "canonicalization": { "const": "JCS-RFC8785" },
+        "algorithm": { "const": "SHA-256" },
+        "encoding": { "const": "LowerHex" },
+        "excluded_fields": { "const": ["manifest_digest.digest"] },
+        "entry_ordering": { "const": "export_logical_path ascending, source_member_id ascending" },
+        "omission_ordering": { "const": "omission_id ascending, source_logical_path ascending" },
+        "warning_ordering": { "const": "warning_code ascending, subject_path ascending" },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "x-application-rules": ["MANIFEST-002"],
+  "examples": [
+    {"schema_version":"1.0.0","export_id":"80000000-0000-4000-8000-000000000501","run_id":"80000000-0000-4000-8000-000000000001","generated_at":"2026-01-01T00:02:00Z","scope":"Public","source_manifest_digest":"9ccee25c1f2e55dafab162ffd7c2f19093bd47d66869f6323e3e77dad2811e3d","redaction_profile_id":"redaction:public-synthetic","redaction_profile_version":"1.0.0","redaction_profile_digest":"8942f27ac2dc0a0db47a597f80793641822bf63c2b674aa35be1ef4994f0e321","composition_policy_digest":"1f85911c876840fff4040b05991a333896b9883e466711a407fc814fd74b968e","local_redaction_confirmed":true,"entries":[{"source_member_id":"report:public","source_logical_path":"reports/public.json","export_logical_path":"exports/public.json","privacy_class":"Public","action":"Include","file_digest":{"digest_kind":"FileDigest","logical_content":"StoredFileBytes","canonicalization":"RawBytes","algorithm":"SHA-256","encoding":"LowerHex","digest":"9cc27f4c0426a48414fc781084600e8625fee022c898b7324acdd7183c0d95cc"},"size_bytes":128}],"omissions":[{"omission_id":"omission:secret","source_member_id":"evidence:secret","source_logical_path":"evidence/secret.json","privacy_class":"Secret","reason":"ClassExcluded"}],"excluded_counts":{"Public":0,"SystemMetadata":0,"PersonalMetadata":0,"NetworkMetadata":0,"SensitiveSecurityData":0,"Secret":1,"MemoryContent":0},"warnings":[],"manifest_digest":{"digest_kind":"ManifestDigest","logical_content":"ExportManifestObject","canonicalization":"JCS-RFC8785","algorithm":"SHA-256","encoding":"LowerHex","excluded_fields":["manifest_digest.digest"],"entry_ordering":"export_logical_path ascending, source_member_id ascending","omission_ordering":"omission_id ascending, source_logical_path ascending","warning_ordering":"warning_code ascending, subject_path ascending","digest":"9b394ea04c38385a124369d313dedef52080d2139734e0be6c9d0554e97cc313"}}
+  ]
+}

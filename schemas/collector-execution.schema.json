@@ -1,0 +1,1429 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/collector-execution.schema.json",
+  "title": "SecApp CollectorExecution",
+  "description": "State-exclusive lifecycle and bounded result contract for one collector invocation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "execution_id",
+    "run_id",
+    "pass_id",
+    "collector_id",
+    "collector_version",
+    "collector_definition_digest",
+    "state",
+    "privilege",
+    "consent_receipt_ids",
+    "observation_ids",
+    "errors",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "execution_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "pass_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "collector_id": {
+      "type": "string",
+      "pattern": "^collector:[a-z0-9][a-z0-9._-]{0,63}:[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "collector_version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "collector_definition_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "Planned",
+        "NotTested",
+        "BackendNotFound",
+        "ConsentDenied",
+        "PolicyRejected",
+        "Running",
+        "Succeeded",
+        "Failed",
+        "TimedOut",
+        "Cancelled",
+        "Partial"
+      ]
+    },
+    "started_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "ended_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "privilege": {
+      "type": "string",
+      "enum": [
+        "StandardUser",
+        "Elevated"
+      ]
+    },
+    "consent_receipt_ids": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "applied_resource_limits": {
+      "$ref": "#/$defs/resourceLimits"
+    },
+    "command_contract_id": {
+      "type": "string",
+      "pattern": "^command-contract:[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "expected_backend": {
+      "$ref": "#/$defs/expectedBackend"
+    },
+    "backend_process": {
+      "$ref": "#/$defs/observedBackend"
+    },
+    "exit_code": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+    },
+    "output_digests": {
+      "$ref": "#/$defs/outputDigests"
+    },
+    "parser_result": {
+      "$ref": "#/$defs/terminalStageResult"
+    },
+    "import_result": {
+      "$ref": "#/$defs/terminalStageResult"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "truncation": {
+      "$ref": "#/$defs/truncationMarker"
+    },
+    "partial_reason": {
+      "type": "string",
+      "enum": [
+        "OutputTruncated",
+        "SourceFailure",
+        "ParserPartial",
+        "ImportPartial",
+        "ResourceLimit"
+      ]
+    },
+    "cancellation_source": {
+      "type": "string",
+      "enum": [
+        "User",
+        "Policy",
+        "Orchestrator",
+        "Backend"
+      ]
+    },
+    "timeout_source": {
+      "type": "string",
+      "enum": [
+        "Backend",
+        "Orchestrator",
+        "Import"
+      ]
+    },
+    "failure": {
+      "$ref": "error-object.schema.json"
+    },
+    "observation_ids": {
+      "type": "array",
+      "maxItems": 100000,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "error-object.schema.json"
+      }
+    },
+    "integrity": {
+      "$ref": "#/$defs/objectIntegrity"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "enum": [
+              "Planned",
+              "NotTested",
+              "ConsentDenied",
+              "PolicyRejected"
+            ]
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "observation_ids": {
+            "type": "array",
+            "maxItems": 0
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "started_at": true
+              },
+              "required": [
+                "started_at"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ended_at": true
+              },
+              "required": [
+                "ended_at"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "applied_resource_limits": true
+              },
+              "required": [
+                "applied_resource_limits"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "command_contract_id": true
+              },
+              "required": [
+                "command_contract_id"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "expected_backend": true
+              },
+              "required": [
+                "expected_backend"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "backend_process": true
+              },
+              "required": [
+                "backend_process"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "exit_code": true
+              },
+              "required": [
+                "exit_code"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "output_digests": true
+              },
+              "required": [
+                "output_digests"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "parser_result": true
+              },
+              "required": [
+                "parser_result"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "import_result": true
+              },
+              "required": [
+                "import_result"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "record_count": true
+              },
+              "required": [
+                "record_count"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncation": true
+              },
+              "required": [
+                "truncation"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "timeout_source": true
+              },
+              "required": [
+                "timeout_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "cancellation_source": true
+              },
+              "required": [
+                "cancellation_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "partial_reason": true
+              },
+              "required": [
+                "partial_reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "failure": true
+              },
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "const": "BackendNotFound"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "expected_backend"
+        ],
+        "properties": {
+          "observation_ids": {
+            "type": "array",
+            "maxItems": 0
+          },
+          "errors": {
+            "type": "array",
+            "minItems": 1
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "started_at": true
+              },
+              "required": [
+                "started_at"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ended_at": true
+              },
+              "required": [
+                "ended_at"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "applied_resource_limits": true
+              },
+              "required": [
+                "applied_resource_limits"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "command_contract_id": true
+              },
+              "required": [
+                "command_contract_id"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "backend_process": true
+              },
+              "required": [
+                "backend_process"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "exit_code": true
+              },
+              "required": [
+                "exit_code"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "output_digests": true
+              },
+              "required": [
+                "output_digests"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "parser_result": true
+              },
+              "required": [
+                "parser_result"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "import_result": true
+              },
+              "required": [
+                "import_result"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "record_count": true
+              },
+              "required": [
+                "record_count"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncation": true
+              },
+              "required": [
+                "truncation"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "timeout_source": true
+              },
+              "required": [
+                "timeout_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "cancellation_source": true
+              },
+              "required": [
+                "cancellation_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "partial_reason": true
+              },
+              "required": [
+                "partial_reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "failure": true
+              },
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "const": "Running"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "started_at",
+          "applied_resource_limits",
+          "command_contract_id",
+          "backend_process"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "expected_backend": true
+              },
+              "required": [
+                "expected_backend"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ended_at": true
+              },
+              "required": [
+                "ended_at"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "exit_code": true
+              },
+              "required": [
+                "exit_code"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "output_digests": true
+              },
+              "required": [
+                "output_digests"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "parser_result": true
+              },
+              "required": [
+                "parser_result"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "import_result": true
+              },
+              "required": [
+                "import_result"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "record_count": true
+              },
+              "required": [
+                "record_count"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncation": true
+              },
+              "required": [
+                "truncation"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "timeout_source": true
+              },
+              "required": [
+                "timeout_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "cancellation_source": true
+              },
+              "required": [
+                "cancellation_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "partial_reason": true
+              },
+              "required": [
+                "partial_reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "failure": true
+              },
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "enum": [
+              "Succeeded",
+              "Failed",
+              "TimedOut",
+              "Cancelled",
+              "Partial"
+            ]
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "started_at",
+          "ended_at",
+          "applied_resource_limits",
+          "command_contract_id",
+          "backend_process"
+        ],
+        "not": {
+          "type": "object",
+          "required": [
+            "expected_backend"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "const": "Succeeded"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "exit_code",
+          "output_digests",
+          "parser_result",
+          "import_result",
+          "record_count"
+        ],
+        "properties": {
+          "exit_code": {
+            "const": 0
+          },
+          "parser_result": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "Succeeded"
+              }
+            }
+          },
+          "import_result": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "Succeeded"
+              }
+            }
+          },
+          "errors": {
+            "type": "array",
+            "maxItems": 0
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timeout_source": true
+              },
+              "required": [
+                "timeout_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "cancellation_source": true
+              },
+              "required": [
+                "cancellation_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "partial_reason": true
+              },
+              "required": [
+                "partial_reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncation": true
+              },
+              "required": [
+                "truncation"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "failure": true
+              },
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "const": "Failed"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "failure"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "minItems": 1
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timeout_source": true
+              },
+              "required": [
+                "timeout_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "cancellation_source": true
+              },
+              "required": [
+                "cancellation_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "partial_reason": true
+              },
+              "required": [
+                "partial_reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncation": true
+              },
+              "required": [
+                "truncation"
+              ]
+            }
+          ]
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "exit_code": {
+                "not": {
+                  "const": 0
+                }
+              }
+            },
+            "required": [
+              "exit_code"
+            ]
+          },
+          {
+            "properties": {
+              "parser_result": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "const": "Failed"
+                  }
+                }
+              }
+            },
+            "required": [
+              "parser_result"
+            ]
+          },
+          {
+            "properties": {
+              "import_result": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "const": "Failed"
+                  }
+                }
+              }
+            },
+            "required": [
+              "import_result"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "const": "TimedOut"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "timeout_source"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "cancellation_source": true
+              },
+              "required": [
+                "cancellation_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "partial_reason": true
+              },
+              "required": [
+                "partial_reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncation": true
+              },
+              "required": [
+                "truncation"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "failure": true
+              },
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "const": "Cancelled"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "cancellation_source"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timeout_source": true
+              },
+              "required": [
+                "timeout_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "partial_reason": true
+              },
+              "required": [
+                "partial_reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncation": true
+              },
+              "required": [
+                "truncation"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "failure": true
+              },
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "const": "Partial"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "partial_reason",
+          "parser_result",
+          "import_result",
+          "record_count",
+          "truncation",
+          "output_digests"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timeout_source": true
+              },
+              "required": [
+                "timeout_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "cancellation_source": true
+              },
+              "required": [
+                "cancellation_source"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "failure": true
+              },
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "resourceLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timeout_seconds",
+        "max_cpu_percent",
+        "max_memory_bytes",
+        "max_output_bytes",
+        "max_records"
+      ],
+      "properties": {
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 900
+        },
+        "max_cpu_percent": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "max_memory_bytes": {
+          "type": "integer",
+          "minimum": 1048576,
+          "maximum": 2147483648
+        },
+        "max_output_bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 1073741824
+        },
+        "max_records": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        }
+      }
+    },
+    "expectedBackend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "source_release",
+        "source_revision"
+      ],
+      "properties": {
+        "name": {
+          "const": "Velociraptor"
+        },
+        "source_release": {
+          "type": "string",
+          "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "source_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        }
+      }
+    },
+    "observedBackend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "binary_digest",
+        "runtime_version",
+        "invocation_digest",
+        "source_kind",
+        "source_name"
+      ],
+      "properties": {
+        "name": {
+          "const": "Velociraptor"
+        },
+        "binary_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "runtime_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "invocation_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "Artifact",
+            "VQL"
+          ]
+        },
+        "source_name": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]{1,255}$"
+        }
+      }
+    },
+    "terminalStageResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "NotAttempted",
+            "Succeeded",
+            "Failed",
+            "Partial"
+          ]
+        },
+        "error_code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "enum": [
+                  "Failed",
+                  "Partial"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "error_code": true
+            },
+            "required": [
+              "error_code"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "error_code": true
+              },
+              "required": [
+                "error_code"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "truncationMarker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "partial_output",
+        "is_truncated",
+        "limit_kind"
+      ],
+      "properties": {
+        "partial_output": {
+          "const": true
+        },
+        "is_truncated": {
+          "const": true
+        },
+        "limit_kind": {
+          "type": "string",
+          "enum": [
+            "Bytes",
+            "Records",
+            "Time",
+            "Source",
+            "Parser",
+            "Import"
+          ]
+        }
+      }
+    },
+    "outputDigests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_stdout_digest",
+        "raw_stderr_digest"
+      ],
+      "properties": {
+        "raw_stdout_digest": {
+          "$ref": "#/$defs/fileDigest"
+        },
+        "raw_stderr_digest": {
+          "$ref": "#/$defs/fileDigest"
+        },
+        "collection_zip_digest": {
+          "$ref": "#/$defs/fileDigest"
+        }
+      }
+    },
+    "fileDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "logical_content",
+        "canonicalization",
+        "algorithm",
+        "encoding",
+        "digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "FileDigest"
+        },
+        "logical_content": {
+          "const": "StoredFileBytes"
+        },
+        "canonicalization": {
+          "const": "RawBytes"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "algorithm",
+        "canonicalization",
+        "encoding",
+        "excluded_fields",
+        "object_digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "ObjectDigest"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "canonicalization": {
+          "const": "JCS-RFC8785"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "excluded_fields": {
+          "const": [
+            "integrity.object_digest"
+          ]
+        },
+        "object_digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "x-state-contract": {
+    "pre_execution": [
+      "Planned",
+      "NotTested",
+      "BackendNotFound",
+      "ConsentDenied",
+      "PolicyRejected"
+    ],
+    "active": [
+      "Running"
+    ],
+    "terminal": [
+      "Succeeded",
+      "Failed",
+      "TimedOut",
+      "Cancelled",
+      "Partial"
+    ]
+  },
+  "x-negative-tests": [
+    {
+      "name": "succeeded-with-timeout-source",
+      "expected_error": "EXECUTION_STATE_FIELD_CONFLICT"
+    },
+    {
+      "name": "succeeded-with-cancellation-source",
+      "expected_error": "EXECUTION_STATE_FIELD_CONFLICT"
+    },
+    {
+      "name": "succeeded-with-partial-reason",
+      "expected_error": "EXECUTION_STATE_FIELD_CONFLICT"
+    },
+    {
+      "name": "pre-execution-with-backend-process",
+      "expected_error": "EXECUTION_STATE_FIELD_CONFLICT"
+    },
+    {
+      "name": "timed-out-with-cancellation-source",
+      "expected_error": "EXECUTION_STATE_FIELD_CONFLICT"
+    },
+    {
+      "name": "cancelled-with-timeout-source",
+      "expected_error": "EXECUTION_STATE_FIELD_CONFLICT"
+    },
+    {
+      "name": "partial-without-partial-reason",
+      "expected_error": "EXECUTION_PARTIAL_REASON_REQUIRED"
+    },
+    {
+      "name": "running-with-ended-at",
+      "expected_error": "EXECUTION_STATE_FIELD_CONFLICT"
+    }
+  ],
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "execution_id": "00000000-0000-4000-8000-000000000101",
+      "run_id": "00000000-0000-4000-8000-000000000001",
+      "pass_id": "00000000-0000-4000-8000-000000000011",
+      "collector_id": "collector:secapp:synthetic-readonly",
+      "collector_version": "1.0.0",
+      "collector_definition_digest": "fb866a8015e1d7ff1a1ffeb896fb8c71272c37bbe2986fc14305b77dfa043527",
+      "state": "Planned",
+      "privilege": "StandardUser",
+      "consent_receipt_ids": [],
+      "observation_ids": [],
+      "errors": [],
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": [
+          "integrity.object_digest"
+        ],
+        "object_digest": "084b8b991c22e5535f92bfefdda88872ad313ee20ebc1a0dc637820ade87c74e"
+      }
+    }
+  ]
+}

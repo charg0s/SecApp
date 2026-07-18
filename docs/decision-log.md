@@ -1,0 +1,126 @@
+# SecApp Decision Log
+
+Status: architecture decisions through JCS-DIGEST1; accepted for design and independent recheck only
+
+An accepted design decision does not authorize runtime code, binary acquisition, elevation, dependency installation, deployment, commit, or push.
+
+## Accepted design decisions
+
+### D-001: Keep Velociraptor external and unmodified
+
+SecApp does not fork, vendor, embed, modify, or add Velociraptor as a submodule. An externally supplied official binary is a forensic backend behind a SecApp adapter. Gaps are addressed with reviewed custom artifacts and normalization unless a reproducible fork criterion is met.
+
+### D-002: Prefer a separate local CLI process
+
+The proposed combination is a bounded process, structured CLI command contract, result import, and built-in/custom artifacts without a persistent server. Instant mode, frontend/client, gRPC, and offline collectors remain fallbacks requiring separate review.
+
+### D-003: Pin capability research to release v0.77.1
+
+The release tag resolves to source commit [3137c7f714ab344dd37d0df1d5393573e41b30a5](https://github.com/Velocidex/velociraptor/tree/3137c7f714ab344dd37d0df1d5393573e41b30a5). This source pin supports architecture claims only. A runtime pin separately requires a verified binary version, digest, signer/trust decision, acquisition metadata, and rollback floor.
+
+### D-004: Treat artifact permissions as non-enforcing metadata
+
+Required/implied permissions do not sandbox client-side VQL. Acceptance uses transitive source, import, artifact-call, plugin/function, optional branch, and pinned-parameter analysis. Any unclassified capability is PolicyRejected.
+
+### D-005: Exclude UnsafeForDefault user-related built-ins
+
+Windows.Sys.Users declares FILESYSTEM_WRITE. Generic.Client.Info calls it from the Users source. Windows.Registry.RDP reaches it through Windows.Registry.NTUser. Windows.System.LocalAdmins requires EXECVE and invokes PowerShell. None is accepted as a whole in the default profile. Safe VQL-native custom replacements require a compatibility experiment.
+
+### D-006: Use immutable strict contracts
+
+Current schemas use Draft 2020-12, schema_version 1.0.0, and immutable IDs under https://schemas.secapp.dev/v1/. Root unknown properties and unknown major versions fail closed. Compatibility and migration follow [schema-compatibility.md](schema-compatibility.md).
+
+### D-007: Use a bounded flat rule graph
+
+RuleDefinition uses a non-recursive predicate table with references: at most 64 nodes, depth 8, and 16 children per All/Any. Missing, null, type mismatch, and evaluation order are explicit. Duplicate IDs, missing references, unreachable nodes, and cycles are application-level rejections.
+
+### D-008: Separate lifecycle and coverage
+
+CollectorExecution separates pre-execution, Running, and terminal states. AuditRun contains independent standard, elevated, reboot-continuation, and post-reboot passes. Coverage findings for NotTested, BackendNotFound, ConsentDenied, and PolicyRejected are distinct from security findings and need no ordinary Observation.
+
+### D-009: Use strict ConsentReceipt
+
+Consent is single-use and bound to run, pass, collector, definition digest, purpose, capabilities, classes, host digest, expiry, user presence, application/text versions, and nonce. Scope comparison, expiry, revocation, conflict, and replay are application-level checks.
+
+### D-010: Use model-level append-only ActionLog
+
+ActionLog entries have a monotonic sequence and previous-entry digest chain. The log and digest are manifest members. This detects chain modification relative to a trusted anchor but cannot prevent a compromised administrator from rewriting all local state.
+
+### D-011: Standardize digest and path semantics
+
+Content, file, object, manifest, and profile digests have separate logical content and canonicalization. Object-like JSON uses RFC 8785 JCS; files use raw bytes. Self-digest fields are excluded exactly. Logical paths are strict relative ASCII identifiers. [integrity-model.md](integrity-model.md) is normative.
+
+### D-012: Make public redaction fail closed
+
+Public exports never Include personal, network, sensitive-security, secret, or memory classes. Hash requires a key ID. Unknown/duplicate field paths, class-policy weakening, and unassessed composition reject export. ExportManifest pins the exact source, profile, and composition digests.
+
+### D-013: Require authenticated single-use reboot state
+
+Reboot state binds run, host, build, executable, next stage, expiry, sequence, and nonce. HMAC-SHA256 and Ed25519 have exact tag lengths. Replay, rollback, stale state, or verification uncertainty causes fail-closed startup. No secret key, command, or local path is stored.
+
+### D-014: Adopt initial safety limits
+
+The structural and byte/archive limits in [integrity-model.md](integrity-model.md) are conservative starting points. Raising them is a reviewed compatibility/security change with resource-exhaustion tests.
+
+### D-015: Block runtime on privacy/storage decisions
+
+Retention, temporary files, ACLs, encryption, key lifecycle, backups, crash/paging/indexer exposure, SSD deletion limitations, local-only semantics, composition risk, export deletion, compromised-host limitations, and corroboration must be resolved before runtime.
+
+### D-016: Make AuditPass standalone and AuditRun an index
+
+The retained `passes/<pass-id>.json` layout requires an immutable standalone AuditPass schema and an AuditPass manifest role. AuditRun holds only bounded references/summaries, with a 4 MiB serialized limit, 2 GiB decompressed-run budget, and 4 GiB package budget.
+
+### D-017: Separate every consent authority
+
+Administrative, NetworkAccess, Reboot, DefenderScan, DefenderOffline, MemoryAcquisition, Remediation, SensitiveDataCollection, and Export map to disjoint exact operation codes. A receipt is bound to one run, pass, action, target, and single use; possession of one type never implies another.
+
+### D-018: Normalize each manifest type independently
+
+AuditManifest sorts members by logical path and member ID. ExportManifest separately sorts export entries, omissions, and warnings by their own declared keys. Both reject duplicates before RFC 8785 JCS and SHA-256 LowerHex. ExportManifest does not acquire fields from RedactionProfile.
+
+### D-019: Make action effects mutually exclusive
+
+Every ActionLog action type owns exactly one authorization/effect shape, while routine actions own none. A complete required structure does not excuse a second foreign structure; the entry is rejected with `ACTION_EFFECT_CONFLICT`.
+
+### D-020: Split pass failures by responsibility
+
+`PASS-004` reports only execution/pass privilege mismatch, `PASS-005` reports exact consent and binding failures, and `PASS-006` reports prerequisite or reboot-chain failures. Pass application vectors first validate as complete schema objects and isolate one named rule.
+
+### D-021: Use discriminator-specific consent bindings
+
+Collector operations, export, remediation, and reboot carry disjoint binding variants. Export has no collector/pass binding; remediation binds an action and exact target; reboot binds workflow and stage. Optional related collectors are role-limited and cannot turn one authority into another.
+
+### D-022: Make package limits self-describing and overflow-safe
+
+AuditRun carries one immutable normative `package_limits` object. All counters use checked unsigned safe-integer arithmetic, and each exhausted reference, byte, ZIP, ratio, stream, nesting, decompression, and package budget has a deterministic error code.
+
+### D-023: Require the full validator through SCHEMA-VALIDATION1
+
+ARCH-FIX3 performed only dependency-free local structural and contract checks. SCHEMA-VALIDATION1 subsequently supplied the exact-version development dependency, reviewed lock, strict offline Draft 2020-12 registry, deterministic commands, and no runtime dependency. CI integration and independent recheck remain separate decisions.
+
+### D-024: Make XOBJ coverage executable and complete
+
+XOBJ-001 through XOBJ-018 use one bounded test-only materialized graph model and separate deterministic rule functions. Constituent objects pass their production schemas; the wrapper accepts only bounded data mutations and is frozen before evaluation. Duplicate IDs remain visible until XOBJ-002 rejects them. The application gate fails for missing inputs, unknown rules, missing dispatch implementations, absent positive/negative coverage, unexecuted or skipped vectors, or any mismatch among registered, executable, and covered rule sets. This is reference validation, not runtime implementation or provenance proof.
+
+### D-025: Supersede D-023 gate sufficiency with strict digest conformance
+
+D-023 remains the historical dependency and full-schema-validator decision, but its original digest sub-gate was not sufficient: the reported 9/9 result did not exercise nonempty ProfileDigest ordering or byte-backed digests and allowed malformed direct JCS values to be accepted or to crash with raw exceptions. JCS-DIGEST1 supersedes that sufficiency boundary with official RFC 8785 serialization/property-order vectors, ECMAScript number cases, strict Unicode and direct-API fail-closed behavior, exact `field` ProfileDigest normalization, raw-byte FileDigest vectors, and normative ContentDigest text canonicalization. Passing remains a local design-contract gate, not provenance, runtime conformance, or a trust anchor.
+
+## Open decisions before runtime
+
+| ID | Decision | Required evidence |
+|---|---|---|
+| O-001 | Runtime binary acquisition, signer/hash trust, pinning, update, and rollback | Official release metadata study plus tamper/downgrade tests |
+| O-002 | CLI stdout versus standardized collection container | Binary-backed v0.77.1 compatibility experiment for sources, logs, errors, partial output, cancellation, and encodings |
+| O-003 | Windows elevation boundary | Threat model, typed protocol, consent flow, DLL/path/TOCTOU/replay tests |
+| O-004 | Private storage and retention | Exact durations, ACL/encryption format, temp/crash/paging/backup lifecycle, key recovery/erasure, SSD limitations |
+| O-005 | Safe platform/users/local-admin/password-policy collectors | Demonstrated read-only VQL-native definitions without transitive write or exec |
+| O-006 | Safe WinRE/recovery sources | Read-only sources without command execution, repair, or configuration change |
+| O-007 | Area-specific Observation schemas | Field definitions, privacy mapping, byte limits, provenance, and fixtures |
+| O-008 | Initial rules and severity rationale | Security review plus deterministic positive/negative examples |
+| O-009 | Supported Windows versions/editions | Standard/elevated behavior and unsupported-state test matrix |
+| O-010 | HTML renderer, localization, and CSP | Injection corpus and browser regression plan |
+| O-011 | Validator CI integration and independent recheck | Reproduce the installed pinned Draft 2020-12, XOBJ-GRAPH1, and JCS-DIGEST1 gates in deterministic CI, then perform ARCH-REVIEW5 |
+| O-012 | External integrity trust anchor | Protected stored digest or detached signature design and key lifecycle |
+
+Until these decisions pass review, the permitted next action is independent architecture recheck, not runtime implementation.

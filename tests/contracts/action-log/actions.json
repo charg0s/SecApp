@@ -1,0 +1,1263 @@
+{
+  "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+  "digest_contract": {
+    "entry": "SHA-256(JCS(entry excluding the entire entry_digest member))",
+    "log": "SHA-256(JCS(full ActionLog excluding only log_digest.digest; entries sorted by sequence_number))"
+  },
+  "vectors": [
+    {
+      "vector_id": "ACTION_START_COLLECTOR_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:01Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000001",
+            "action_type": "StartCollector",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "StartCollector",
+              "target_reference": "collector:windows:synthetic",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "cf04de941f8016aed71916fd1374baa14f41b23a5d5c0973837c9dedc3c4a23a"
+            },
+            "collector_id": "collector:windows:synthetic",
+            "execution_id": "30000000-0000-4000-8000-000000000001",
+            "command_contract_id": "command-contract:synthetic-read-only",
+            "collector_authorization": {
+              "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3",
+              "policy_decision_id": "policy:read-only-default"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "6c447beb4ac93107827a3c9fd40ee88c93861ec87ece9daeee2431593cd69c2c"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_NETWORK_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:02Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000002",
+            "action_type": "NetworkUse",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "UseNetwork",
+              "target_reference": "destination:security-metadata",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000101"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "UsedWithConsent",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "905c084a3fed49a348aed8c4aac28e50a681d18c69d9a98f691c21d0a8f5c550"
+            },
+            "collector_id": "collector:windows:network-metadata",
+            "execution_id": "30000000-0000-4000-8000-000000000002",
+            "command_contract_id": "command-contract:synthetic-network",
+            "network_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000101",
+              "destination_scope_reference": "destination:security-metadata"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "c2982506a9e7035e0f99dcc66626d70c848d45e8665782fb2f66e7d48fd4a4b9"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_ELEVATION_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:03Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000003",
+            "action_type": "Elevation",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "CollectPrivilegedReadOnly",
+              "target_reference": "collector:windows:privileged-read",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000102"
+            ],
+            "result": "Started",
+            "privilege_level": "Elevated",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "ea2d11a28a3f130b04f9442447f36247e62d132d3132e2e353df6c219d6616b9"
+            },
+            "elevation_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000102",
+              "privileged_operation": "CollectPrivilegedReadOnly"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "7b9b256996ba219f71ab2b996cc78614b806049ae46133d5ff50b20603657c78"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_REBOOT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:04Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000004",
+            "action_type": "Reboot",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "ScheduleRebootContinuation",
+              "target_reference": "workflow:synthetic-reboot",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000103"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "RebootState",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "d9768ed409c139a7e1175ab7f555b458586c054754fcea66111e44fe8e6871c1"
+            },
+            "reboot_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000103",
+              "continuation_state_reference": "continuation:planned-reboot",
+              "next_stage": "RebootContinuation"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "56fd8c31c8901981c77cecc6ad9b52fedca99f7eb5c92d7593daf8bda61a200e"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_DEFENDER_SCAN_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:05Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000005",
+            "action_type": "DefenderScan",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "RunDefenderScan",
+              "target_reference": "defender:quick-scan",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000104"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "bed75968ca0be7733e7616fc7f43ae91261f191e54a7c07f30f249115596e3a5"
+            },
+            "collector_id": "collector:windows:defender-scan",
+            "execution_id": "30000000-0000-4000-8000-000000000004",
+            "command_contract_id": "command-contract:defender-scan",
+            "defender_scan_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000104",
+              "scan_profile_id": "defender:quick-scan"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "500e547b143c5dae1e4ae50ca727eae2dc3e2574f00e931dca2c6ffb0f203715"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_MEMORY_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:06Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000006",
+            "action_type": "MemoryAcquisition",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "AcquireMemory",
+              "target_reference": "memory:physical",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000105"
+            ],
+            "result": "Started",
+            "privilege_level": "Elevated",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [
+              {
+                "field_id": "field:memory-target",
+                "privacy_class": "MemoryContent",
+                "redaction_action": "Hash",
+                "value_digest": "b2f2b30120a4758c4961a4cc9986ab08fc0bac38e8a1687060d78e486b23be78"
+              }
+            ],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "203ec8715900f43184504c08783099af63eb22c28f52eb63357ae09b0fb3e26a"
+            },
+            "memory_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000105",
+              "storage_policy_reference": "storage:private-memory",
+              "privacy_policy_reference": "privacy:memory-v1",
+              "output_destination_class": "PrivateMemoryEvidence",
+              "expected_byte_limit": 1048576
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "069bb4b81b79b1fc390575eaa523a9b59eef528aeff24f2e839fb3fa3557e91e"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_REMEDIATION_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:07Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000007",
+            "action_type": "Remediation",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "Remediate",
+              "target_reference": "setting:synthetic-control",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000106"
+            ],
+            "result": "Started",
+            "privilege_level": "Elevated",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "Remediation",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "c858b1acf7a13734783c33afe9136aea4d344b19a700451dfaaf5ed35e08c8da"
+            },
+            "command_contract_id": "command-contract:synthetic-remediation",
+            "remediation_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000106",
+              "exact_target_reference": "setting:synthetic-control",
+              "rollback_policy_id": "rollback:synthetic",
+              "precondition_policy_id": "precondition:synthetic",
+              "user_presence": true
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "9bc791bff0980114d3250ce46ffb17b4747017dffebf111e14d82d6f0543e2c6"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_EXPORT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_ids": [
+        "ACTION-001",
+        "ACTION-003",
+        "ACTION-004"
+      ],
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:08Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000008",
+            "action_type": "Export",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "Export",
+              "target_reference": "export:synthetic-package",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000107"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "ExportOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "29d19cd8d16fb063199d4931c0aaf50e174d92b1acc32b431830cd8181783aa1"
+            },
+            "export_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000107",
+              "redaction_profile_digest": "8942f27ac2dc0a0db47a597f80793641822bf63c2b674aa35be1ef4994f0e321",
+              "export_manifest_reference": "export:synthetic-package"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "4ad59af235f3bfe99402b35684ae3be6a3104fe776870cc2e43728e51c272d00"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_START_WITH_NETWORK_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "StartCollector additionally contains foreign network_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:21Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000021",
+            "action_type": "StartCollector",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "StartCollector",
+              "target_reference": "collector:windows:synthetic",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "0704a2bbc75ca7c5440f96d72963f03489df50f16001a036f42cc547f67d9a90"
+            },
+            "collector_id": "collector:windows:synthetic",
+            "execution_id": "30000000-0000-4000-8000-000000000001",
+            "command_contract_id": "command-contract:synthetic-read-only",
+            "collector_authorization": {
+              "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3",
+              "policy_decision_id": "policy:read-only-default"
+            },
+            "network_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000101",
+              "destination_scope_reference": "destination:security-metadata"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "517babc2f76dcf4e36ba8425978493f25cac56e37417e90a4a674942fc9a27ed"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_NETWORK_WITH_REBOOT_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "NetworkUse additionally contains foreign reboot_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:22Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000022",
+            "action_type": "NetworkUse",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "UseNetwork",
+              "target_reference": "destination:security-metadata",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000101"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "UsedWithConsent",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "f5e03a74e820213a666229392bfff8b318b7282b45c66b5d86abcb092842b035"
+            },
+            "collector_id": "collector:windows:network-metadata",
+            "execution_id": "30000000-0000-4000-8000-000000000002",
+            "command_contract_id": "command-contract:synthetic-network",
+            "network_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000101",
+              "destination_scope_reference": "destination:security-metadata"
+            },
+            "reboot_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000103",
+              "continuation_state_reference": "continuation:planned-reboot",
+              "next_stage": "RebootContinuation"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "012210dd7b777b37f5b1a863af1b6c8eeeb4db41bc7b6a259ed0ba36d6610abb"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_ELEVATION_WITH_MEMORY_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "Elevation additionally contains foreign memory_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:23Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000023",
+            "action_type": "Elevation",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "CollectPrivilegedReadOnly",
+              "target_reference": "collector:windows:privileged-read",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000102"
+            ],
+            "result": "Started",
+            "privilege_level": "Elevated",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "ae03fb75b84d04c9b174141ff3ca148717802b44e2e363f3150ed7c546e74df3"
+            },
+            "elevation_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000102",
+              "privileged_operation": "CollectPrivilegedReadOnly"
+            },
+            "memory_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000105",
+              "storage_policy_reference": "storage:private-memory",
+              "privacy_policy_reference": "privacy:memory-v1",
+              "output_destination_class": "PrivateMemoryEvidence",
+              "expected_byte_limit": 1048576
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "8457a75eb20c02676220c22ce5c32904074196f8ebed359cf3d944c8eb60caaf"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_REBOOT_WITH_EXPORT_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "Reboot additionally contains foreign export_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:24Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000024",
+            "action_type": "Reboot",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "ScheduleRebootContinuation",
+              "target_reference": "workflow:synthetic-reboot",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000103"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "RebootState",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "05c580905042ab1b03162bcd0f98217c72ab08c11edd85976c42e49367fa54d8"
+            },
+            "reboot_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000103",
+              "continuation_state_reference": "continuation:planned-reboot",
+              "next_stage": "RebootContinuation"
+            },
+            "export_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000107",
+              "redaction_profile_digest": "8942f27ac2dc0a0db47a597f80793641822bf63c2b674aa35be1ef4994f0e321",
+              "export_manifest_reference": "export:synthetic-package"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "d25ce100c8a0a73c919eb0bffb8e4fb2718fc82f3bee53c641c1b3258069738d"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_DEFENDER_WITH_REMEDIATION_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "DefenderScan additionally contains foreign remediation_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:25Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000025",
+            "action_type": "DefenderScan",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "RunDefenderScan",
+              "target_reference": "defender:quick-scan",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000104"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "e597e1a84f53c51d9f3948fac45a674d1f87222510d776f17d3744a813bb9f30"
+            },
+            "collector_id": "collector:windows:defender-scan",
+            "execution_id": "30000000-0000-4000-8000-000000000004",
+            "command_contract_id": "command-contract:defender-scan",
+            "defender_scan_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000104",
+              "scan_profile_id": "defender:quick-scan"
+            },
+            "remediation_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000106",
+              "exact_target_reference": "setting:synthetic-control",
+              "rollback_policy_id": "rollback:synthetic",
+              "precondition_policy_id": "precondition:synthetic",
+              "user_presence": true
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "cc2a29213162e9a3f0d9acaf116534c119abd73bc916b659dd6c48e38c02af7e"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_MEMORY_WITH_ELEVATION_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "MemoryAcquisition additionally contains foreign elevation_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:26Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000026",
+            "action_type": "MemoryAcquisition",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "AcquireMemory",
+              "target_reference": "memory:physical",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000105"
+            ],
+            "result": "Started",
+            "privilege_level": "Elevated",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [
+              {
+                "field_id": "field:memory-target",
+                "privacy_class": "MemoryContent",
+                "redaction_action": "Hash",
+                "value_digest": "b2f2b30120a4758c4961a4cc9986ab08fc0bac38e8a1687060d78e486b23be78"
+              }
+            ],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "eddae33be184e8f5bc7c34665d87302147a8bcca276e66ba67073f621a6c00e1"
+            },
+            "memory_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000105",
+              "storage_policy_reference": "storage:private-memory",
+              "privacy_policy_reference": "privacy:memory-v1",
+              "output_destination_class": "PrivateMemoryEvidence",
+              "expected_byte_limit": 1048576
+            },
+            "elevation_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000102",
+              "privileged_operation": "CollectPrivilegedReadOnly"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "70f2815fd12fd1f53bc98a8edc183a63a96fa80a9933da79c2930c7a7bb7e101"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_REMEDIATION_WITH_NETWORK_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "Remediation additionally contains foreign network_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:27Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000027",
+            "action_type": "Remediation",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "Remediate",
+              "target_reference": "setting:synthetic-control",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000106"
+            ],
+            "result": "Started",
+            "privilege_level": "Elevated",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "Remediation",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "e14d085482860f99f6725b58d25bfc39cbecd1e3450e794a109b546081494b43"
+            },
+            "command_contract_id": "command-contract:synthetic-remediation",
+            "remediation_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000106",
+              "exact_target_reference": "setting:synthetic-control",
+              "rollback_policy_id": "rollback:synthetic",
+              "precondition_policy_id": "precondition:synthetic",
+              "user_presence": true
+            },
+            "network_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000101",
+              "destination_scope_reference": "destination:security-metadata"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "8884cc8eb7a7ae054db2f7325ae4df8ffa9107703391738c6590ad8c98d43a80"
+        }
+      }
+    },
+    {
+      "vector_id": "ACTION_EXPORT_WITH_COLLECTOR_AUTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "schema_id": "https://schemas.secapp.dev/v1/action-log.schema.json",
+      "expected_schema_valid": false,
+      "expected_application_valid": false,
+      "rule_id": "ACTION-004",
+      "expected_error_code": "ACTION_EFFECT_CONFLICT",
+      "single_fault": "Export additionally contains foreign collector_authorization",
+      "instance": {
+        "schema_version": "1.0.0",
+        "action_log_id": "10000000-0000-4000-8000-000000000900",
+        "run_id": "10000000-0000-4000-8000-000000000001",
+        "created_at": "2026-01-01T00:00:00Z",
+        "entries": [
+          {
+            "timestamp": "2026-01-01T00:00:28Z",
+            "sequence_number": 0,
+            "action_id": "20000000-0000-4000-8000-000000000028",
+            "action_type": "Export",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "10000000-0000-4000-8000-000000000001",
+            "pass_id": "10000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "Export",
+              "target_reference": "export:synthetic-package",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "10000000-0000-4000-8000-000000000107"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "ExportOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": null,
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "b9258b7a83ece91cf34c49b5fafa5a1ffd1daf7c88ceb021c29af5a4d221e0b5"
+            },
+            "export_authorization": {
+              "consent_receipt_id": "10000000-0000-4000-8000-000000000107",
+              "redaction_profile_digest": "8942f27ac2dc0a0db47a597f80793641822bf63c2b674aa35be1ef4994f0e321",
+              "export_manifest_reference": "export:synthetic-package"
+            },
+            "collector_authorization": {
+              "collector_definition_digest": "f685c222e48d8e7ff823e96b70447c6a8598ca4930fae98c899358d263f2ada3",
+              "policy_decision_id": "policy:read-only-default"
+            }
+          }
+        ],
+        "log_digest": {
+          "digest_kind": "ObjectDigest",
+          "logical_content": "ActionLogObject",
+          "canonicalization": "JCS-RFC8785",
+          "algorithm": "SHA-256",
+          "encoding": "LowerHex",
+          "excluded_fields": [
+            "log_digest.digest"
+          ],
+          "entry_ordering": "sequence_number ascending",
+          "digest": "6870c4134c4affaf6d64c5733d333032db4402eacb0ea0fba97dcefc6081d6ba"
+        }
+      }
+    }
+  ]
+}

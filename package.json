@@ -1,0 +1,19 @@
+{
+  "name": "secapp-schema-validation",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Development-only validation gate for SecApp JSON contracts.",
+  "scripts": {
+    "validate:schemas": "node tools/validate-schemas.mjs",
+    "validate:contracts": "node tools/validate-contracts.mjs",
+    "validate:application": "node tools/validate-application-rules.mjs",
+    "validate:digests": "node tools/validate-digests.mjs",
+    "validate:all": "npm run validate:schemas && npm run validate:contracts && npm run validate:application && npm run validate:digests",
+    "test": "npm run validate:all"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  }
+}

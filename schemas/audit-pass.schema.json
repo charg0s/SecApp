@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/audit-pass.schema.json",
+  "title": "SecApp AuditPass",
+  "description": "Standalone versioned pass contract stored as passes/<pass-id>.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "pass_id",
+    "run_id",
+    "kind",
+    "privilege_class",
+    "state",
+    "prerequisite_pass_ids",
+    "reboot_planned",
+    "coverage_only",
+    "consent_receipt_ids",
+    "collector_execution_ids",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "pass_id": { "type": "string", "format": "uuid" },
+    "run_id": { "type": "string", "format": "uuid" },
+    "kind": { "type": "string", "enum": ["Standard", "Elevated", "RebootContinuation", "PostReboot"] },
+    "privilege_class": { "type": "string", "enum": ["StandardUser", "Elevated"] },
+    "state": {
+      "type": "string",
+      "enum": ["Planned", "Running", "Completed", "Partial", "Failed", "Cancelled", "NotTested"]
+    },
+    "started_at": { "$ref": "#/$defs/timestamp" },
+    "ended_at": { "$ref": "#/$defs/timestamp" },
+    "prerequisite_pass_ids": {
+      "type": "array",
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "reboot_planned": { "type": "boolean" },
+    "coverage_only": { "type": "boolean" },
+    "consent_receipt_ids": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "collector_execution_ids": {
+      "type": "array",
+      "maxItems": 4096,
+      "uniqueItems": true,
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "coverage_reason_code": {
+      "type": "string",
+      "enum": ["NoEligibleCollectors", "ConsentDenied", "BackendUnavailable", "PolicyRejected", "UnsupportedPlatform"]
+    },
+    "integrity": { "$ref": "#/$defs/objectIntegrity" }
+  },
+  "allOf": [
+    {
+      "if": { "type": "object", "properties": { "kind": { "const": "Standard" } }, "required": ["kind"] },
+      "then": {
+        "type": "object",
+        "properties": {
+          "privilege_class": { "const": "StandardUser" },
+          "prerequisite_pass_ids": { "type": "array", "maxItems": 0 }
+        }
+      }
+    },
+    {
+      "if": { "type": "object", "properties": { "kind": { "const": "Elevated" } }, "required": ["kind"] },
+      "then": {
+        "type": "object",
+        "properties": {
+          "privilege_class": { "const": "Elevated" }
+        }
+      }
+    },
+    {
+      "if": { "type": "object", "properties": { "coverage_only": { "const": true } }, "required": ["coverage_only"] },
+      "then": {
+        "type": "object",
+        "required": ["coverage_reason_code"],
+        "properties": {
+          "coverage_reason_code": true,
+          "state": { "const": "NotTested" },
+          "collector_execution_ids": { "type": "array", "maxItems": 0 }
+        }
+      },
+      "else": {
+        "type": "object",
+        "properties": { "collector_execution_ids": { "type": "array", "minItems": 1 } },
+        "not": { "type": "object", "properties": { "coverage_reason_code": true }, "required": ["coverage_reason_code"] }
+      }
+    },
+    {
+      "if": { "type": "object", "properties": { "state": { "const": "Running" } }, "required": ["state"] },
+      "then": { "type": "object", "properties": { "started_at": true }, "required": ["started_at"], "not": { "type": "object", "properties": { "ended_at": true }, "required": ["ended_at"] } }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": { "state": { "enum": ["Completed", "Partial", "Failed", "Cancelled"] } },
+        "required": ["state"]
+      },
+      "then": { "type": "object", "properties": { "started_at": true, "ended_at": true }, "required": ["started_at", "ended_at"] }
+    },
+    {
+      "if": { "type": "object", "properties": { "state": { "enum": ["Planned", "NotTested"] } }, "required": ["state"] },
+      "then": {
+        "not": { "anyOf": [{ "type": "object", "properties": { "started_at": true }, "required": ["started_at"] }, { "type": "object", "properties": { "ended_at": true }, "required": ["ended_at"] }] }
+      }
+    }
+  ],
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "algorithm", "canonicalization", "encoding", "excluded_fields", "object_digest"],
+      "properties": {
+        "digest_kind": { "const": "ObjectDigest" },
+        "algorithm": { "const": "SHA-256" },
+        "canonicalization": { "const": "JCS-RFC8785" },
+        "encoding": { "const": "LowerHex" },
+        "excluded_fields": { "const": ["integrity.object_digest"] },
+        "object_digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "pass_id": "00000000-0000-4000-8000-000000000011",
+      "run_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "Standard",
+      "privilege_class": "StandardUser",
+      "state": "NotTested",
+      "prerequisite_pass_ids": [],
+      "reboot_planned": false,
+      "coverage_only": true,
+      "consent_receipt_ids": [],
+      "collector_execution_ids": [],
+      "coverage_reason_code": "NoEligibleCollectors",
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": ["integrity.object_digest"],
+        "object_digest": "f54fc40bc017120ab60b534ae8a100bdc461736dffe4b9831f1a412d8c198ceb"
+      }
+    }
+  ],
+  "x-application-rules": ["PASS-001", "PASS-002", "PASS-003", "PASS-004", "PASS-005", "PASS-006"]
+}

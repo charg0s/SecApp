@@ -17,6 +17,7 @@ Desktop.ini
 *.pfx
 
 # Generated output
+/node_modules/
 /build/
 /dist/
 /out/

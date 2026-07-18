@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/redaction-profile.schema.json",
+  "title": "SecApp RedactionProfile",
+  "description": "Fail-closed class and canonical-field export policy evaluated only on the local host.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "version",
+    "title",
+    "export_scope",
+    "execution_location",
+    "unknown_field_behavior",
+    "precedence",
+    "class_actions",
+    "field_rules",
+    "composition_policy",
+    "profile_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "profile_id": {
+      "type": "string",
+      "pattern": "^redaction:[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "export_scope": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "Private"
+      ]
+    },
+    "execution_location": {
+      "const": "LocalHostOnly"
+    },
+    "unknown_field_behavior": {
+      "const": "RejectExport"
+    },
+    "precedence": {
+      "const": "ClassFloorThenMoreRestrictiveFieldRule"
+    },
+    "class_actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Public",
+        "SystemMetadata",
+        "PersonalMetadata",
+        "NetworkMetadata",
+        "SensitiveSecurityData",
+        "Secret",
+        "MemoryContent"
+      ],
+      "properties": {
+        "Public": {
+          "$ref": "#/$defs/action"
+        },
+        "SystemMetadata": {
+          "$ref": "#/$defs/action"
+        },
+        "PersonalMetadata": {
+          "$ref": "#/$defs/action"
+        },
+        "NetworkMetadata": {
+          "$ref": "#/$defs/action"
+        },
+        "SensitiveSecurityData": {
+          "$ref": "#/$defs/action"
+        },
+        "Secret": {
+          "$ref": "#/$defs/action"
+        },
+        "MemoryContent": {
+          "$ref": "#/$defs/action"
+        }
+      }
+    },
+    "field_rules": {
+      "type": "array",
+      "maxItems": 512,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "privacy_class",
+          "action"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*$"
+          },
+          "privacy_class": {
+            "$ref": "#/$defs/privacyClass"
+          },
+          "action": {
+            "$ref": "#/$defs/action"
+          },
+          "replacement": {
+            "type": "string",
+            "maxLength": 128
+          }
+        }
+      }
+    },
+    "pseudonymization_key_id": {
+      "type": "string",
+      "pattern": "^key:[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "composition_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_digest",
+        "on_unassessed_combination"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "pattern": "^composition:[a-z0-9][a-z0-9._-]{0,127}$"
+        },
+        "policy_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "on_unassessed_combination": {
+          "const": "RejectExport"
+        }
+      }
+    },
+    "profile_digest": {
+      "$ref": "#/$defs/profileDigest"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "export_scope": {
+            "const": "Public"
+          }
+        },
+        "required": [
+          "export_scope"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "class_actions": {
+            "type": "object",
+            "properties": {
+              "PersonalMetadata": {
+                "enum": [
+                  "Redact",
+                  "Hash",
+                  "Exclude"
+                ]
+              },
+              "NetworkMetadata": {
+                "enum": [
+                  "Redact",
+                  "Hash",
+                  "Exclude"
+                ]
+              },
+              "SensitiveSecurityData": {
+                "enum": [
+                  "Redact",
+                  "Hash",
+                  "Exclude"
+                ]
+              },
+              "Secret": {
+                "const": "Exclude"
+              },
+              "MemoryContent": {
+                "const": "Exclude"
+              }
+            }
+          },
+          "field_rules": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {
+                      "privacy_class": {
+                        "enum": [
+                          "PersonalMetadata",
+                          "NetworkMetadata",
+                          "SensitiveSecurityData"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "privacy_class"
+                    ]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "enum": [
+                          "Redact",
+                          "Hash",
+                          "Exclude"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {
+                      "privacy_class": {
+                        "enum": [
+                          "Secret",
+                          "MemoryContent"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "privacy_class"
+                    ]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "const": "Exclude"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "class_actions": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "Public": {
+                        "const": "Hash"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "SystemMetadata": {
+                        "const": "Hash"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "PersonalMetadata": {
+                        "const": "Hash"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "NetworkMetadata": {
+                        "const": "Hash"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "SensitiveSecurityData": {
+                        "const": "Hash"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "Secret": {
+                        "const": "Hash"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "MemoryContent": {
+                        "const": "Hash"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "field_rules": {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "const": "Hash"
+                    }
+                  },
+                  "required": [
+                    "action"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "pseudonymization_key_id": true
+        },
+        "required": [
+          "pseudonymization_key_id"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "Include",
+        "Redact",
+        "Hash",
+        "Exclude"
+      ]
+    },
+    "privacyClass": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "SystemMetadata",
+        "PersonalMetadata",
+        "NetworkMetadata",
+        "SensitiveSecurityData",
+        "Secret",
+        "MemoryContent"
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "profileDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "logical_content",
+        "canonicalization",
+        "algorithm",
+        "encoding",
+        "excluded_fields",
+        "digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "ProfileDigest"
+        },
+        "logical_content": {
+          "const": "RedactionProfileObject"
+        },
+        "canonicalization": {
+          "const": "JCS-RFC8785"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "excluded_fields": {
+          "const": [
+            "profile_digest.digest"
+          ]
+        },
+        "digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "profile_id": "redaction:public-default",
+      "version": "1.0.0",
+      "title": "Synthetic public export",
+      "export_scope": "Public",
+      "execution_location": "LocalHostOnly",
+      "unknown_field_behavior": "RejectExport",
+      "precedence": "ClassFloorThenMoreRestrictiveFieldRule",
+      "class_actions": {
+        "Public": "Include",
+        "SystemMetadata": "Redact",
+        "PersonalMetadata": "Exclude",
+        "NetworkMetadata": "Exclude",
+        "SensitiveSecurityData": "Exclude",
+        "Secret": "Exclude",
+        "MemoryContent": "Exclude"
+      },
+      "field_rules": [
+        {
+          "field": "a_a",
+          "privacy_class": "SystemMetadata",
+          "action": "Redact"
+        },
+        {
+          "field": "a.a",
+          "privacy_class": "Public",
+          "action": "Include"
+        }
+      ],
+      "composition_policy": {
+        "policy_id": "composition:public-default",
+        "policy_digest": "a08d845d933caca68461cbd2100d2e2e90286599377a29184d87d30659bf0f6a",
+        "on_unassessed_combination": "RejectExport"
+      },
+      "profile_digest": {
+        "digest_kind": "ProfileDigest",
+        "logical_content": "RedactionProfileObject",
+        "canonicalization": "JCS-RFC8785",
+        "algorithm": "SHA-256",
+        "encoding": "LowerHex",
+        "excluded_fields": [
+          "profile_digest.digest"
+        ],
+        "digest": "995c92c9d170620f7457a93ac535d96c0daae00d7e9220e56d9e4026d047cacd"
+      }
+    }
+  ],
+  "x-negative-tests": [
+    {
+      "name": "public-personal-include",
+      "expected_error": "REDACTION_PUBLIC_INCLUDE_FORBIDDEN"
+    },
+    {
+      "name": "hash-without-key",
+      "expected_error": "REDACTION_HASH_KEY_REQUIRED"
+    },
+    {
+      "name": "duplicate-field-path",
+      "expected_error": "REDACTION_FIELD_RULE_CONFLICT"
+    },
+    {
+      "name": "field-rule-weakens-class",
+      "expected_error": "REDACTION_POLICY_WEAKENING"
+    },
+    {
+      "name": "unknown-field",
+      "expected_error": "REDACTION_UNKNOWN_FIELD"
+    }
+  ]
+}

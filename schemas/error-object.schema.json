@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/error-object.schema.json",
+  "title": "SecApp ErrorObject",
+  "description": "Bounded, typed, redacted error information shared by SecApp contracts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "error_id",
+    "code",
+    "stage",
+    "message",
+    "retryable",
+    "details_redacted"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "error_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "code": {
+      "type": "string",
+      "enum": [
+        "BackendNotFound",
+        "BackendRejected",
+        "ConsentDenied",
+        "PolicyRejected",
+        "PermissionDenied",
+        "Timeout",
+        "ResourceLimit",
+        "ParseError",
+        "ImportError",
+        "ValidationError",
+        "IntegrityError",
+        "Cancelled",
+        "Unsupported",
+        "ReplayRejected",
+        "StaleState",
+        "Internal"
+      ]
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "Plan",
+        "Consent",
+        "Prepare",
+        "Execute",
+        "Import",
+        "Normalize",
+        "Evaluate",
+        "Report",
+        "Export",
+        "Resume"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "details_redacted": {
+      "const": true
+    },
+    "detail_codes": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "error_id": "00000000-0000-4000-8000-000000000901",
+      "code": "BackendNotFound",
+      "stage": "Prepare",
+      "message": "The approved backend identity was not available.",
+      "retryable": true,
+      "details_redacted": true,
+      "detail_codes": [
+        "BINARY_UNAVAILABLE"
+      ]
+    }
+  ]
+}

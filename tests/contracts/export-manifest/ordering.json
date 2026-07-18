@@ -1,0 +1,106 @@
+{
+  "schema_id": "https://schemas.secapp.dev/v1/export-manifest.schema.json",
+  "projection_contract": "MANIFEST-002 export arrays",
+  "vectors": [
+    {
+      "vector_id": "EXPORT_ORDER_A_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "application_projection": {
+        "entries": [
+          {
+            "export_logical_path": "exports/synthetic/b.json",
+            "source_member_id": "member:b"
+          },
+          {
+            "export_logical_path": "exports/synthetic/a.json",
+            "source_member_id": "member:a"
+          }
+        ],
+        "omissions": [
+          {
+            "omission_id": "omission:b",
+            "source_logical_path": "runs/synthetic/b.json"
+          },
+          {
+            "omission_id": "omission:a",
+            "source_logical_path": "runs/synthetic/a.json"
+          }
+        ],
+        "warnings": [
+          {
+            "warning_code": "WARNING_B",
+            "subject_path": "exports/synthetic/b.json"
+          },
+          {
+            "warning_code": "WARNING_A",
+            "subject_path": "exports/synthetic/a.json"
+          }
+        ]
+      },
+      "expected_normalized_fingerprint": "export-order-set-1"
+    },
+    {
+      "vector_id": "EXPORT_ORDER_B_VALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": true,
+      "application_projection": {
+        "entries": [
+          {
+            "export_logical_path": "exports/synthetic/a.json",
+            "source_member_id": "member:a"
+          },
+          {
+            "export_logical_path": "exports/synthetic/b.json",
+            "source_member_id": "member:b"
+          }
+        ],
+        "omissions": [
+          {
+            "omission_id": "omission:a",
+            "source_logical_path": "runs/synthetic/a.json"
+          },
+          {
+            "omission_id": "omission:b",
+            "source_logical_path": "runs/synthetic/b.json"
+          }
+        ],
+        "warnings": [
+          {
+            "warning_code": "WARNING_A",
+            "subject_path": "exports/synthetic/a.json"
+          },
+          {
+            "warning_code": "WARNING_B",
+            "subject_path": "exports/synthetic/b.json"
+          }
+        ]
+      },
+      "expected_normalized_fingerprint": "export-order-set-1"
+    },
+    {
+      "vector_id": "EXPORT_DUPLICATE_PATH_INVALID",
+      "fixture_kind": "DigestProjection",
+      "expected_schema_valid": null,
+      "expected_application_valid": false,
+      "rule_id": "MANIFEST-002",
+      "expected_error_code": "MANIFEST_ORDER_OR_DIGEST_INVALID",
+      "application_projection": {
+        "entries": [
+          {
+            "export_logical_path": "exports/synthetic/a.json",
+            "source_member_id": "member:a"
+          },
+          {
+            "export_logical_path": "exports/synthetic/a.json",
+            "source_member_id": "member:b"
+          }
+        ],
+        "omissions": [],
+        "warnings": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/audit-run.schema.json",
+  "title": "SecApp AuditRun",
+  "description": "Bounded index and summary for a run; full pass, execution, observation, evidence, and finding objects are separate manifest members.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "audit_profile",
+    "state",
+    "network_policy",
+    "started_at",
+    "pass_references",
+    "consent_receipt_ids",
+    "execution_references",
+    "observation_references",
+    "evidence_references",
+    "finding_references",
+    "inline_summaries",
+    "package_limits",
+    "errors",
+    "action_log_reference",
+    "manifest_reference",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run_id": { "type": "string", "format": "uuid" },
+    "audit_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile_id", "profile_version", "profile_digest"],
+      "properties": {
+        "profile_id": { "type": "string", "pattern": "^audit:[a-z0-9][a-z0-9._-]{0,127}$" },
+        "profile_version": { "$ref": "#/$defs/semanticVersion" },
+        "profile_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "state": { "type": "string", "enum": ["Planned", "Running", "Completed", "Partial", "Failed", "Cancelled", "RebootPending"] },
+    "network_policy": { "type": "string", "enum": ["Forbidden", "ConsentRequired"] },
+    "started_at": { "$ref": "#/$defs/timestamp" },
+    "ended_at": { "$ref": "#/$defs/timestamp" },
+    "pass_references": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": { "$ref": "#/$defs/passReference" }
+    },
+    "consent_receipt_ids": { "$ref": "#/$defs/uuidReferences256" },
+    "execution_references": {
+      "type": "array",
+      "maxItems": 4096,
+      "items": { "$ref": "#/$defs/objectReference" }
+    },
+    "observation_references": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": { "$ref": "#/$defs/objectReference" }
+    },
+    "evidence_references": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": { "$ref": "#/$defs/objectReference" }
+    },
+    "finding_references": {
+      "type": "array",
+      "maxItems": 5000,
+      "items": { "$ref": "#/$defs/objectReference" }
+    },
+    "inline_summaries": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["summary_code", "subject_id", "status", "display_text"],
+        "properties": {
+          "summary_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" },
+          "subject_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "status": { "type": "string", "enum": ["Complete", "Partial", "NotTested", "Failed"] },
+          "display_text": { "type": "string", "minLength": 1, "maxLength": 1024 }
+        }
+      }
+    },
+    "package_limits": { "$ref": "#/$defs/packageLimits" },
+    "errors": { "type": "array", "maxItems": 256, "items": { "$ref": "error-object.schema.json" } },
+    "action_log_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_log_id", "logical_path", "log_digest"],
+      "properties": {
+        "action_log_id": { "type": "string", "format": "uuid" },
+        "logical_path": { "$ref": "#/$defs/logicalPath" },
+        "log_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "manifest_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_id", "logical_path"],
+      "properties": {
+        "manifest_id": { "type": "string", "format": "uuid" },
+        "logical_path": { "$ref": "#/$defs/logicalPath" }
+      }
+    },
+    "integrity": { "$ref": "#/$defs/objectIntegrity" }
+  },
+  "allOf": [
+    {
+      "if": { "type": "object", "properties": { "state": { "enum": ["Completed", "Partial", "Failed", "Cancelled"] } }, "required": ["state"] },
+      "then": { "type": "object", "properties": { "ended_at": true }, "required": ["ended_at"] }
+    },
+    {
+      "if": { "type": "object", "properties": { "state": { "enum": ["Planned", "Running", "RebootPending"] } }, "required": ["state"] },
+      "then": { "not": { "type": "object", "properties": { "ended_at": true }, "required": ["ended_at"] } }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+    "timestamp": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "logicalPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[\\\\:\\u0000-\\u001F\\u007F])(?:[A-Za-z0-9][A-Za-z0-9._-]{0,127})(?:/[A-Za-z0-9][A-Za-z0-9._-]{0,127})*$"
+    },
+    "objectReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_id", "object_digest"],
+      "properties": {
+        "object_id": { "type": "string", "format": "uuid" },
+        "object_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "passReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pass_id", "kind", "privilege_class", "logical_path", "object_digest", "reboot_planned"],
+      "properties": {
+        "pass_id": { "type": "string", "format": "uuid" },
+        "kind": { "type": "string", "enum": ["Standard", "Elevated", "RebootContinuation", "PostReboot"] },
+        "privilege_class": { "type": "string", "enum": ["StandardUser", "Elevated"] },
+        "logical_path": { "$ref": "#/$defs/logicalPath" },
+        "object_digest": { "$ref": "#/$defs/sha256" },
+        "reboot_planned": { "type": "boolean" }
+      }
+    },
+    "uuidReferences256": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "packageLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_serialized_audit_run_bytes",
+        "max_pass_references",
+        "max_execution_references",
+        "max_observation_references",
+        "max_evidence_references",
+        "max_finding_references",
+        "max_inline_summaries",
+        "max_inline_summary_bytes",
+        "max_decompressed_run_bytes",
+        "max_audit_package_bytes",
+        "max_zip_entries",
+        "max_zip_total_expanded_bytes",
+        "max_zip_entry_expanded_bytes",
+        "max_compression_ratio",
+        "max_logical_paths",
+        "max_imported_records",
+        "max_json_nesting_depth",
+        "max_raw_stdout_bytes",
+        "max_raw_stderr_bytes",
+        "arithmetic"
+      ],
+      "properties": {
+        "max_serialized_audit_run_bytes": { "const": 4194304 },
+        "max_pass_references": { "const": 4 },
+        "max_execution_references": { "const": 4096 },
+        "max_observation_references": { "const": 10000 },
+        "max_evidence_references": { "const": 10000 },
+        "max_finding_references": { "const": 5000 },
+        "max_inline_summaries": { "const": 256 },
+        "max_inline_summary_bytes": { "const": 2048 },
+        "max_decompressed_run_bytes": { "const": 2147483648 },
+        "max_audit_package_bytes": { "const": 4294967296 },
+        "max_zip_entries": { "const": 10000 },
+        "max_zip_total_expanded_bytes": { "const": 1073741824 },
+        "max_zip_entry_expanded_bytes": { "const": 268435456 },
+        "max_compression_ratio": { "const": 100 },
+        "max_logical_paths": { "const": 100000 },
+        "max_imported_records": { "const": 1000000 },
+        "max_json_nesting_depth": { "const": 64 },
+        "max_raw_stdout_bytes": { "const": 1073741824 },
+        "max_raw_stderr_bytes": { "const": 1073741824 },
+        "arithmetic": { "const": "CheckedUnsignedSafeInteger" }
+      }
+    },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest_kind", "algorithm", "canonicalization", "encoding", "excluded_fields", "object_digest"],
+      "properties": {
+        "digest_kind": { "const": "ObjectDigest" },
+        "algorithm": { "const": "SHA-256" },
+        "canonicalization": { "const": "JCS-RFC8785" },
+        "encoding": { "const": "LowerHex" },
+        "excluded_fields": { "const": ["integrity.object_digest"] },
+        "object_digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "x-application-limits": { "$ref": "#/$defs/packageLimits" },
+  "x-application-rules": ["PASS-001", "PASS-002", "PASS-003", "PASS-004", "PASS-005", "PASS-006", "LIMIT-001"],
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "run_id": "00000000-0000-4000-8000-000000000001",
+      "audit_profile": {
+        "profile_id": "audit:audit-foundation1",
+        "profile_version": "1.0.0",
+        "profile_digest": "af2efd97527e44d6e896bc5bfc0e9a9eec1ce50801a72f22360a46b6d4064513"
+      },
+      "state": "Completed",
+      "network_policy": "Forbidden",
+      "started_at": "2026-01-01T00:00:00Z",
+      "ended_at": "2026-01-01T00:00:01Z",
+      "pass_references": [{
+        "pass_id": "00000000-0000-4000-8000-000000000011",
+        "kind": "Standard",
+        "privilege_class": "StandardUser",
+        "logical_path": "runs/00000000-0000-4000-8000-000000000001/passes/00000000-0000-4000-8000-000000000011.json",
+        "object_digest": "500961964dafa15f01fa981576784d803761eec228b30de35cfa5ba9cfeab065",
+        "reboot_planned": false
+      }],
+      "consent_receipt_ids": [],
+      "execution_references": [],
+      "observation_references": [],
+      "evidence_references": [],
+      "finding_references": [],
+      "inline_summaries": [],
+      "package_limits": {
+        "max_serialized_audit_run_bytes": 4194304,
+        "max_pass_references": 4,
+        "max_execution_references": 4096,
+        "max_observation_references": 10000,
+        "max_evidence_references": 10000,
+        "max_finding_references": 5000,
+        "max_inline_summaries": 256,
+        "max_inline_summary_bytes": 2048,
+        "max_decompressed_run_bytes": 2147483648,
+        "max_audit_package_bytes": 4294967296,
+        "max_zip_entries": 10000,
+        "max_zip_total_expanded_bytes": 1073741824,
+        "max_zip_entry_expanded_bytes": 268435456,
+        "max_compression_ratio": 100,
+        "max_logical_paths": 100000,
+        "max_imported_records": 1000000,
+        "max_json_nesting_depth": 64,
+        "max_raw_stdout_bytes": 1073741824,
+        "max_raw_stderr_bytes": 1073741824,
+        "arithmetic": "CheckedUnsignedSafeInteger"
+      },
+      "errors": [],
+      "action_log_reference": {
+        "action_log_id": "00000000-0000-4000-8000-000000000900",
+        "logical_path": "runs/00000000-0000-4000-8000-000000000001/action-log/action-log.json",
+        "log_digest": "4819c8eba57a0dfde1ac539a89542d5326a1025cf2ddacabfaa42f75827dca2b"
+      },
+      "manifest_reference": {
+        "manifest_id": "00000000-0000-4000-8000-000000000501",
+        "logical_path": "runs/00000000-0000-4000-8000-000000000001/manifest.json"
+      },
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": ["integrity.object_digest"],
+        "object_digest": "fcf0876c9610a01c41b1e1dc064986fc476b6676f3a9fc1ae4c1cadd19f3320d"
+      }
+    }
+  ]
+}

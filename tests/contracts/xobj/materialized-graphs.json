@@ -1,0 +1,2536 @@
+{
+  "contract": "SecApp XOBJ-GRAPH1 test-only materialized graph bundle",
+  "fixture_model": "A fixed base graph plus bounded non-executable JSON Pointer mutations; the validator deep-clones and freezes every materialization.",
+  "base_graph": {
+    "graph_version": "1.0.0",
+    "test_only": true,
+    "run_id": "00000000-0000-4000-8000-000000000001",
+    "validation_context": {
+      "validation_time": "2026-01-01T00:30:00Z",
+      "verified_reboot_state_ids": [
+        "00000000-0000-4000-8000-000000000701"
+      ],
+      "expected_executable_digest": "db83927eccb156324b18dbe8626baa1b51365089ccec95bb85e01d7fbfc3659e",
+      "expected_build_digest": "814b34b5de0793e01dfe9a7635458dd88c7fe58283d673975afafb032b84441c",
+      "machine_binding_digest": "d6d46c6e4a239fb352dcc3e8588e88a57522dd555dae274252ea0ea8f073ddb4"
+    },
+    "collections": {
+      "audit_runs": [
+        {
+          "schema_version": "1.0.0",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "audit_profile": {
+            "profile_id": "audit:audit-foundation1",
+            "profile_version": "1.0.0",
+            "profile_digest": "af2efd97527e44d6e896bc5bfc0e9a9eec1ce50801a72f22360a46b6d4064513"
+          },
+          "state": "Completed",
+          "network_policy": "Forbidden",
+          "started_at": "2026-01-01T00:00:05Z",
+          "ended_at": "2026-01-01T00:10:00Z",
+          "pass_references": [
+            {
+              "pass_id": "00000000-0000-4000-8000-000000000011",
+              "kind": "Standard",
+              "privilege_class": "StandardUser",
+              "logical_path": "passes/00000000-0000-4000-8000-000000000011.json",
+              "object_digest": "f711f98b0292ef76102e4397ed2da9d4674af8370859e5ffeb9440e0885317f7",
+              "reboot_planned": false
+            }
+          ],
+          "consent_receipt_ids": [
+            "00000000-0000-4000-8000-000000000601"
+          ],
+          "execution_references": [
+            {
+              "object_id": "00000000-0000-4000-8000-000000000101",
+              "object_digest": "63772b356a305cf65eeb368a13cf63f1edd29e44985534e2604f49383e11c6ec"
+            }
+          ],
+          "observation_references": [
+            {
+              "object_id": "00000000-0000-4000-8000-000000000201",
+              "object_digest": "72d5dfd98987eab729bcf8886988a0ecb9093e777d7db78e31e127ed1d6eb2e5"
+            }
+          ],
+          "evidence_references": [
+            {
+              "object_id": "00000000-0000-4000-8000-000000000301",
+              "object_digest": "0d6c0af88dd2dc1e68ce8631585bffc3f84945a2ce2ab7dac2d75b8432c3efd8"
+            }
+          ],
+          "finding_references": [
+            {
+              "object_id": "00000000-0000-4000-8000-000000000401",
+              "object_digest": "c37163e4ff7d40c5948c26aeac81a50b61a04c0007662f802f323fd234259b3a"
+            }
+          ],
+          "inline_summaries": [],
+          "package_limits": {
+            "max_serialized_audit_run_bytes": 4194304,
+            "max_pass_references": 4,
+            "max_execution_references": 4096,
+            "max_observation_references": 10000,
+            "max_evidence_references": 10000,
+            "max_finding_references": 5000,
+            "max_inline_summaries": 256,
+            "max_inline_summary_bytes": 2048,
+            "max_decompressed_run_bytes": 2147483648,
+            "max_audit_package_bytes": 4294967296,
+            "max_zip_entries": 10000,
+            "max_zip_total_expanded_bytes": 1073741824,
+            "max_zip_entry_expanded_bytes": 268435456,
+            "max_compression_ratio": 100,
+            "max_logical_paths": 100000,
+            "max_imported_records": 1000000,
+            "max_json_nesting_depth": 64,
+            "max_raw_stdout_bytes": 1073741824,
+            "max_raw_stderr_bytes": 1073741824,
+            "arithmetic": "CheckedUnsignedSafeInteger"
+          },
+          "errors": [],
+          "action_log_reference": {
+            "action_log_id": "00000000-0000-4000-8000-000000000900",
+            "logical_path": "action-log/action-log.json",
+            "log_digest": "2a4b027c167186149f1ec633a38e1d7b57ca1be1079c8291d35aac5b38730f95"
+          },
+          "manifest_reference": {
+            "manifest_id": "00000000-0000-4000-8000-000000000501",
+            "logical_path": "manifest.json"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "ebe0cf4c4356a1bff1260a67049ac59bb7687a622caca75dffa602b801e6816f"
+          }
+        }
+      ],
+      "audit_passes": [
+        {
+          "schema_version": "1.0.0",
+          "pass_id": "00000000-0000-4000-8000-000000000011",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "kind": "Standard",
+          "privilege_class": "StandardUser",
+          "state": "Completed",
+          "prerequisite_pass_ids": [],
+          "reboot_planned": false,
+          "coverage_only": false,
+          "consent_receipt_ids": [
+            "00000000-0000-4000-8000-000000000601"
+          ],
+          "collector_execution_ids": [
+            "00000000-0000-4000-8000-000000000101"
+          ],
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "f711f98b0292ef76102e4397ed2da9d4674af8370859e5ffeb9440e0885317f7"
+          },
+          "started_at": "2026-01-01T00:00:10Z",
+          "ended_at": "2026-01-01T00:09:00Z"
+        }
+      ],
+      "collector_definitions": [
+        {
+          "schema_version": "1.0.0",
+          "collector_id": "collector:secapp:synthetic-network",
+          "version": "1.0.0",
+          "title": "Listening ports",
+          "description": "Collect a bounded local listening-port snapshot.",
+          "backend": {
+            "kind": "VelociraptorArtifact",
+            "artifact_name": "Windows.Network.ListeningPorts",
+            "parameters": {},
+            "capabilities": [
+              "NETWORK"
+            ]
+          },
+          "execution_context": {
+            "privilege": "StandardUser",
+            "network_access": "ConsentRequired",
+            "mutation_policy": "ReadOnly",
+            "reboot_policy": "NotAllowed",
+            "consent_requirements": [
+              "NetworkAccess"
+            ]
+          },
+          "default_profile_eligible": false,
+          "expected_observation_areas": [
+            "NetworkState"
+          ],
+          "privacy_classes": [
+            "SystemMetadata"
+          ],
+          "resource_limits": {
+            "timeout_seconds": 60,
+            "max_cpu_percent": 25,
+            "max_memory_bytes": 268435456,
+            "max_output_bytes": 16777216,
+            "max_records": 100000
+          },
+          "provenance": {
+            "source_kind": "VelociraptorArtifact",
+            "source_name": "Windows.Network.ListeningPorts",
+            "source_release": "v0.77.1",
+            "upstream_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+            "source_content_digest": "1094400a044df58832efff8b11dcbf23ca475c61a073d4dae46d402e68ec2ab7"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "94f91dcf4e887ea9b3847ef4a478d93fce3d7a3eee439a1500e30801b7cd92b1"
+          }
+        }
+      ],
+      "collector_executions": [
+        {
+          "schema_version": "1.0.0",
+          "execution_id": "00000000-0000-4000-8000-000000000101",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "pass_id": "00000000-0000-4000-8000-000000000011",
+          "collector_id": "collector:secapp:synthetic-network",
+          "collector_version": "1.0.0",
+          "collector_definition_digest": "94f91dcf4e887ea9b3847ef4a478d93fce3d7a3eee439a1500e30801b7cd92b1",
+          "state": "Succeeded",
+          "privilege": "StandardUser",
+          "consent_receipt_ids": [
+            "00000000-0000-4000-8000-000000000601"
+          ],
+          "observation_ids": [
+            "00000000-0000-4000-8000-000000000201"
+          ],
+          "errors": [],
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "63772b356a305cf65eeb368a13cf63f1edd29e44985534e2604f49383e11c6ec"
+          },
+          "started_at": "2026-01-01T00:00:20Z",
+          "applied_resource_limits": {
+            "timeout_seconds": 60,
+            "max_cpu_percent": 25,
+            "max_memory_bytes": 268435456,
+            "max_output_bytes": 16777216,
+            "max_records": 100000
+          },
+          "command_contract_id": "command-contract:synthetic-v1",
+          "backend_process": {
+            "name": "Velociraptor",
+            "binary_digest": "ce6a1de71ef1d9686e6aee3abf8a6b47882e9e4af6a060dec3c7e25a4a6694e7",
+            "runtime_version": "0.77.1",
+            "invocation_digest": "3ec89ded2b4355525b2493549387d4130e74e5a8f709e778c49a8b4f584bcf98",
+            "source_kind": "Artifact",
+            "source_name": "SecApp.Windows.SyntheticReadOnly"
+          },
+          "ended_at": "2026-01-01T00:01:00Z",
+          "exit_code": 0,
+          "output_digests": {
+            "raw_stdout_digest": {
+              "digest_kind": "FileDigest",
+              "logical_content": "StoredFileBytes",
+              "canonicalization": "RawBytes",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "digest": "994b70a2313bccc9c30081175376d3217160ed6fd01d020c56f7726bdb02a96b"
+            },
+            "raw_stderr_digest": {
+              "digest_kind": "FileDigest",
+              "logical_content": "StoredFileBytes",
+              "canonicalization": "RawBytes",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "digest": "a0cfa6968f22a91d7957ea019d8fbb01245dc7600442a3b41cf8c8d7f48f4bb6"
+            }
+          },
+          "parser_result": {
+            "status": "Succeeded"
+          },
+          "import_result": {
+            "status": "Succeeded"
+          },
+          "record_count": 0
+        }
+      ],
+      "observations": [
+        {
+          "schema_version": "1.0.0",
+          "observation_id": "00000000-0000-4000-8000-000000000201",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "execution_id": "00000000-0000-4000-8000-000000000101",
+          "observed_at": "2026-01-01T00:00:30Z",
+          "area": "NetworkState",
+          "subject": {
+            "kind": "System",
+            "key": "system:synthetic"
+          },
+          "privacy_class": "NetworkMetadata",
+          "data_schema": "urn:secapp:observation:network-state:1",
+          "data": {
+            "listener_count": 0
+          },
+          "evidence_ids": [
+            "00000000-0000-4000-8000-000000000301"
+          ],
+          "provenance": {
+            "source_kind": "VelociraptorArtifact",
+            "source_name": "Windows.Network.ListeningPorts",
+            "source_release": "v0.77.1",
+            "upstream_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+            "source_content_digest": "6619d1122d390ca40f021258c8552564f691642990cebd8eaf9fe84d2c7c207b"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "72d5dfd98987eab729bcf8886988a0ecb9093e777d7db78e31e127ed1d6eb2e5"
+          }
+        }
+      ],
+      "evidence_references": [
+        {
+          "schema_version": "1.0.0",
+          "evidence_id": "00000000-0000-4000-8000-000000000301",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "observation_id": "00000000-0000-4000-8000-000000000201",
+          "kind": "BackendOutput",
+          "logical_path": "evidence/00000000-0000-4000-8000-000000000301.json",
+          "media_type": "application/jsonl",
+          "size_bytes": 0,
+          "file_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "8ed3293a2fcda18fe6ce3479fedef3af0c89e6657ed4ac50223ef463283e0e1b"
+          },
+          "privacy_class": "NetworkMetadata",
+          "captured_at": "2026-01-01T00:00:31Z",
+          "acquisition_method": "VelociraptorResult",
+          "provenance": {
+            "source_kind": "VelociraptorArtifact",
+            "source_name": "Windows.Network.ListeningPorts",
+            "source_release": "v0.77.1",
+            "upstream_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+            "source_content_digest": "3ed1829721a27c1c1fdff9b159b8a03f206ccfb109471efd118801ec32acd5fe"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "0d6c0af88dd2dc1e68ce8631585bffc3f84945a2ce2ab7dac2d75b8432c3efd8"
+          }
+        }
+      ],
+      "findings": [
+        {
+          "schema_version": "1.0.0",
+          "finding_id": "00000000-0000-4000-8000-000000000401",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "finding_kind": "Security",
+          "rule_id": "rule:secapp:no-listeners-observed",
+          "rule_version": "1.0.0",
+          "rule_definition_digest": "87fe3f5779906b6012e0837929af7db8cbe378b437debe033ac9cec2ecaa533d",
+          "title": "Network-state collection was not tested",
+          "summary": "The synthetic backend was unavailable.",
+          "severity": "Info",
+          "confidence": "Possible",
+          "status": "Open",
+          "detected_at": "2026-01-01T00:00:40Z",
+          "observation_ids": [
+            "00000000-0000-4000-8000-000000000201"
+          ],
+          "evidence_ids": [
+            "00000000-0000-4000-8000-000000000301"
+          ],
+          "privacy_class": "NetworkMetadata",
+          "rationale": "Missing backend coverage must not be reported as a healthy security result.",
+          "limitations": [
+            "This synthetic example does not represent an audited system."
+          ],
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "c37163e4ff7d40c5948c26aeac81a50b61a04c0007662f802f323fd234259b3a"
+          }
+        }
+      ],
+      "consent_receipts": [
+        {
+          "schema_version": "1.0.0",
+          "receipt_id": "00000000-0000-4000-8000-000000000601",
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "consent_type": "NetworkAccess",
+          "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+          "exact_scope": {
+            "pass_id": "00000000-0000-4000-8000-000000000011",
+            "authorized_action_id": "00000000-0000-4000-8000-000000000801",
+            "operation_code": "UseNetwork",
+            "target_reference": "destination:security-metadata",
+            "single_use": true
+          },
+          "requested_capabilities": [
+            "NETWORK"
+          ],
+          "approved_capabilities": [
+            "NETWORK"
+          ],
+          "requested_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "approved_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "consent_text_version": "consent-text:1.0.0",
+          "presented_at": "2026-01-01T00:00:00Z",
+          "accepted_at": "2026-01-01T00:00:01Z",
+          "expires_at": "2026-01-01T01:00:00Z",
+          "nonce": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+          "user_presence": true,
+          "application_version": "0.1.0",
+          "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+          "revocation": {
+            "state": "Active"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "55fc168e5e633e8af54d14956572ecf1c17dc6e0e9061e1cfb70f677974c29cf"
+          },
+          "collector_binding": {
+            "collector_id": "collector:secapp:synthetic-network",
+            "collector_definition_digest": "94f91dcf4e887ea9b3847ef4a478d93fce3d7a3eee439a1500e30801b7cd92b1"
+          }
+        }
+      ],
+      "action_logs": [
+        {
+          "schema_version": "1.0.0",
+          "action_log_id": "00000000-0000-4000-8000-000000000900",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "created_at": "2026-01-01T00:00:05Z",
+          "entries": [
+            {
+              "timestamp": "2026-01-01T00:00:15Z",
+              "sequence_number": 0,
+              "action_id": "00000000-0000-4000-8000-000000000801",
+              "action_type": "NetworkUse",
+              "actor": {
+                "kind": "SecApp",
+                "actor_id": "secapp:orchestrator"
+              },
+              "audit_run_id": "00000000-0000-4000-8000-000000000001",
+              "pass_id": "00000000-0000-4000-8000-000000000011",
+              "operation": {
+                "operation_code": "UseNetwork",
+                "target_reference": "destination:security-metadata",
+                "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+              },
+              "consent_receipt_ids": [
+                "00000000-0000-4000-8000-000000000601"
+              ],
+              "result": "Started",
+              "privilege_level": "StandardUser",
+              "network_use": "UsedWithConsent",
+              "filesystem_mutation_class": "PrivateRunOutput",
+              "redacted_parameters": [],
+              "previous_entry_digest": null,
+              "entry_digest": {
+                "digest_kind": "EntryDigest",
+                "logical_content": "ActionLogEntryObject",
+                "canonicalization": "JCS-RFC8785",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "excluded_fields": [
+                  "entry_digest"
+                ],
+                "previous_digest_included": true,
+                "digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6"
+              },
+              "collector_id": "collector:secapp:synthetic-network",
+              "execution_id": "00000000-0000-4000-8000-000000000101",
+              "command_contract_id": "command-contract:synthetic-network",
+              "network_authorization": {
+                "consent_receipt_id": "00000000-0000-4000-8000-000000000601",
+                "destination_scope_reference": "destination:security-metadata"
+              }
+            }
+          ],
+          "log_digest": {
+            "digest_kind": "ObjectDigest",
+            "logical_content": "ActionLogObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "log_digest.digest"
+            ],
+            "entry_ordering": "sequence_number ascending",
+            "digest": "2a4b027c167186149f1ec633a38e1d7b57ca1be1079c8291d35aac5b38730f95"
+          }
+        }
+      ],
+      "audit_manifests": [
+        {
+          "schema_version": "1.0.0",
+          "manifest_id": "00000000-0000-4000-8000-000000000501",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "run_state": "Completed",
+          "generated_at": "2026-01-01T00:10:00Z",
+          "backend": {
+            "availability_state": "Found",
+            "expected_identity": {
+              "name": "Velociraptor",
+              "source_release": "v0.77.1",
+              "source_revision": "e76929f32215483a9747201de58567114d9e4eff"
+            },
+            "observed_identity": {
+              "runtime_version": "0.77.1",
+              "runtime_binary_digest": "6f336c07bfac085873c61f20205823221d04c1dced579b9f76b40ca4c8832f9f"
+            }
+          },
+          "entries": [
+            {
+              "role": "AuditRun",
+              "member_id": "auditrun:00000000-0000-4000-8000-000000000001",
+              "logical_path": "run.json",
+              "media_type": "application/json",
+              "size_bytes": 2634,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "2e12a7c81846feb7131d0d4689835cac73359825e77405172f38059b396f635a"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "AuditPass",
+              "member_id": "auditpass:00000000-0000-4000-8000-000000000011",
+              "logical_path": "passes/00000000-0000-4000-8000-000000000011.json",
+              "media_type": "application/json",
+              "size_bytes": 715,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "cfedff4d4942076bfe6da90991dbc1947ab29ad7c6026b2be086786569857a8e"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "CollectorDefinition",
+              "member_id": "collectordefinition:collector:secapp:synthetic-network",
+              "logical_path": "definitions/collectors/synthetic-network.json",
+              "media_type": "application/json",
+              "size_bytes": 1289,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "e88a3422532bdd9fea756f057ff79849c7da0d48d908fa0a983f59361c3c8421"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "RuleDefinition",
+              "member_id": "ruledefinition:rule:secapp:no-listeners-observed",
+              "logical_path": "definitions/rules/no-listeners-observed.json",
+              "media_type": "application/json",
+              "size_bytes": 1290,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "40a51d2bb7f482e9117a8d8f8ce0e229049d14db81ca9f57c0d2d96a8c81a5cb"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "CollectorExecution",
+              "member_id": "collectorexecution:00000000-0000-4000-8000-000000000101",
+              "logical_path": "executions/00000000-0000-4000-8000-000000000101.json",
+              "media_type": "application/json",
+              "size_bytes": 1967,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "c23714fdc96fa88b7e6f3e8c3ffab76b2625a7c8c93c015b992cd1cdfd6e978a"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "Observation",
+              "member_id": "observation:00000000-0000-4000-8000-000000000201",
+              "logical_path": "observations/00000000-0000-4000-8000-000000000201.json",
+              "media_type": "application/json",
+              "size_bytes": 998,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "1d3cfc7783f7a63fbbaed01a81c8f342a7fd345da2411aa3f63b335906e3e35a"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "Evidence",
+              "member_id": "evidence:00000000-0000-4000-8000-000000000301",
+              "logical_path": "evidence/00000000-0000-4000-8000-000000000301.json",
+              "media_type": "application/json",
+              "size_bytes": 1193,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "fa3940bd356fd8768aab765819f363859d80262d81c8d834b3f7c76fadc87ce1"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "Finding",
+              "member_id": "finding:00000000-0000-4000-8000-000000000401",
+              "logical_path": "findings/00000000-0000-4000-8000-000000000401.json",
+              "media_type": "application/json",
+              "size_bytes": 1076,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "d3bd4a1e31bde95d81c1ac82645b4f1748390226ae2d82849b8e636f0b84ce97"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "ConsentReceipt",
+              "member_id": "consentreceipt:00000000-0000-4000-8000-000000000601",
+              "logical_path": "consent/00000000-0000-4000-8000-000000000601.json",
+              "media_type": "application/json",
+              "size_bytes": 1397,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "30e7c12abb122e2deb9c9ab0c68dca11fe04f9b1bf75037df214fca7bf3e194a"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "ActionLog",
+              "member_id": "actionlog:00000000-0000-4000-8000-000000000900",
+              "logical_path": "action-log/action-log.json",
+              "media_type": "application/json",
+              "size_bytes": 1795,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "2197c93e1106d4b500b4e60f7f19417b9475237f6aa22097baca3d1266e8f750"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "RedactionProfile",
+              "member_id": "redactionprofile:redaction:public-default",
+              "logical_path": "redaction/public-default.json",
+              "media_type": "application/json",
+              "size_bytes": 968,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "2cffe99af34e825c445494d292f4a94d70bb0d63251736110671d49d11dd7a7e"
+              },
+              "privacy_class": "SystemMetadata"
+            },
+            {
+              "role": "RebootContinuationState",
+              "member_id": "rebootcontinuationstate:00000000-0000-4000-8000-000000000701",
+              "logical_path": "continuation/00000000-0000-4000-8000-000000000701.json",
+              "media_type": "application/json",
+              "size_bytes": 1508,
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "60a321dd10eb70ddcc2998d1982e385942806fc53d6d8c921f78860356b0d2e2"
+              },
+              "privacy_class": "SystemMetadata"
+            }
+          ],
+          "action_log_reference": {
+            "action_log_id": "00000000-0000-4000-8000-000000000900",
+            "logical_path": "action-log/action-log.json",
+            "log_digest": "2a4b027c167186149f1ec633a38e1d7b57ca1be1079c8291d35aac5b38730f95"
+          },
+          "manifest_digest": {
+            "digest_kind": "ManifestDigest",
+            "logical_content": "AuditManifestObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "manifest_digest.digest"
+            ],
+            "member_ordering": "logical_path ascending, member_id ascending",
+            "digest": "1a2ba45110fad26aa7f0e234918f6cad1d5bb89d59edee392a5a6e0bfb50a3b9"
+          }
+        }
+      ],
+      "export_manifests": [
+        {
+          "schema_version": "1.0.0",
+          "export_id": "00000000-0000-4000-8000-000000000502",
+          "run_id": "00000000-0000-4000-8000-000000000001",
+          "generated_at": "2026-01-01T00:11:00Z",
+          "scope": "Public",
+          "source_manifest_digest": "1a2ba45110fad26aa7f0e234918f6cad1d5bb89d59edee392a5a6e0bfb50a3b9",
+          "redaction_profile_id": "redaction:public-default",
+          "redaction_profile_version": "1.0.0",
+          "redaction_profile_digest": "795facf2f555b157ce5c4bf90af502b137aaa1bb70d7c888e1d73090fb6ffd72",
+          "composition_policy_digest": "a08d845d933caca68461cbd2100d2e2e90286599377a29184d87d30659bf0f6a",
+          "local_redaction_confirmed": true,
+          "entries": [
+            {
+              "source_member_id": "auditrun:00000000-0000-4000-8000-000000000001",
+              "source_logical_path": "run.json",
+              "export_logical_path": "exports/run.json",
+              "privacy_class": "SystemMetadata",
+              "action": "Redact",
+              "file_digest": {
+                "digest_kind": "FileDigest",
+                "logical_content": "StoredFileBytes",
+                "canonicalization": "RawBytes",
+                "algorithm": "SHA-256",
+                "encoding": "LowerHex",
+                "digest": "6e156357ba672c6c0c603c99aec0425463616ddf3f54c3efad8d78e0acc2ef8b"
+              },
+              "size_bytes": 512
+            }
+          ],
+          "omissions": [],
+          "excluded_counts": {
+            "Public": 0,
+            "SystemMetadata": 0,
+            "PersonalMetadata": 0,
+            "NetworkMetadata": 0,
+            "SensitiveSecurityData": 0,
+            "Secret": 0,
+            "MemoryContent": 0
+          },
+          "warnings": [],
+          "manifest_digest": {
+            "digest_kind": "ManifestDigest",
+            "logical_content": "ExportManifestObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "manifest_digest.digest"
+            ],
+            "entry_ordering": "export_logical_path ascending, source_member_id ascending",
+            "omission_ordering": "omission_id ascending, source_logical_path ascending",
+            "warning_ordering": "warning_code ascending, subject_path ascending",
+            "digest": "6ec487ecf8619a5cd1cac8f8b2c73ed2f3acbf2ab7c5b60b72915b126855d7a1"
+          }
+        }
+      ],
+      "redaction_profiles": [
+        {
+          "schema_version": "1.0.0",
+          "profile_id": "redaction:public-default",
+          "version": "1.0.0",
+          "title": "Synthetic public export",
+          "export_scope": "Public",
+          "execution_location": "LocalHostOnly",
+          "unknown_field_behavior": "RejectExport",
+          "precedence": "ClassFloorThenMoreRestrictiveFieldRule",
+          "class_actions": {
+            "Public": "Include",
+            "SystemMetadata": "Redact",
+            "PersonalMetadata": "Exclude",
+            "NetworkMetadata": "Exclude",
+            "SensitiveSecurityData": "Exclude",
+            "Secret": "Exclude",
+            "MemoryContent": "Exclude"
+          },
+          "field_rules": [],
+          "composition_policy": {
+            "policy_id": "composition:public-default",
+            "policy_digest": "a08d845d933caca68461cbd2100d2e2e90286599377a29184d87d30659bf0f6a",
+            "on_unassessed_combination": "RejectExport"
+          },
+          "profile_digest": {
+            "digest_kind": "ProfileDigest",
+            "logical_content": "RedactionProfileObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "profile_digest.digest"
+            ],
+            "digest": "795facf2f555b157ce5c4bf90af502b137aaa1bb70d7c888e1d73090fb6ffd72"
+          }
+        }
+      ],
+      "reboot_continuation_states": [
+        {
+          "schema_version": "1.0.0",
+          "state_id": "00000000-0000-4000-8000-000000000701",
+          "expected_run_id": "00000000-0000-4000-8000-000000000001",
+          "issued_at": "2026-01-01T00:00:05Z",
+          "expires_at": "2026-01-01T01:00:00Z",
+          "monotonic_sequence": 1,
+          "nonce": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "expected_next_stage": "PostRebootPass",
+          "expected_executable_digest": "db83927eccb156324b18dbe8626baa1b51365089ccec95bb85e01d7fbfc3659e",
+          "expected_build_digest": "814b34b5de0793e01dfe9a7635458dd88c7fe58283d673975afafb032b84441c",
+          "prior_manifest_digest": "1a2ba45110fad26aa7f0e234918f6cad1d5bb89d59edee392a5a6e0bfb50a3b9",
+          "machine_binding_digest": "d6d46c6e4a239fb352dcc3e8588e88a57522dd555dae274252ea0ea8f073ddb4",
+          "consumption_state": "Unconsumed",
+          "rollback_behavior": "RejectSequenceNotGreaterThanStored",
+          "stale_state_behavior": "RejectExpiredOrBuildMismatch",
+          "startup_behavior": "FailClosedNoAutomaticCommand",
+          "authentication": {
+            "algorithm": "HMAC-SHA256",
+            "key_id": "key:synthetic",
+            "canonicalization": "JCS-RFC8785",
+            "authenticated_fields": [
+              "schema_version",
+              "state_id",
+              "expected_run_id",
+              "issued_at",
+              "expires_at",
+              "monotonic_sequence",
+              "nonce",
+              "expected_next_stage",
+              "expected_executable_digest",
+              "expected_build_digest",
+              "prior_manifest_digest",
+              "machine_binding_digest",
+              "consumption_state",
+              "consumed_at",
+              "rollback_behavior",
+              "stale_state_behavior",
+              "startup_behavior",
+              "authentication.algorithm",
+              "authentication.key_id",
+              "authentication.canonicalization",
+              "authentication.authenticated_fields"
+            ],
+            "tag": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+          }
+        }
+      ],
+      "rule_definitions": [
+        {
+          "schema_version": "1.0.0",
+          "rule_id": "rule:secapp:no-listeners-observed",
+          "version": "1.0.0",
+          "title": "No listening ports were observed",
+          "description": "Synthetic declarative example for bounded expression validation.",
+          "input_areas": [
+            "NetworkState"
+          ],
+          "expression": {
+            "root_predicate_id": "p:listener_count",
+            "predicates": [
+              {
+                "predicate_id": "p:listener_count",
+                "kind": "Compare",
+                "field": "data.listener_count",
+                "operator": "Equals",
+                "value": 0
+              }
+            ],
+            "evaluation_order": "ArrayOrderShortCircuit",
+            "missing_semantics": "MissingIsUnknown",
+            "null_semantics": "NullIsValue",
+            "type_mismatch_semantics": "TypeMismatchIsUnknown",
+            "maximum_depth": 8
+          },
+          "finding_template": {
+            "title": "Network-state coverage requires review",
+            "summary": "The synthetic observation contains no listeners.",
+            "severity": "Info",
+            "confidence": "Possible",
+            "privacy_class": "NetworkMetadata"
+          },
+          "not_tested_behavior": "EmitCoverageFinding",
+          "provenance": {
+            "source_name": "rule:secapp:no-listeners-observed",
+            "source_version": "1.0.0",
+            "source_content_digest": "780c1c593d16f1c45af134eee3c2374e02308d5bad90c950a5445253f0f63b4e"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "87fe3f5779906b6012e0837929af7db8cbe378b437debe033ac9cec2ecaa533d"
+          }
+        }
+      ]
+    },
+    "loaded_digests": {
+      "collector_definitions": [
+        {
+          "collector_id": "collector:secapp:synthetic-network",
+          "version": "1.0.0",
+          "object_digest": "94f91dcf4e887ea9b3847ef4a478d93fce3d7a3eee439a1500e30801b7cd92b1"
+        }
+      ],
+      "rule_definitions": [
+        {
+          "rule_id": "rule:secapp:no-listeners-observed",
+          "version": "1.0.0",
+          "object_digest": "87fe3f5779906b6012e0837929af7db8cbe378b437debe033ac9cec2ecaa533d"
+        }
+      ],
+      "redaction_profiles": [
+        {
+          "profile_id": "redaction:public-default",
+          "version": "1.0.0",
+          "profile_digest": "795facf2f555b157ce5c4bf90af502b137aaa1bb70d7c888e1d73090fb6ffd72"
+        }
+      ],
+      "composition_policies": [
+        {
+          "policy_id": "composition:public-default",
+          "policy_digest": "a08d845d933caca68461cbd2100d2e2e90286599377a29184d87d30659bf0f6a"
+        }
+      ],
+      "audit_manifests": [
+        {
+          "manifest_id": "00000000-0000-4000-8000-000000000501",
+          "manifest_digest": "1a2ba45110fad26aa7f0e234918f6cad1d5bb89d59edee392a5a6e0bfb50a3b9"
+        }
+      ]
+    },
+    "replay_history": {
+      "consent_nonces": [],
+      "reboot_nonces": [],
+      "minimum_reboot_sequence": 0
+    },
+    "manifest_membership_index": [
+      {
+        "role": "AuditRun",
+        "object_kind": "AuditRun",
+        "object_id": "00000000-0000-4000-8000-000000000001",
+        "member_id": "auditrun:00000000-0000-4000-8000-000000000001",
+        "logical_path": "run.json"
+      },
+      {
+        "role": "AuditPass",
+        "object_kind": "AuditPass",
+        "object_id": "00000000-0000-4000-8000-000000000011",
+        "member_id": "auditpass:00000000-0000-4000-8000-000000000011",
+        "logical_path": "passes/00000000-0000-4000-8000-000000000011.json"
+      },
+      {
+        "role": "CollectorDefinition",
+        "object_kind": "CollectorDefinition",
+        "object_id": "collector:secapp:synthetic-network",
+        "member_id": "collectordefinition:collector:secapp:synthetic-network",
+        "logical_path": "definitions/collectors/synthetic-network.json"
+      },
+      {
+        "role": "RuleDefinition",
+        "object_kind": "RuleDefinition",
+        "object_id": "rule:secapp:no-listeners-observed",
+        "member_id": "ruledefinition:rule:secapp:no-listeners-observed",
+        "logical_path": "definitions/rules/no-listeners-observed.json"
+      },
+      {
+        "role": "CollectorExecution",
+        "object_kind": "CollectorExecution",
+        "object_id": "00000000-0000-4000-8000-000000000101",
+        "member_id": "collectorexecution:00000000-0000-4000-8000-000000000101",
+        "logical_path": "executions/00000000-0000-4000-8000-000000000101.json"
+      },
+      {
+        "role": "Observation",
+        "object_kind": "Observation",
+        "object_id": "00000000-0000-4000-8000-000000000201",
+        "member_id": "observation:00000000-0000-4000-8000-000000000201",
+        "logical_path": "observations/00000000-0000-4000-8000-000000000201.json"
+      },
+      {
+        "role": "Evidence",
+        "object_kind": "Evidence",
+        "object_id": "00000000-0000-4000-8000-000000000301",
+        "member_id": "evidence:00000000-0000-4000-8000-000000000301",
+        "logical_path": "evidence/00000000-0000-4000-8000-000000000301.json"
+      },
+      {
+        "role": "Finding",
+        "object_kind": "Finding",
+        "object_id": "00000000-0000-4000-8000-000000000401",
+        "member_id": "finding:00000000-0000-4000-8000-000000000401",
+        "logical_path": "findings/00000000-0000-4000-8000-000000000401.json"
+      },
+      {
+        "role": "ConsentReceipt",
+        "object_kind": "ConsentReceipt",
+        "object_id": "00000000-0000-4000-8000-000000000601",
+        "member_id": "consentreceipt:00000000-0000-4000-8000-000000000601",
+        "logical_path": "consent/00000000-0000-4000-8000-000000000601.json"
+      },
+      {
+        "role": "ActionLog",
+        "object_kind": "ActionLog",
+        "object_id": "00000000-0000-4000-8000-000000000900",
+        "member_id": "actionlog:00000000-0000-4000-8000-000000000900",
+        "logical_path": "action-log/action-log.json"
+      },
+      {
+        "role": "RedactionProfile",
+        "object_kind": "RedactionProfile",
+        "object_id": "redaction:public-default",
+        "member_id": "redactionprofile:redaction:public-default",
+        "logical_path": "redaction/public-default.json"
+      },
+      {
+        "role": "RebootContinuationState",
+        "object_kind": "RebootContinuationState",
+        "object_id": "00000000-0000-4000-8000-000000000701",
+        "member_id": "rebootcontinuationstate:00000000-0000-4000-8000-000000000701",
+        "logical_path": "continuation/00000000-0000-4000-8000-000000000701.json"
+      }
+    ],
+    "redaction_field_registry": [
+      {
+        "field": "subject.synthetic",
+        "privacy_class": "SystemMetadata"
+      }
+    ],
+    "capability_graph": [
+      {
+        "collector_id": "collector:secapp:synthetic-network",
+        "collector_version": "1.0.0",
+        "root_node_id": "node:artifact",
+        "declared_capabilities": [
+          "NETWORK"
+        ],
+        "nodes": [
+          {
+            "node_id": "node:artifact",
+            "kind": "Artifact",
+            "capabilities": [
+              "NETWORK"
+            ],
+            "child_ids": [
+              "node:function"
+            ]
+          },
+          {
+            "node_id": "node:function",
+            "kind": "Function",
+            "capabilities": [
+              "NETWORK"
+            ],
+            "child_ids": []
+          }
+        ]
+      }
+    ],
+    "size_measurements": {
+      "ordinary_contract_bytes": 16384,
+      "observation_payload_bytes": 128,
+      "raw_output_or_file_bytes": 1024,
+      "collector_records": 0,
+      "total_decompressed_run_bytes": 65536,
+      "audit_package_bytes": 131072,
+      "manifest_entries": 12,
+      "action_log_entries": 1,
+      "zip_entries": 0,
+      "zip_total_expanded_bytes": 0,
+      "zip_single_entry_expanded_bytes": 0,
+      "zip_compression_ratio": 1,
+      "archive_nesting": 0,
+      "json_nesting_depth": 16,
+      "logical_paths": 12,
+      "imported_records": 0
+    }
+  },
+  "vectors": [
+    {
+      "vector_id": "XOBJ_001_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-001",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_002_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-002",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_003_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-003",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_004_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-004",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_005_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-005",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_006_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-006",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_007_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-007",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_008_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-008",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_009_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-009",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_010_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-010",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_011_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_012_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-012",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_013_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-013",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_014_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-014",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_015_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-015",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_016_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-016",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_017_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-017",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_018_GRAPH_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-018",
+      "graph_ref": "/base_graph",
+      "mutations": []
+    },
+    {
+      "vector_id": "XOBJ_001_CROSS_RUN_FINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "RUN_ID_MISMATCH",
+      "rule_id": "XOBJ-001",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/run_id",
+          "value": "00000000-0000-4000-8000-000000000002"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_002_DUPLICATE_OBSERVATION_ID_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "EXECUTION_PASS_MISMATCH",
+      "rule_id": "XOBJ-002",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "copy",
+          "from": "/collections/observations/0",
+          "path": "/collections/observations/-"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_002_EXECUTION_PRIVILEGE_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "EXECUTION_PASS_MISMATCH",
+      "rule_id": "XOBJ-002",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/collector_executions/0/privilege",
+          "value": "Elevated"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_003_MISSING_EXECUTION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "OBSERVATION_EXECUTION_MISMATCH",
+      "rule_id": "XOBJ-003",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": "/collections/collector_executions/0"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_003_EXECUTION_OBSERVATION_RECIPROCAL_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "OBSERVATION_EXECUTION_MISMATCH",
+      "rule_id": "XOBJ-003",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": "/collections/collector_executions/0/observation_ids/0"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_004_OBSERVATION_EVIDENCE_RECIPROCAL_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "EVIDENCE_OBSERVATION_MISMATCH",
+      "rule_id": "XOBJ-004",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": "/collections/observations/0/evidence_ids/0"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_005_FINDING_UNKNOWN_OBSERVATION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "FINDING_REFERENCE_MISMATCH",
+      "rule_id": "XOBJ-005",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/observation_ids/0",
+          "value": "00000000-0000-4000-8000-000000000999"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_005_COVERAGE_EXECUTION_STATE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "FINDING_REFERENCE_MISMATCH",
+      "rule_id": "XOBJ-005",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/finding_kind",
+          "value": "Coverage"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/observation_ids",
+          "value": []
+        },
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/evidence_ids",
+          "value": []
+        },
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/confidence",
+          "value": "Not tested"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/status",
+          "value": "Requires review"
+        },
+        {
+          "op": "add",
+          "path": "/collections/findings/0/coverage",
+          "value": {
+            "execution_id": "00000000-0000-4000-8000-000000000101",
+            "execution_state": "BackendNotFound",
+            "control_id": "control:network-state"
+          }
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_006_COLLECTOR_DIGEST_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "COLLECTOR_DEFINITION_MISMATCH",
+      "rule_id": "XOBJ-006",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/collector_executions/0/collector_definition_digest",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_007_RULE_DIGEST_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "RULE_DEFINITION_MISMATCH",
+      "rule_id": "XOBJ-007",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/findings/0/rule_definition_digest",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_008_MISSING_MANIFEST_MEMBER_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "MANIFEST_MEMBERSHIP_MISMATCH",
+      "rule_id": "XOBJ-008",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": "/collections/audit_manifests/0/entries/7"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_008_UNKNOWN_MANIFEST_MEMBER_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "MANIFEST_MEMBERSHIP_MISMATCH",
+      "rule_id": "XOBJ-008",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/collections/audit_manifests/0/entries/-",
+          "value": {
+            "role": "Report",
+            "member_id": "report:unknown",
+            "logical_path": "reports/unknown.json",
+            "media_type": "application/json",
+            "size_bytes": 1,
+            "file_digest": {
+              "digest_kind": "FileDigest",
+              "logical_content": "StoredFileBytes",
+              "canonicalization": "RawBytes",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "digest": "37645b4fc435eaebaddfc4608b34979288653ab76d91ad6da788c70b2dec172f"
+            },
+            "privacy_class": "SystemMetadata"
+          }
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_009_SOURCE_MANIFEST_DIGEST_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "EXPORT_SOURCE_MISMATCH",
+      "rule_id": "XOBJ-009",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/export_manifests/0/source_manifest_digest",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_010_OBSERVATION_BEFORE_EXECUTION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "TIMESTAMP_ORDER_INVALID",
+      "rule_id": "XOBJ-010",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/observations/0/observed_at",
+          "value": "2026-01-01T00:00:19Z"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_011_CONSENT_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/0/collector_binding/collector_id",
+          "value": "collector:secapp:other-network"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_011_CONSENT_EXPIRED_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/validation_context/validation_time",
+          "value": "2026-01-01T02:00:00Z"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_011_CONSENT_REVOKED_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/0/revocation",
+          "value": {
+            "state": "Revoked",
+            "revoked_at": "2026-01-01T00:20:00Z",
+            "reason_code": "UserRevoked"
+          }
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_011_CONSENT_REPLAY_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/replay_history/consent_nonces/-",
+          "value": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_012_ACTION_SEQUENCE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "ACTION_LOG_CHAIN_INVALID",
+      "rule_id": "XOBJ-012",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/0/sequence_number",
+          "value": 1
+        },
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/0/previous_entry_digest",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_012_ACTION_PREVIOUS_DIGEST_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "ACTION_LOG_CHAIN_INVALID",
+      "rule_id": "XOBJ-012",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "copy",
+          "from": "/collections/action_logs/0/entries/0",
+          "path": "/collections/action_logs/0/entries/-"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1/sequence_number",
+          "value": 1
+        },
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1/previous_entry_digest",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1/action_id",
+          "value": "00000000-0000-4000-8000-000000000999"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1/timestamp",
+          "value": "2026-01-01T00:00:16Z"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1/consent_receipt_ids",
+          "value": [
+            "00000000-0000-4000-8000-000000000999"
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1/network_authorization/consent_receipt_id",
+          "value": "00000000-0000-4000-8000-000000000999"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_012_ACTION_CROSS_RUN_ENTRY_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "ACTION_LOG_CHAIN_INVALID",
+      "rule_id": "XOBJ-012",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/0/audit_run_id",
+          "value": "00000000-0000-4000-8000-000000000002"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_013_REBOOT_NONCE_REPLAY_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "REBOOT_STATE_INVALID",
+      "rule_id": "XOBJ-013",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/replay_history/reboot_nonces/-",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_013_REBOOT_SEQUENCE_ROLLBACK_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "REBOOT_STATE_INVALID",
+      "rule_id": "XOBJ-013",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/replay_history/minimum_reboot_sequence",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_013_REBOOT_STALE_BUILD_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "REBOOT_STATE_INVALID",
+      "rule_id": "XOBJ-013",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/validation_context/expected_build_digest",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_014_RULE_CYCLE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "RULE_GRAPH_INVALID",
+      "rule_id": "XOBJ-014",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/predicates",
+          "value": [
+            {
+              "predicate_id": "p:a",
+              "kind": "All",
+              "child_ids": [
+                "p:b"
+              ]
+            },
+            {
+              "predicate_id": "p:b",
+              "kind": "All",
+              "child_ids": [
+                "p:a"
+              ]
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/root_predicate_id",
+          "value": "p:a"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_014_RULE_UNREACHABLE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "RULE_GRAPH_INVALID",
+      "rule_id": "XOBJ-014",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/predicates",
+          "value": [
+            {
+              "predicate_id": "p:a",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:b",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/root_predicate_id",
+          "value": "p:a"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_014_RULE_DEPTH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "RULE_GRAPH_INVALID",
+      "rule_id": "XOBJ-014",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/predicates",
+          "value": [
+            {
+              "predicate_id": "p:n0",
+              "kind": "All",
+              "child_ids": [
+                "p:n1"
+              ]
+            },
+            {
+              "predicate_id": "p:n1",
+              "kind": "All",
+              "child_ids": [
+                "p:n2"
+              ]
+            },
+            {
+              "predicate_id": "p:n2",
+              "kind": "All",
+              "child_ids": [
+                "p:n3"
+              ]
+            },
+            {
+              "predicate_id": "p:n3",
+              "kind": "All",
+              "child_ids": [
+                "p:n4"
+              ]
+            },
+            {
+              "predicate_id": "p:n4",
+              "kind": "All",
+              "child_ids": [
+                "p:n5"
+              ]
+            },
+            {
+              "predicate_id": "p:n5",
+              "kind": "All",
+              "child_ids": [
+                "p:n6"
+              ]
+            },
+            {
+              "predicate_id": "p:n6",
+              "kind": "All",
+              "child_ids": [
+                "p:n7"
+              ]
+            },
+            {
+              "predicate_id": "p:n7",
+              "kind": "All",
+              "child_ids": [
+                "p:n8"
+              ]
+            },
+            {
+              "predicate_id": "p:n8",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/root_predicate_id",
+          "value": "p:n0"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_014_COST_BOUNDARY_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-014",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/predicates",
+          "value": [
+            {
+              "predicate_id": "p:root",
+              "kind": "All",
+              "child_ids": [
+                "p:g0",
+                "p:g1",
+                "p:g2",
+                "p:g3",
+                "p:g4",
+                "p:g5",
+                "p:g6",
+                "p:g7",
+                "p:g8",
+                "p:g9",
+                "p:g10",
+                "p:g11",
+                "p:g12",
+                "p:g13",
+                "p:g14",
+                "p:g15"
+              ]
+            },
+            {
+              "predicate_id": "p:g0",
+              "kind": "All",
+              "child_ids": [
+                "p:l0",
+                "p:l1",
+                "p:l2"
+              ]
+            },
+            {
+              "predicate_id": "p:l0",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l1",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l2",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g1",
+              "kind": "All",
+              "child_ids": [
+                "p:l3",
+                "p:l4",
+                "p:l5"
+              ]
+            },
+            {
+              "predicate_id": "p:l3",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l4",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l5",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g2",
+              "kind": "All",
+              "child_ids": [
+                "p:l6",
+                "p:l7",
+                "p:l8"
+              ]
+            },
+            {
+              "predicate_id": "p:l6",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l7",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l8",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g3",
+              "kind": "All",
+              "child_ids": [
+                "p:l9",
+                "p:l10",
+                "p:l11"
+              ]
+            },
+            {
+              "predicate_id": "p:l9",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l10",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l11",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g4",
+              "kind": "All",
+              "child_ids": [
+                "p:l12",
+                "p:l13",
+                "p:l14"
+              ]
+            },
+            {
+              "predicate_id": "p:l12",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l13",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l14",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g5",
+              "kind": "All",
+              "child_ids": [
+                "p:l15",
+                "p:l16",
+                "p:l17"
+              ]
+            },
+            {
+              "predicate_id": "p:l15",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l16",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l17",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g6",
+              "kind": "All",
+              "child_ids": [
+                "p:l18",
+                "p:l19",
+                "p:l20"
+              ]
+            },
+            {
+              "predicate_id": "p:l18",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l19",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l20",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g7",
+              "kind": "All",
+              "child_ids": [
+                "p:l21",
+                "p:l22",
+                "p:l23"
+              ]
+            },
+            {
+              "predicate_id": "p:l21",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l22",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l23",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g8",
+              "kind": "All",
+              "child_ids": [
+                "p:l24",
+                "p:l25",
+                "p:l26"
+              ]
+            },
+            {
+              "predicate_id": "p:l24",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l25",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l26",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g9",
+              "kind": "All",
+              "child_ids": [
+                "p:l27",
+                "p:l28",
+                "p:l29"
+              ]
+            },
+            {
+              "predicate_id": "p:l27",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l28",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l29",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g10",
+              "kind": "All",
+              "child_ids": [
+                "p:l30",
+                "p:l31",
+                "p:l32"
+              ]
+            },
+            {
+              "predicate_id": "p:l30",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l31",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l32",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g11",
+              "kind": "All",
+              "child_ids": [
+                "p:l33",
+                "p:l34",
+                "p:l35"
+              ]
+            },
+            {
+              "predicate_id": "p:l33",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l34",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l35",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g12",
+              "kind": "All",
+              "child_ids": [
+                "p:l36",
+                "p:l37",
+                "p:l38"
+              ]
+            },
+            {
+              "predicate_id": "p:l36",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l37",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l38",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g13",
+              "kind": "All",
+              "child_ids": [
+                "p:l39",
+                "p:l40",
+                "p:l41"
+              ]
+            },
+            {
+              "predicate_id": "p:l39",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l40",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l41",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g14",
+              "kind": "All",
+              "child_ids": [
+                "p:l42",
+                "p:l43",
+                "p:l44"
+              ]
+            },
+            {
+              "predicate_id": "p:l42",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l43",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l44",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:g15",
+              "kind": "All",
+              "child_ids": [
+                "p:l45",
+                "p:l46"
+              ]
+            },
+            {
+              "predicate_id": "p:l45",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            },
+            {
+              "predicate_id": "p:l46",
+              "kind": "Compare",
+              "field": "data.listener_count",
+              "operator": "Equals",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/collections/rule_definitions/0/expression/root_predicate_id",
+          "value": "p:root"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_015_REDACTION_PRECEDENCE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "REDACTION_POLICY_INVALID",
+      "rule_id": "XOBJ-015",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/collections/redaction_profiles/0/field_rules/-",
+          "value": {
+            "field": "subject.synthetic",
+            "privacy_class": "SystemMetadata",
+            "action": "Include"
+          }
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_015_DUPLICATE_FIELD_PATH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "REDACTION_POLICY_INVALID",
+      "rule_id": "XOBJ-015",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/collections/redaction_profiles/0/field_rules/-",
+          "value": {
+            "field": "subject.synthetic",
+            "privacy_class": "SystemMetadata",
+            "action": "Redact"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/collections/redaction_profiles/0/field_rules/-",
+          "value": {
+            "field": "subject.synthetic",
+            "privacy_class": "SystemMetadata",
+            "action": "Redact"
+          }
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_016_DUPLICATE_CANONICAL_PATH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "PATH_SET_INVALID",
+      "rule_id": "XOBJ-016",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "copy",
+          "from": "/collections/audit_manifests/0/entries/0",
+          "path": "/collections/audit_manifests/0/entries/-"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/audit_manifests/0/entries/12/member_id",
+          "value": "auditrun:duplicate"
+        },
+        {
+          "op": "copy",
+          "from": "/manifest_membership_index/0",
+          "path": "/manifest_membership_index/-"
+        },
+        {
+          "op": "replace",
+          "path": "/manifest_membership_index/12/member_id",
+          "value": "auditrun:duplicate"
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_017_AUDIT_PACKAGE_SIZE_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "SIZE_LIMIT_EXCEEDED",
+      "rule_id": "XOBJ-017",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/size_measurements/audit_package_bytes",
+          "value": 4294967297
+        }
+      ]
+    },
+    {
+      "vector_id": "XOBJ_018_TRANSITIVE_CAPABILITY_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "TRANSITIVE_CAPABILITY_MISMATCH",
+      "rule_id": "XOBJ-018",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/capability_graph/0/nodes/1/capabilities/0",
+          "value": "EXECVE"
+        }
+      ]
+    }
+  ]
+}

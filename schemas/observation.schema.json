@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/observation.schema.json",
+  "title": "SecApp Observation",
+  "description": "Normalized, source-attributed statement produced by exactly one collector execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "observation_id",
+    "run_id",
+    "execution_id",
+    "observed_at",
+    "area",
+    "subject",
+    "privacy_class",
+    "data_schema",
+    "data",
+    "evidence_ids",
+    "provenance",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "observation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "execution_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "observed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "area": {
+      "$ref": "#/$defs/observationArea"
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "key"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "System",
+            "SecurityControl",
+            "UserAccount",
+            "NetworkEndpoint",
+            "Software",
+            "PersistenceEntry",
+            "RecoveryEnvironment"
+          ]
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        }
+      }
+    },
+    "privacy_class": {
+      "$ref": "#/$defs/privacyClass"
+    },
+    "data_schema": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 256,
+      "pattern": "^urn:secapp:observation:[a-z0-9._-]+:[0-9]+$"
+    },
+    "data": {
+      "type": "object",
+      "description": "Bounded extension point validated against data_schema before acceptance; serialized size is limited separately.",
+      "maxProperties": 128,
+      "additionalProperties": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "integrity": {
+      "$ref": "#/$defs/objectIntegrity"
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "observationArea": {
+      "type": "string",
+      "enum": [
+        "WindowsPlatform",
+        "Updates",
+        "PendingReboot",
+        "Defender",
+        "Firewall",
+        "SecureBoot",
+        "TPM",
+        "BitLocker",
+        "UAC",
+        "VBS",
+        "LocalAccounts",
+        "PasswordPolicy",
+        "NetworkState",
+        "Startup",
+        "WMI",
+        "ScheduledTasks",
+        "Services",
+        "Drivers",
+        "Authenticode",
+        "FileACL",
+        "RemoteManagement",
+        "PowerShell",
+        "NameResolution",
+        "InstalledSoftware",
+        "WindowsEvents",
+        "Recovery",
+        "DefenderOffline"
+      ]
+    },
+    "privacyClass": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "SystemMetadata",
+        "PersonalMetadata",
+        "NetworkMetadata",
+        "SensitiveSecurityData",
+        "Secret",
+        "MemoryContent"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_kind",
+        "source_name",
+        "source_release",
+        "upstream_revision",
+        "source_content_digest"
+      ],
+      "properties": {
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "VelociraptorArtifact",
+            "VelociraptorVQL",
+            "SecAppSystem"
+          ]
+        },
+        "source_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "source_release": {
+          "type": "string",
+          "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "upstream_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "source_content_digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "algorithm",
+        "canonicalization",
+        "encoding",
+        "excluded_fields",
+        "object_digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "ObjectDigest"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "canonicalization": {
+          "const": "JCS-RFC8785"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "excluded_fields": {
+          "const": [
+            "integrity.object_digest"
+          ]
+        },
+        "object_digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "observation_id": "00000000-0000-4000-8000-000000000201",
+      "run_id": "00000000-0000-4000-8000-000000000001",
+      "execution_id": "00000000-0000-4000-8000-000000000101",
+      "observed_at": "2026-01-01T00:00:01Z",
+      "area": "NetworkState",
+      "subject": {
+        "kind": "System",
+        "key": "system:synthetic"
+      },
+      "privacy_class": "NetworkMetadata",
+      "data_schema": "urn:secapp:observation:network-state:1",
+      "data": {
+        "listener_count": 0
+      },
+      "evidence_ids": [],
+      "provenance": {
+        "source_kind": "VelociraptorArtifact",
+        "source_name": "Windows.Network.ListeningPorts",
+        "source_release": "v0.77.1",
+        "upstream_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+        "source_content_digest": "6619d1122d390ca40f021258c8552564f691642990cebd8eaf9fe84d2c7c207b"
+      },
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": [
+          "integrity.object_digest"
+        ],
+        "object_digest": "9c140a8e87318101cc5467c0cfd019dc0d9b6b7aa63ee24783e3474a8db27bb3"
+      }
+    }
+  ]
+}

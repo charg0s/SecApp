@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/evidence-reference.schema.json",
+  "title": "SecApp EvidenceReference",
+  "description": "Reference from one observation to evidence stored outside the repository under a canonical logical path.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "run_id",
+    "observation_id",
+    "kind",
+    "logical_path",
+    "media_type",
+    "size_bytes",
+    "file_digest",
+    "privacy_class",
+    "captured_at",
+    "acquisition_method",
+    "provenance",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "evidence_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "observation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "BackendOutput",
+        "EventRecord",
+        "RegistryValue",
+        "FileMetadata",
+        "FileContent",
+        "CollectionLog",
+        "Manifest",
+        "Report"
+      ]
+    },
+    "logical_path": {
+      "$ref": "#/$defs/logicalPath"
+    },
+    "media_type": {
+      "type": "string",
+      "maxLength": 127,
+      "pattern": "^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$"
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1073741824
+    },
+    "file_digest": {
+      "$ref": "#/$defs/fileDigest"
+    },
+    "privacy_class": {
+      "$ref": "#/$defs/privacyClass"
+    },
+    "captured_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "acquisition_method": {
+      "type": "string",
+      "enum": [
+        "VelociraptorResult",
+        "VelociraptorUpload",
+        "SecAppGenerated"
+      ]
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "integrity": {
+      "$ref": "#/$defs/objectIntegrity"
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "logicalPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[\\\\:\\u0000-\\u001F\\u007F])(?:[A-Za-z0-9][A-Za-z0-9._-]{0,127})(?:/[A-Za-z0-9][A-Za-z0-9._-]{0,127})*$"
+    },
+    "privacyClass": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "SystemMetadata",
+        "PersonalMetadata",
+        "NetworkMetadata",
+        "SensitiveSecurityData",
+        "Secret",
+        "MemoryContent"
+      ]
+    },
+    "fileDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "logical_content",
+        "canonicalization",
+        "algorithm",
+        "encoding",
+        "digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "FileDigest"
+        },
+        "logical_content": {
+          "const": "StoredFileBytes"
+        },
+        "canonicalization": {
+          "const": "RawBytes"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_kind",
+        "source_name",
+        "source_release",
+        "upstream_revision",
+        "source_content_digest"
+      ],
+      "properties": {
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "VelociraptorArtifact",
+            "VelociraptorVQL",
+            "SecAppSystem"
+          ]
+        },
+        "source_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "source_release": {
+          "type": "string",
+          "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "upstream_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "source_content_digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "objectIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest_kind",
+        "algorithm",
+        "canonicalization",
+        "encoding",
+        "excluded_fields",
+        "object_digest"
+      ],
+      "properties": {
+        "digest_kind": {
+          "const": "ObjectDigest"
+        },
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "canonicalization": {
+          "const": "JCS-RFC8785"
+        },
+        "encoding": {
+          "const": "LowerHex"
+        },
+        "excluded_fields": {
+          "const": [
+            "integrity.object_digest"
+          ]
+        },
+        "object_digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "evidence_id": "00000000-0000-4000-8000-000000000301",
+      "run_id": "00000000-0000-4000-8000-000000000001",
+      "observation_id": "00000000-0000-4000-8000-000000000201",
+      "kind": "BackendOutput",
+      "logical_path": "runs/synthetic/backend-output.jsonl",
+      "media_type": "application/jsonl",
+      "size_bytes": 0,
+      "file_digest": {
+        "digest_kind": "FileDigest",
+        "logical_content": "StoredFileBytes",
+        "canonicalization": "RawBytes",
+        "algorithm": "SHA-256",
+        "encoding": "LowerHex",
+        "digest": "8ed3293a2fcda18fe6ce3479fedef3af0c89e6657ed4ac50223ef463283e0e1b"
+      },
+      "privacy_class": "NetworkMetadata",
+      "captured_at": "2026-01-01T00:00:01Z",
+      "acquisition_method": "VelociraptorResult",
+      "provenance": {
+        "source_kind": "VelociraptorArtifact",
+        "source_name": "Windows.Network.ListeningPorts",
+        "source_release": "v0.77.1",
+        "upstream_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+        "source_content_digest": "3ed1829721a27c1c1fdff9b159b8a03f206ccfb109471efd118801ec32acd5fe"
+      },
+      "integrity": {
+        "digest_kind": "ObjectDigest",
+        "algorithm": "SHA-256",
+        "canonicalization": "JCS-RFC8785",
+        "encoding": "LowerHex",
+        "excluded_fields": [
+          "integrity.object_digest"
+        ],
+        "object_digest": "2e7eb66f3a5681f6823e7f8296b3cfeafe78c665e8a0c3ef46763199edcdda12"
+      }
+    }
+  ],
+  "x-negative-tests": [
+    {
+      "name": "absolute-path",
+      "expected_error": "PATH_ABSOLUTE"
+    },
+    {
+      "name": "drive-letter",
+      "expected_error": "PATH_DRIVE_LETTER"
+    },
+    {
+      "name": "parent-segment",
+      "expected_error": "PATH_TRAVERSAL"
+    },
+    {
+      "name": "repeated-separator",
+      "expected_error": "PATH_EMPTY_SEGMENT"
+    }
+  ]
+}

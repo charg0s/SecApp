@@ -1,0 +1,318 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/reboot-continuation-state.schema.json",
+  "title": "SecApp RebootContinuationState",
+  "description": "Single-use authenticated continuation state containing no command, path, evidence, credential, or secret key.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "state_id",
+    "expected_run_id",
+    "issued_at",
+    "expires_at",
+    "monotonic_sequence",
+    "nonce",
+    "expected_next_stage",
+    "expected_executable_digest",
+    "expected_build_digest",
+    "prior_manifest_digest",
+    "machine_binding_digest",
+    "consumption_state",
+    "rollback_behavior",
+    "stale_state_behavior",
+    "startup_behavior",
+    "authentication"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "state_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "expected_run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "issued_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "monotonic_sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "expected_next_stage": {
+      "type": "string",
+      "enum": [
+        "RebootContinuationPass",
+        "PostRebootPass",
+        "Normalization",
+        "Evaluation",
+        "Reporting"
+      ]
+    },
+    "expected_executable_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "expected_build_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "prior_manifest_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "machine_binding_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "consumption_state": {
+      "type": "string",
+      "enum": [
+        "Unconsumed",
+        "Consumed",
+        "RejectedReplay"
+      ]
+    },
+    "consumed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "rollback_behavior": {
+      "const": "RejectSequenceNotGreaterThanStored"
+    },
+    "stale_state_behavior": {
+      "const": "RejectExpiredOrBuildMismatch"
+    },
+    "startup_behavior": {
+      "const": "FailClosedNoAutomaticCommand"
+    },
+    "authentication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "key_id",
+        "canonicalization",
+        "authenticated_fields",
+        "tag"
+      ],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "HMAC-SHA256",
+            "Ed25519"
+          ]
+        },
+        "key_id": {
+          "type": "string",
+          "pattern": "^key:[a-z0-9][a-z0-9._-]{0,127}$"
+        },
+        "canonicalization": {
+          "const": "JCS-RFC8785"
+        },
+        "authenticated_fields": {
+          "const": [
+            "schema_version",
+            "state_id",
+            "expected_run_id",
+            "issued_at",
+            "expires_at",
+            "monotonic_sequence",
+            "nonce",
+            "expected_next_stage",
+            "expected_executable_digest",
+            "expected_build_digest",
+            "prior_manifest_digest",
+            "machine_binding_digest",
+            "consumption_state",
+            "consumed_at",
+            "rollback_behavior",
+            "stale_state_behavior",
+            "startup_behavior",
+            "authentication.algorithm",
+            "authentication.key_id",
+            "authentication.canonicalization",
+            "authentication.authenticated_fields"
+          ]
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "algorithm": {
+                "const": "HMAC-SHA256"
+              }
+            },
+            "required": [
+              "algorithm"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9+/]{43}=$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "algorithm": {
+                "const": "Ed25519"
+              }
+            },
+            "required": [
+              "algorithm"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9+/]{86}==$"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "consumption_state": {
+            "enum": [
+              "Consumed",
+              "RejectedReplay"
+            ]
+          }
+        },
+        "required": [
+          "consumption_state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "consumed_at": true
+        },
+        "required": [
+          "consumed_at"
+        ]
+      },
+      "else": {
+        "not": {
+          "type": "object",
+          "properties": {
+            "consumed_at": true
+          },
+          "required": [
+            "consumed_at"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "state_id": "00000000-0000-4000-8000-000000000701",
+      "expected_run_id": "00000000-0000-4000-8000-000000000001",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "expires_at": "2026-01-02T00:00:00Z",
+      "monotonic_sequence": 1,
+      "nonce": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "expected_next_stage": "PostRebootPass",
+      "expected_executable_digest": "db83927eccb156324b18dbe8626baa1b51365089ccec95bb85e01d7fbfc3659e",
+      "expected_build_digest": "814b34b5de0793e01dfe9a7635458dd88c7fe58283d673975afafb032b84441c",
+      "prior_manifest_digest": "a06bcb88b74e1fb39c1a839ced838aa1dc96b8a98239e648a3a9b2fd3614c899",
+      "machine_binding_digest": "d6d46c6e4a239fb352dcc3e8588e88a57522dd555dae274252ea0ea8f073ddb4",
+      "consumption_state": "Unconsumed",
+      "rollback_behavior": "RejectSequenceNotGreaterThanStored",
+      "stale_state_behavior": "RejectExpiredOrBuildMismatch",
+      "startup_behavior": "FailClosedNoAutomaticCommand",
+      "authentication": {
+        "algorithm": "HMAC-SHA256",
+        "key_id": "key:synthetic",
+        "canonicalization": "JCS-RFC8785",
+        "authenticated_fields": [
+          "schema_version",
+          "state_id",
+          "expected_run_id",
+          "issued_at",
+          "expires_at",
+          "monotonic_sequence",
+          "nonce",
+          "expected_next_stage",
+          "expected_executable_digest",
+          "expected_build_digest",
+          "prior_manifest_digest",
+          "machine_binding_digest",
+          "consumption_state",
+          "consumed_at",
+          "rollback_behavior",
+          "stale_state_behavior",
+          "startup_behavior",
+          "authentication.algorithm",
+          "authentication.key_id",
+          "authentication.canonicalization",
+          "authentication.authenticated_fields"
+        ],
+        "tag": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+      }
+    }
+  ],
+  "x-negative-tests": [
+    {
+      "name": "expired-state",
+      "expected_error": "REBOOT_STATE_STALE"
+    },
+    {
+      "name": "reused-nonce",
+      "expected_error": "REBOOT_NONCE_REPLAY"
+    },
+    {
+      "name": "rollback-sequence",
+      "expected_error": "REBOOT_SEQUENCE_ROLLBACK"
+    },
+    {
+      "name": "wrong-build",
+      "expected_error": "REBOOT_BUILD_MISMATCH"
+    },
+    {
+      "name": "wrong-tag-length",
+      "expected_error": "REBOOT_AUTH_TAG_INVALID"
+    }
+  ]
+}
