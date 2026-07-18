@@ -1,6 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { evaluateApplicationRecord, validateActionLog, verifyAuditManifestDigest } from "./lib/application-rules.mjs";
+import {
+  checkedAdd,
+  checkedMultiply,
+  evaluateApplicationRecord,
+  validateActionLog,
+  verifyAuditManifestDigest
+} from "./lib/application-rules.mjs";
 import {
   canonicalizeContentBytes,
   digestWithExclusion,
@@ -16,25 +22,299 @@ import {
 } from "./lib/jcs.mjs";
 import { compareUnicodeCodeUnits } from "./lib/order.mjs";
 import { createResult, emit, finish } from "./lib/report.mjs";
-import { createSchemaRegistry } from "./lib/schema-registry.mjs";
+import { createSchemaRegistry, validateSchemaIdentity } from "./lib/schema-registry.mjs";
 import { loadVectorCatalog, schemaSubjects } from "./lib/vectors.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const result = createResult("validate-digests");
 
+export const REQUIRED_CASE_IDS_BY_CATEGORY = Object.freeze({
+  catalog_digest: Object.freeze([
+    "DIGEST_ACTION_FULL_OBJECT_VALID",
+    "DIGEST_MANIFEST_FULL_OBJECT_VALID",
+    "DIGEST_ACTION_CHAIN_VALID",
+    "DIGEST_ACTION_GAP_INVALID",
+    "DIGEST_ACTION_DUP_SEQUENCE_INVALID",
+    "DIGEST_ACTION_PREVIOUS_MISMATCH_INVALID",
+    "DIGEST_ACTION_CROSS_RUN_INVALID",
+    "DIGEST_MANIFEST_PERMUTATION_VALID",
+    "DIGEST_EXPORT_PERMUTATION_VALID"
+  ]),
+  jcs_conformance: Object.freeze([
+    "JCS_RFC8785_SERIALIZATION_SAMPLE",
+    "JCS_RFC8785_PROPERTY_ORDER_SAMPLE",
+    "JCS_NUMBER_POSITIVE_ZERO",
+    "JCS_NUMBER_NEGATIVE_ZERO",
+    "JCS_NUMBER_MAX_SAFE_INTEGER",
+    "JCS_NUMBER_FRACTION",
+    "JCS_NUMBER_EXPONENT",
+    "JCS_NUMBER_FIXED_THRESHOLD",
+    "JCS_NUMBER_EXPONENT_THRESHOLD",
+    "JCS_NUMBER_LARGE_THRESHOLD",
+    "JCS_NUMBER_MAX_FINITE",
+    "JCS_NUMBER_ROUNDING",
+    "JCS_STRING_EMPTY",
+    "JCS_STRING_BMP",
+    "JCS_STRING_SUPPLEMENTARY",
+    "JCS_STRING_COMPOSED",
+    "JCS_STRING_DECOMPOSED",
+    "JCS_STRING_ESCAPES_CONTROLS",
+    "JCS_PROPERTY_ORDER_ADVERSARIAL"
+  ]),
+  jcs_direct_api_positive: Object.freeze([
+    "JCS_DIRECT_POSITIVE_null",
+    "JCS_DIRECT_POSITIVE_boolean",
+    "JCS_DIRECT_POSITIVE_finite-number",
+    "JCS_DIRECT_POSITIVE_valid-unicode",
+    "JCS_DIRECT_POSITIVE_dense-array",
+    "JCS_DIRECT_POSITIVE_plain-object",
+    "JCS_DIRECT_POSITIVE_null-prototype-object",
+    "JCS_DIRECT_POSITIVE_shared-noncyclic-object"
+  ]),
+  jcs_direct_api_negative: Object.freeze([
+    "JCS_DIRECT_NEGATIVE_high-lone-surrogate-value",
+    "JCS_DIRECT_NEGATIVE_low-lone-surrogate-value",
+    "JCS_DIRECT_NEGATIVE_surrogate-property-name",
+    "JCS_DIRECT_NEGATIVE_undefined-value",
+    "JCS_DIRECT_NEGATIVE_function-value",
+    "JCS_DIRECT_NEGATIVE_symbol-value",
+    "JCS_DIRECT_NEGATIVE_bigint",
+    "JCS_DIRECT_NEGATIVE_nan",
+    "JCS_DIRECT_NEGATIVE_positive-infinity",
+    "JCS_DIRECT_NEGATIVE_negative-infinity",
+    "JCS_DIRECT_NEGATIVE_sparse-array",
+    "JCS_DIRECT_NEGATIVE_cyclic-object",
+    "JCS_DIRECT_NEGATIVE_date",
+    "JCS_DIRECT_NEGATIVE_map",
+    "JCS_DIRECT_NEGATIVE_set",
+    "JCS_DIRECT_NEGATIVE_typed-array",
+    "JCS_DIRECT_NEGATIVE_getter",
+    "JCS_DIRECT_NEGATIVE_non-enumerable-property",
+    "JCS_DIRECT_NEGATIVE_symbol-key",
+    "JCS_DIRECT_NEGATIVE_array-extra-property",
+    "JCS_DIRECT_NEGATIVE_proxy"
+  ]),
+  profile_digest: Object.freeze([
+    "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A",
+    "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A_PERMUTATION",
+    "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A_MUTATION_action",
+    "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A_MUTATION_path",
+    "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A_MUTATION_class",
+    "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A_MUTATION_key",
+    "PROFILE_PUBLIC_NONEMPTY_A_DOT_A_A_UNDERSCORE_A_MUTATION_public-private",
+    "PROFILE_PRIVATE_NONEMPTY",
+    "PROFILE_PRIVATE_NONEMPTY_PERMUTATION",
+    "PROFILE_DUPLICATE_FIELD_REJECTED",
+    "PROFILE_FIELD_FALLBACK_REJECTED"
+  ]),
+  file_digest: Object.freeze([
+    "FILE_EMPTY",
+    "FILE_ASCII",
+    "FILE_UTF8",
+    "FILE_UTF8_BOM",
+    "FILE_LF",
+    "FILE_CRLF",
+    "FILE_FINAL_LF",
+    "FILE_NO_FINAL_LF",
+    "FILE_NUL",
+    "FILE_BYTE_BOUNDARIES",
+    "FILE_ARBITRARY_BINARY",
+    "FILE_INVALID_HEX",
+    "FILE_ODD_HEX",
+    "FILE_INVALID_BASE64",
+    "FILE_UNSUPPORTED_ENCODING"
+  ]),
+  content_digest: Object.freeze([
+    "CONTENT_EMPTY",
+    "CONTENT_ASCII_NO_FINAL_LF",
+    "CONTENT_CRLF",
+    "CONTENT_CR",
+    "CONTENT_BOM",
+    "CONTENT_BOM_ONLY",
+    "CONTENT_LF_ONLY",
+    "CONTENT_MIXED_LINE_ENDINGS",
+    "CONTENT_FINAL_LF",
+    "CONTENT_UTF8",
+    "CONTENT_COMPOSED",
+    "CONTENT_DECOMPOSED",
+    "CONTENT_SUPPLEMENTARY",
+    "CONTENT_NUL",
+    "CONTENT_INVALID_UTF8",
+    "CONTENT_INVALID_UTF8_BINARY"
+  ]),
+  schema_guard_negative: Object.freeze([
+    "SCHEMA_FORMAT_UUID_INVALID",
+    "SCHEMA_FORMAT_DATE_TIME_INVALID",
+    "SCHEMA_FORMAT_URI_INVALID",
+    "SCHEMA_KEYWORD_UNKNOWN_ORDINARY_INVALID",
+    "SCHEMA_KEYWORD_UNKNOWN_X_INVALID",
+    "SCHEMA_NAMESPACE_UNKNOWN_MAJOR_INVALID"
+  ]),
+  checked_arithmetic: Object.freeze([
+    "CHECKED_ADD_MAX_SAFE_BOUNDARY",
+    "CHECKED_ADD_OVERFLOW",
+    "CHECKED_MULTIPLY_MAX_SAFE_BOUNDARY",
+    "CHECKED_MULTIPLY_OVERFLOW",
+    "CHECKED_MULTIPLY_ORDINARY"
+  ])
+});
+
+const OFFICIAL_JCS_CASE_IDS = Object.freeze([
+  "JCS_RFC8785_SERIALIZATION_SAMPLE",
+  "JCS_RFC8785_PROPERTY_ORDER_SAMPLE"
+]);
+const caseDefinitions = [];
+const executedCaseRecords = [];
+let caseControlById = new Map();
+
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-function runCase(caseId, action) {
+function runCase(caseId, category, action, { additional = false } = {}) {
+  const control = caseControlById.get(caseId) ?? {};
+  const definition = {
+    case_id: caseId,
+    category,
+    additional,
+    skipped: control.skipped === true,
+    execute: control.execute !== false
+  };
+  caseDefinitions.push(definition);
+  if (definition.skipped || !definition.execute) return;
   result.vector_count += 1;
+  const execution = { case_id: caseId, category, passed: false };
+  executedCaseRecords.push(execution);
   try {
     action();
+    execution.passed = true;
     result.passed += 1;
   } catch (error) {
     result.failed += 1;
     result.errors.push({ error_code: "DIGEST_CASE_FAILED", vector_id: caseId, message: error.message });
   }
+}
+
+function categoryIds(definitions, additional) {
+  const result = Object.fromEntries(Object.keys(REQUIRED_CASE_IDS_BY_CATEGORY).map((category) => [category, []]));
+  for (const definition of definitions) {
+    if (definition.additional !== additional) continue;
+    if (!result[definition.category]) result[definition.category] = [];
+    result[definition.category].push(definition.case_id);
+  }
+  for (const ids of Object.values(result)) ids.sort(compareUnicodeCodeUnits);
+  return result;
+}
+
+export function analyzeRequiredCases(definitions, executions) {
+  const requiredCategoryById = new Map();
+  for (const [category, ids] of Object.entries(REQUIRED_CASE_IDS_BY_CATEGORY)) {
+    for (const id of ids) requiredCategoryById.set(id, category);
+  }
+  const requiredDefinitions = definitions.filter((item) => !item.additional);
+  const definitionIds = requiredDefinitions.map((item) => item.case_id);
+  const duplicateCaseIds = [...new Set(definitionIds.filter((id, index) => definitionIds.indexOf(id) !== index))]
+    .filter((id) => requiredCategoryById.has(id))
+    .sort(compareUnicodeCodeUnits);
+  const missingRequiredCaseIds = [];
+  const categoryMismatchCaseIds = [];
+  const skippedRequiredCaseIds = [];
+  const notExecutedRequiredCaseIds = [];
+  const failedRequiredCaseIds = [];
+  for (const [id, expectedCategory] of requiredCategoryById) {
+    const matchingId = requiredDefinitions.filter((item) => item.case_id === id);
+    const matchingCategory = matchingId.filter((item) => item.category === expectedCategory);
+    if (matchingCategory.length === 0) missingRequiredCaseIds.push(id);
+    if (matchingId.some((item) => item.category !== expectedCategory)) categoryMismatchCaseIds.push(id);
+    if (matchingCategory.some((item) => item.skipped)) skippedRequiredCaseIds.push(id);
+    if (matchingCategory.length > 0 && !executions.some((item) => item.case_id === id && item.category === expectedCategory)) {
+      notExecutedRequiredCaseIds.push(id);
+    }
+    if (executions.some((item) => item.case_id === id && item.category === expectedCategory && item.passed === false)) {
+      failedRequiredCaseIds.push(id);
+    }
+  }
+  const actualByCategory = categoryIds(requiredDefinitions, false);
+  const exactSet = Object.entries(REQUIRED_CASE_IDS_BY_CATEGORY).every(([category, requiredIds]) => {
+    const actualIds = actualByCategory[category] ?? [];
+    const expectedIds = [...requiredIds].sort(compareUnicodeCodeUnits);
+    return actualIds.length === expectedIds.length && actualIds.every((id, index) => id === expectedIds[index]);
+  }) && Object.keys(actualByCategory).every((category) => Object.hasOwn(REQUIRED_CASE_IDS_BY_CATEGORY, category));
+  const requiredSetComplete = exactSet
+    && duplicateCaseIds.length === 0
+    && categoryMismatchCaseIds.length === 0
+    && skippedRequiredCaseIds.length === 0
+    && notExecutedRequiredCaseIds.length === 0
+    && failedRequiredCaseIds.length === 0;
+  const failures = [
+    ...missingRequiredCaseIds.map((case_id) => ({ error_code: "DIGEST_REQUIRED_CASE_MISSING", case_id })),
+    ...duplicateCaseIds.map((case_id) => ({ error_code: "DIGEST_REQUIRED_CASE_DUPLICATE", case_id })),
+    ...categoryMismatchCaseIds.map((case_id) => ({ error_code: "DIGEST_CASE_CATEGORY_MISMATCH", case_id })),
+    ...skippedRequiredCaseIds.map((case_id) => ({ error_code: "DIGEST_REQUIRED_CASE_SKIPPED", case_id })),
+    ...notExecutedRequiredCaseIds.map((case_id) => ({ error_code: "DIGEST_REQUIRED_CASE_NOT_EXECUTED", case_id }))
+  ];
+  if (!requiredSetComplete) failures.push({ error_code: "DIGEST_REQUIRED_SET_MISMATCH" });
+  return {
+    failures,
+    required_case_ids_by_category: Object.fromEntries(Object.entries(REQUIRED_CASE_IDS_BY_CATEGORY)
+      .map(([category, ids]) => [category, [...ids]])),
+    actual_case_ids_by_category: actualByCategory,
+    missing_required_case_ids: missingRequiredCaseIds.sort(compareUnicodeCodeUnits),
+    duplicate_case_ids: duplicateCaseIds,
+    category_mismatch_case_ids: categoryMismatchCaseIds.sort(compareUnicodeCodeUnits),
+    skipped_required_case_ids: skippedRequiredCaseIds.sort(compareUnicodeCodeUnits),
+    not_executed_required_case_ids: notExecutedRequiredCaseIds.sort(compareUnicodeCodeUnits),
+    failed_required_case_ids: failedRequiredCaseIds.sort(compareUnicodeCodeUnits),
+    required_set_complete: requiredSetComplete
+  };
+}
+
+function runDigestCompletenessSelfTests(definitions, executions) {
+  const required = Object.entries(REQUIRED_CASE_IDS_BY_CATEGORY)
+    .flatMap(([category, ids]) => ids.map((case_id) => ({ case_id, category })));
+  let count = 0;
+  for (const target of required) {
+    const peers = REQUIRED_CASE_IDS_BY_CATEGORY[target.category].filter((id) => id !== target.case_id);
+    const replacementId = peers[0];
+    const removedDefinitions = definitions.filter((item) => item.additional || item.case_id !== target.case_id);
+    const removedExecutions = executions.filter((item) => item.case_id !== target.case_id);
+    assert(analyzeRequiredCases(removedDefinitions, removedExecutions).failures.some((item) =>
+      item.error_code === "DIGEST_REQUIRED_CASE_MISSING" && item.case_id === target.case_id), `${target.case_id}: removal self-test failed`);
+    count += 1;
+
+    const replacedDefinitions = structuredClone(definitions);
+    const replaced = replacedDefinitions.find((item) => !item.additional && item.case_id === target.case_id);
+    replaced.case_id = replacementId;
+    const replacedAnalysis = analyzeRequiredCases(replacedDefinitions, executions);
+    assert(replacedAnalysis.failures.some((item) => item.error_code === "DIGEST_REQUIRED_CASE_MISSING" && item.case_id === target.case_id)
+      && replacedAnalysis.failures.some((item) => item.error_code === "DIGEST_REQUIRED_CASE_DUPLICATE" && item.case_id === replacementId),
+    `${target.case_id}: replacement-by-duplicate self-test failed`);
+    count += 1;
+
+    const duplicateDefinitions = structuredClone(definitions);
+    duplicateDefinitions.push(structuredClone(duplicateDefinitions.find((item) => !item.additional && item.case_id === target.case_id)));
+    assert(analyzeRequiredCases(duplicateDefinitions, executions).failures.some((item) =>
+      item.error_code === "DIGEST_REQUIRED_CASE_DUPLICATE" && item.case_id === target.case_id), `${target.case_id}: duplicate self-test failed`);
+    count += 1;
+
+    const categoryDefinitions = structuredClone(definitions);
+    categoryDefinitions.find((item) => !item.additional && item.case_id === target.case_id).category = "category-mismatch";
+    assert(analyzeRequiredCases(categoryDefinitions, executions).failures.some((item) =>
+      item.error_code === "DIGEST_CASE_CATEGORY_MISMATCH" && item.case_id === target.case_id), `${target.case_id}: category self-test failed`);
+    count += 1;
+
+    const skippedDefinitions = structuredClone(definitions);
+    skippedDefinitions.find((item) => !item.additional && item.case_id === target.case_id).skipped = true;
+    assert(analyzeRequiredCases(skippedDefinitions, executions).failures.some((item) =>
+      item.error_code === "DIGEST_REQUIRED_CASE_SKIPPED" && item.case_id === target.case_id), `${target.case_id}: skipped self-test failed`);
+    count += 1;
+
+    const notExecuted = executions.filter((item) => item.case_id !== target.case_id);
+    assert(analyzeRequiredCases(definitions, notExecuted).failures.some((item) =>
+      item.error_code === "DIGEST_REQUIRED_CASE_NOT_EXECUTED" && item.case_id === target.case_id), `${target.case_id}: not-executed self-test failed`);
+    count += 1;
+  }
+  return { case_ids: required.map((item) => item.case_id), mutation_count: count };
 }
 
 function normalizeExample(schemaId, example) {
@@ -172,10 +452,18 @@ try {
   const records = catalog.records.filter((record) => record.source === "tests/contracts/digests/digests.json");
   const fixtureDocument = records[0]?.document;
   if (!fixtureDocument) throw new Error("digest fixture document is missing");
+  if (!Array.isArray(fixtureDocument.case_controls ?? [])) throw new Error("digest case_controls must be an array");
+  caseControlById = new Map();
+  for (const control of fixtureDocument.case_controls ?? []) {
+    if (!control || typeof control.case_id !== "string" || caseControlById.has(control.case_id)) {
+      throw new Error("digest case_controls contains a duplicate or invalid case_id");
+    }
+    caseControlById.set(control.case_id, control);
+  }
   result.schema_count = registry.schemas.length;
 
   for (const record of records) {
-    runCase(record.descriptor.vector_id, () => {
+    runCase(record.descriptor.vector_id, "catalog_digest", () => {
       const expected = record.descriptor.expected_application_valid;
       const errors = evaluateCatalogDigest(record);
       if (expected) assert(errors.length === 0, `expected valid digest; got ${errors.join(",")}`);
@@ -184,7 +472,7 @@ try {
   }
 
   for (const vector of fixtureDocument.jcs_conformance_vectors) {
-    runCase(vector.case_id, () => {
+    runCase(vector.case_id, "jcs_conformance", () => {
       const before = JSON.stringify(vector.input);
       const actual = jcs(vector.input);
       assert(actual === vector.expected_canonical, `canonical mismatch: ${JSON.stringify(actual)}`);
@@ -194,9 +482,8 @@ try {
   }
 
   const positives = directPositiveFactories();
-  assert(positives.size === fixtureDocument.jcs_direct_api_positive_cases.length, "direct positive case inventory mismatch");
   for (const caseId of fixtureDocument.jcs_direct_api_positive_cases) {
-    runCase(`JCS_DIRECT_POSITIVE_${caseId}`, () => {
+    runCase(`JCS_DIRECT_POSITIVE_${caseId}`, "jcs_direct_api_positive", () => {
       const factory = positives.get(caseId);
       assert(factory, "unknown direct positive case");
       const value = factory();
@@ -206,9 +493,8 @@ try {
   }
 
   const negatives = directNegativeFactories();
-  assert(negatives.size === fixtureDocument.jcs_direct_api_negative_cases.length, "direct negative case inventory mismatch");
   for (const caseId of fixtureDocument.jcs_direct_api_negative_cases) {
-    runCase(`JCS_DIRECT_NEGATIVE_${caseId}`, () => {
+    runCase(`JCS_DIRECT_NEGATIVE_${caseId}`, "jcs_direct_api_negative", () => {
       const factory = negatives.get(caseId);
       assert(factory, "unknown direct negative case");
       try {
@@ -223,7 +509,7 @@ try {
   const validateProfile = registry.ajv.getSchema("https://schemas.secapp.dev/v1/redaction-profile.schema.json");
   let profileDigestCases = 0;
   for (const vector of fixtureDocument.profile_digest_cases) {
-    runCase(vector.case_id, () => {
+    runCase(vector.case_id, "profile_digest", () => {
       profileDigestCases += 1;
       assert(validateProfile(vector.profile), `profile fixture is schema-invalid: ${JSON.stringify(validateProfile.errors)}`);
       const before = JSON.stringify(vector.profile);
@@ -232,7 +518,7 @@ try {
       assert(JSON.stringify(vector.profile) === before, "ProfileDigest mutated its input");
     });
     if (vector.permutation_invariant) {
-      runCase(`${vector.case_id}_PERMUTATION`, () => {
+      runCase(`${vector.case_id}_PERMUTATION`, "profile_digest", () => {
         profileDigestCases += 1;
         const permutation = structuredClone(vector.profile);
         permutation.field_rules.reverse();
@@ -241,7 +527,7 @@ try {
       });
     }
     for (const mutation of vector.mutations) {
-      runCase(`${vector.case_id}_MUTATION_${mutation.name}`, () => {
+      runCase(`${vector.case_id}_MUTATION_${mutation.name}`, "profile_digest", () => {
         profileDigestCases += 1;
         const mutated = applyFixtureMutation(vector.profile, mutation);
         assert(validateProfile(mutated), `${mutation.name} mutation is schema-invalid: ${JSON.stringify(validateProfile.errors)}`);
@@ -250,7 +536,7 @@ try {
       });
     }
   }
-  runCase("PROFILE_DUPLICATE_FIELD_REJECTED", () => {
+  runCase("PROFILE_DUPLICATE_FIELD_REJECTED", "profile_digest", () => {
     profileDigestCases += 1;
     const duplicate = structuredClone(fixtureDocument.profile_digest_cases[0].profile);
     duplicate.field_rules.push(structuredClone(duplicate.field_rules[0]));
@@ -261,7 +547,7 @@ try {
       assert(error.message === "DIGEST_PROFILE_DUPLICATE_FIELD", `unexpected duplicate error: ${error.message}`);
     }
   });
-  runCase("PROFILE_FIELD_FALLBACK_REJECTED", () => {
+  runCase("PROFILE_FIELD_FALLBACK_REJECTED", "profile_digest", () => {
     profileDigestCases += 1;
     const wrongName = structuredClone(fixtureDocument.profile_digest_cases[0].profile);
     wrongName.field_rules = [{ field_id: "a.a", privacy_class: "Public", action: "Include" }];
@@ -274,7 +560,7 @@ try {
   });
 
   for (const vector of fixtureDocument.file_digest_cases) {
-    runCase(vector.case_id, () => {
+    runCase(vector.case_id, "file_digest", () => {
       try {
         const bytes = materializeByteSource(vector.source_bytes);
         assert(!vector.expected_error, `expected ${vector.expected_error}; bytes were accepted`);
@@ -288,7 +574,7 @@ try {
   }
 
   for (const vector of fixtureDocument.content_digest_cases) {
-    runCase(vector.case_id, () => {
+    runCase(vector.case_id, "content_digest", () => {
       try {
         const canonical = canonicalizeContentBytes(materializeByteSource(vector.source_bytes));
         assert(!vector.expected_error, `expected ${vector.expected_error}; content was accepted`);
@@ -296,6 +582,49 @@ try {
         assert(sha256LowerHex(canonical) === vector.expected_digest, "ContentDigest SHA-256 mismatch");
       } catch (error) {
         if (!vector.expected_error || error.message !== vector.expected_error) throw error;
+      }
+    });
+  }
+
+  for (const vector of fixtureDocument.schema_guard_negative_cases) {
+    runCase(vector.case_id, "schema_guard_negative", () => {
+      if (vector.kind === "Format") {
+        const validate = registry.ajv.compile({ type: "string", format: vector.format });
+        assert(!validate(vector.invalid_value), `${vector.case_id}: invalid format value was accepted`);
+        return;
+      }
+      if (vector.kind === "UnknownKeyword") {
+        try {
+          registry.ajv.compile({ type: "object", [vector.keyword]: true });
+          throw new Error(`${vector.case_id}: unknown keyword was accepted`);
+        } catch (error) {
+          assert(String(error.message).includes(`unknown keyword: "${vector.keyword}"`), `${vector.case_id}: unexpected keyword error`);
+        }
+        return;
+      }
+      if (vector.kind === "Namespace") {
+        try {
+          validateSchemaIdentity("synthetic.schema.json", vector.schema);
+          throw new Error(`${vector.case_id}: unknown namespace was accepted`);
+        } catch (error) {
+          assert(String(error.message).includes("invalid immutable $id"), `${vector.case_id}: unexpected namespace error`);
+        }
+        return;
+      }
+      throw new Error(`${vector.case_id}: unknown schema guard kind`);
+    });
+  }
+
+  for (const vector of fixtureDocument.checked_arithmetic_cases) {
+    runCase(vector.case_id, "checked_arithmetic", () => {
+      const operation = vector.operator === "checkedAdd" ? checkedAdd : vector.operator === "checkedMultiply" ? checkedMultiply : undefined;
+      assert(operation, `${vector.case_id}: unknown arithmetic operator`);
+      try {
+        const actual = operation(...vector.operands);
+        assert(vector.expected_error === undefined, `${vector.case_id}: expected ${vector.expected_error}; operation was accepted`);
+        assert(actual === vector.expected, `${vector.case_id}: checked arithmetic result mismatch`);
+      } catch (error) {
+        if (vector.expected_error === undefined || error.message !== vector.expected_error) throw error;
       }
     });
   }
@@ -308,9 +637,9 @@ try {
       const check = verifyExample(item.schema.$id, example);
       embeddedExampleChecks += check.checked;
       for (let checkIndex = 0; checkIndex < check.checked; checkIndex += 1) {
-        runCase(`EMBEDDED_DIGEST_${path.basename(item.file)}_${exampleIndex}_${checkIndex}`, () => {
+        runCase(`EMBEDDED_DIGEST_${path.basename(item.file)}_${exampleIndex}_${checkIndex}`, "embedded_digest", () => {
           assert(check.errors.length === 0, check.errors.join(",") || "embedded digest check failed");
-        });
+        }, { additional: true });
       }
     }
   }
@@ -321,30 +650,53 @@ try {
     .filter(([kind]) => !supportedSchemaDigestKinds.has(kind))
     .reduce((total, [, count]) => total + count, 0);
   const completeness = {
+    catalog_digest_vectors: records.length,
     jcs_conformance_cases: fixtureDocument.jcs_conformance_vectors.length,
     jcs_direct_api_negative_cases: fixtureDocument.jcs_direct_api_negative_cases.length,
     jcs_direct_api_positive_cases: fixtureDocument.jcs_direct_api_positive_cases.length,
     profile_digest_cases: profileDigestCases,
     byte_backed_file_digest_cases: fixtureDocument.file_digest_cases.length,
     byte_backed_content_digest_cases: fixtureDocument.content_digest_cases.length,
+    schema_guard_negative_cases: fixtureDocument.schema_guard_negative_cases.length,
+    checked_arithmetic_cases: fixtureDocument.checked_arithmetic_cases.length,
     structurally_only_digest_cases: structurallyOnlyDigestCases,
     unsupported_digest_cases: unsupportedDigestCases,
     skipped_digest_cases: 0
   };
-  runCase("DIGEST_COMPLETENESS", () => {
-    for (const field of ["jcs_conformance_cases", "jcs_direct_api_negative_cases", "jcs_direct_api_positive_cases", "profile_digest_cases", "byte_backed_file_digest_cases", "byte_backed_content_digest_cases", "structurally_only_digest_cases"]) {
-      assert(completeness[field] > 0, `${field} must be nonzero`);
-    }
-    assert(completeness.unsupported_digest_cases === 0, "unsupported digest metadata exists");
-    assert(completeness.skipped_digest_cases === 0, "digest cases were skipped");
-    const declared = catalog.index.digest_gate_coverage;
-    assert(declared?.catalog_digest_vectors === records.length, "index catalog_digest_vectors mismatch");
-    for (const [field, value] of Object.entries(completeness)) {
-      assert(declared[field] === value, `index ${field} mismatch`);
-    }
-  });
-
-  const failedBeforeFinish = result.failed;
+  const canonicalDefinitions = Object.entries(REQUIRED_CASE_IDS_BY_CATEGORY)
+    .flatMap(([category, ids]) => ids.map((case_id) => ({
+      case_id,
+      category,
+      additional: false,
+      skipped: false,
+      execute: true
+    })));
+  const canonicalExecutions = canonicalDefinitions.map((item) => ({
+    case_id: item.case_id,
+    category: item.category,
+    passed: true
+  }));
+  const completenessSelfTests = runDigestCompletenessSelfTests(canonicalDefinitions, canonicalExecutions);
+  const requiredAnalysis = analyzeRequiredCases(caseDefinitions, executedCaseRecords);
+  const { failures: requiredFailures, ...requiredSummary } = requiredAnalysis;
+  completeness.skipped_digest_cases = requiredSummary.skipped_required_case_ids.length;
+  const declared = catalog.index.digest_gate_coverage;
+  const declaredCountsMatch = Object.entries(completeness).every(([field, value]) => declared?.[field] === value);
+  const declaredRequiredIdsMatch = JSON.stringify(declared?.required_case_ids_by_category)
+    === JSON.stringify(requiredSummary.required_case_ids_by_category);
+  const metadataComplete = unsupportedDigestCases === 0 && declaredCountsMatch && declaredRequiredIdsMatch;
+  for (const failure of requiredFailures) {
+    result.failed += 1;
+    result.errors.push({ ...failure, message: failure.case_id ?? "digest required set mismatch" });
+  }
+  if (!metadataComplete) {
+    result.failed += 1;
+    result.errors.push({
+      error_code: "DIGEST_REQUIRED_SET_MISMATCH",
+      message: "digest index/count/metadata declaration mismatch"
+    });
+  }
+  const requiredSetComplete = requiredSummary.required_set_complete && metadataComplete;
   finish(result, {
     algorithm: "SHA-256",
     encoding: "LowerHex",
@@ -352,8 +704,28 @@ try {
     digest_types: ["AuditManifest ManifestDigest", "ContentDigest", "EntryDigest/ObjectDigest", "ExportManifest ManifestDigest", "FileDigest", "ObjectDigest", "ProfileDigest"].sort(compareUnicodeCodeUnits),
     embedded_example_digest_checks: embeddedExampleChecks,
     ...completeness,
+    ...requiredSummary,
+    required_set_complete: requiredSetComplete,
+    additional_case_ids_by_category: categoryIds(caseDefinitions, true),
+    digest_completeness_self_tested_case_ids: completenessSelfTests.case_ids,
+    digest_completeness_self_test_mutation_count: completenessSelfTests.mutation_count,
+    digest_completeness_self_test_operations: [
+      "remove-required-id",
+      "replace-required-id-with-duplicate",
+      "duplicate-vector-id",
+      "change-category",
+      "mark-skipped",
+      "mark-not-executed"
+    ],
     canonical_sort_implementation: "RFC 8785 raw UTF-16 code-unit property ordering; contract arrays use shared bytewise UTF-8 comparators from tools/lib/order.mjs",
-    rfc8785_conformance_status: failedBeforeFinish === 0 ? "passed" : "failed",
+    rfc8785_conformance_status: result.failed === 0 ? "covered_conformance_set_passed" : "covered_conformance_set_failed",
+    conformance_claim: "CoveredSet",
+    covered_case_count: REQUIRED_CASE_IDS_BY_CATEGORY.jcs_conformance.length,
+    full_corpus_claimed: false,
+    official_or_derived_vectors: {
+      official: [...OFFICIAL_JCS_CASE_IDS],
+      derived: REQUIRED_CASE_IDS_BY_CATEGORY.jcs_conformance.filter((id) => !OFFICIAL_JCS_CASE_IDS.includes(id))
+    },
     content_digest_contract: "UTF-8 without BOM; CRLF/CR normalized to LF; required final LF; no Unicode normalization",
     file_digest_contract: "exact materialized bytes; no decoding or normalization",
     file_digest_mutation: "flip first byte, or append 00 for empty input",
@@ -372,8 +744,21 @@ try {
     structurally_only_digest_cases: 0,
     unsupported_digest_cases: 0,
     skipped_digest_cases: 0,
+    required_case_ids_by_category: Object.fromEntries(Object.entries(REQUIRED_CASE_IDS_BY_CATEGORY)
+      .map(([category, ids]) => [category, [...ids]])),
+    actual_case_ids_by_category: {},
+    missing_required_case_ids: Object.values(REQUIRED_CASE_IDS_BY_CATEGORY).flat(),
+    duplicate_case_ids: [],
+    category_mismatch_case_ids: [],
+    skipped_required_case_ids: [],
+    not_executed_required_case_ids: Object.values(REQUIRED_CASE_IDS_BY_CATEGORY).flat(),
+    required_set_complete: false,
     canonical_sort_implementation: "initialization failed",
-    rfc8785_conformance_status: "failed"
+    rfc8785_conformance_status: "covered_conformance_set_failed",
+    conformance_claim: "CoveredSet",
+    covered_case_count: 0,
+    full_corpus_claimed: false,
+    official_or_derived_vectors: { official: [...OFFICIAL_JCS_CASE_IDS], derived: [] }
   });
 }
 

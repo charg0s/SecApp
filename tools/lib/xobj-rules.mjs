@@ -12,7 +12,14 @@ export const XOBJ_RULE_SPECS = Object.freeze([
   ["XOBJ-008", "MANIFEST_MEMBERSHIP_MISMATCH", ["collections.audit_manifests", "collections.audit_runs", "collections.action_logs", "manifest_membership_index"]],
   ["XOBJ-009", "EXPORT_SOURCE_MISMATCH", ["collections.export_manifests", "collections.audit_manifests", "collections.redaction_profiles", "loaded_digests.redaction_profiles", "loaded_digests.composition_policies", "loaded_digests.audit_manifests"]],
   ["XOBJ-010", "TIMESTAMP_ORDER_INVALID", ["validation_context.validation_time", "collections.audit_runs"]],
-  ["XOBJ-011", "CONSENT_SCOPE_INVALID", ["validation_context.validation_time", "collections.consent_receipts", "replay_history.consent_nonces"]],
+  ["XOBJ-011", "CONSENT_SCOPE_INVALID", [
+    "validation_context.validation_time", "collections.audit_runs", "collections.audit_passes",
+    "collections.collector_definitions", "collections.collector_executions", "collections.observations",
+    "collections.findings", "collections.consent_receipts", "collections.action_logs",
+    "collections.export_manifests", "collections.redaction_profiles",
+    "loaded_digests.collector_definitions", "loaded_digests.redaction_profiles",
+    "replay_history.consent_nonces"
+  ]],
   ["XOBJ-012", "ACTION_LOG_CHAIN_INVALID", ["collections.action_logs"]],
   ["XOBJ-013", "REBOOT_STATE_INVALID", ["collections.reboot_continuation_states", "validation_context.verified_reboot_state_ids", "replay_history.reboot_nonces", "replay_history.minimum_reboot_sequence"]],
   ["XOBJ-014", "RULE_GRAPH_INVALID", ["collections.rule_definitions"]],
@@ -60,6 +67,11 @@ function sameSet(left, right) {
   const sortedLeft = [...left].sort(compareUnicodeCodeUnits);
   const sortedRight = [...right].sort(compareUnicodeCodeUnits);
   return sortedLeft.length === sortedRight.length && sortedLeft.every((value, index) => value === sortedRight[index]);
+}
+
+function isSubset(subset, superset) {
+  const values = new Set(superset);
+  return subset.every((value) => values.has(value));
 }
 
 function asTime(value) {
@@ -301,36 +313,198 @@ export function validateXobj010(graph) {
   return [];
 }
 
-export function validateXobj011(graph) {
+export const XOBJ011_CONSENT_VARIANTS = Object.freeze(["CollectorExecution", "Export", "Remediation", "Reboot"]);
+
+export const XOBJ011_CONSENT_TYPE_MODELS = Object.freeze({
+  Administrative: "CollectorExecution",
+  NetworkAccess: "CollectorExecution",
+  DefenderScan: "CollectorExecution",
+  DefenderOffline: "CollectorExecution",
+  MemoryAcquisition: "CollectorExecution",
+  SensitiveDataCollection: "CollectorExecution",
+  Export: "Export",
+  Remediation: "Remediation",
+  Reboot: "Reboot"
+});
+
+export const XOBJ011_CONSENT_TYPES = Object.freeze(Object.keys(XOBJ011_CONSENT_TYPE_MODELS).sort(compareUnicodeCodeUnits));
+
+const XOBJ011_OPERATIONS_BY_TYPE = Object.freeze({
+  Administrative: new Set(["CollectPrivilegedReadOnly"]),
+  NetworkAccess: new Set(["UseNetwork", "OnlineLookup"]),
+  DefenderScan: new Set(["RunDefenderScan"]),
+  DefenderOffline: new Set(["ScheduleDefenderOffline", "PerformDefenderOffline"]),
+  MemoryAcquisition: new Set(["AcquireMemory"]),
+  SensitiveDataCollection: new Set(["CollectSensitiveData"]),
+  Export: new Set(["Export"]),
+  Remediation: new Set(["Remediate"]),
+  Reboot: new Set(["ScheduleRebootContinuation", "PerformRebootContinuation"])
+});
+
+const XOBJ011_AUTHORIZATION_FIELD_BY_TYPE = Object.freeze({
+  Administrative: "elevation_authorization",
+  NetworkAccess: "network_authorization",
+  DefenderScan: "defender_scan_authorization",
+  DefenderOffline: "reboot_authorization",
+  MemoryAcquisition: "memory_authorization",
+  Export: "export_authorization",
+  Remediation: "remediation_authorization",
+  Reboot: "reboot_authorization"
+});
+
+function loadedCollectorBinding(graph, binding) {
+  if (!binding) return undefined;
+  const definition = graph.collections.collector_definitions.find((item) =>
+    item.collector_id === binding.collector_id && item.integrity.object_digest === binding.collector_definition_digest);
+  const loaded = graph.loaded_digests.collector_definitions.find((item) =>
+    item.collector_id === binding.collector_id && item.object_digest === binding.collector_definition_digest);
+  return definition && loaded ? definition : undefined;
+}
+
+function receiptPassBinding(graph, receipt, action) {
+  const scopePassId = receipt.exact_scope.pass_id;
+  if ((scopePassId === undefined) !== (action.pass_id === undefined)) return undefined;
+  const referencingPasses = graph.collections.audit_passes.filter((item) => item.consent_receipt_ids.includes(receipt.receipt_id));
+  if (scopePassId === undefined) return referencingPasses.length === 0 ? null : undefined;
+  const pass = oneBy(graph.collections.audit_passes, "pass_id", scopePassId);
+  return pass && action.pass_id === scopePassId && referencingPasses.length === 1 && referencingPasses[0] === pass ? pass : undefined;
+}
+
+function findingUsesCollector(graph, finding, definition) {
+  const executionIds = new Set();
+  if (finding.finding_kind === "Coverage" && finding.coverage?.execution_id) executionIds.add(finding.coverage.execution_id);
+  for (const observationId of finding.observation_ids ?? []) {
+    const observation = oneBy(graph.collections.observations, "observation_id", observationId);
+    if (observation) executionIds.add(observation.execution_id);
+  }
+  return graph.collections.collector_executions.some((execution) =>
+    executionIds.has(execution.execution_id)
+      && execution.collector_id === definition.collector_id
+      && execution.collector_definition_digest === definition.integrity.object_digest);
+}
+
+function validateCollectorConsent(graph, receipt, action, definitions) {
+  const definition = loadedCollectorBinding(graph, receipt.collector_binding);
+  const pass = receiptPassBinding(graph, receipt, action);
+  const executions = graph.collections.collector_executions.filter((item) => item.consent_receipt_ids.includes(receipt.receipt_id));
+  if (!definition || !pass || receipt.export_binding || receipt.action_binding || receipt.reboot_binding
+    || executions.length !== 1 || executions[0].collector_id !== definition.collector_id
+    || executions[0].collector_definition_digest !== definition.integrity.object_digest
+    || executions[0].pass_id !== pass.pass_id
+    || (action.execution_id !== undefined && action.execution_id !== executions[0].execution_id)
+    || !definition.execution_context.consent_requirements.includes(receipt.consent_type)
+    || !definition.backend.capabilities.every((item) => receipt.approved_capabilities.includes(item))
+    || !definition.privacy_classes.every((item) => receipt.approved_privacy_classes.includes(item))) return false;
+  return definitions.includes(definition);
+}
+
+function validateExportConsent(graph, receipt, action) {
+  if (!receipt.export_binding || receipt.collector_binding || receipt.action_binding || receipt.reboot_binding
+    || receipt.exact_scope.pass_id !== undefined
+    || graph.collections.audit_passes.some((item) => item.consent_receipt_ids.includes(receipt.receipt_id))
+    || graph.collections.collector_executions.some((item) => item.consent_receipt_ids.includes(receipt.receipt_id))
+    || action.action_type !== "Export") return false;
+  const exported = oneBy(graph.collections.export_manifests, "export_id", receipt.export_binding.export_id);
+  if (!exported || exported.run_id !== graph.run_id) return false;
+  const profile = graph.collections.redaction_profiles.find((item) =>
+    item.profile_id === exported.redaction_profile_id && item.version === exported.redaction_profile_version);
+  const loadedProfile = profile && graph.loaded_digests.redaction_profiles.find((item) =>
+    item.profile_id === profile.profile_id && item.version === profile.version);
+  return Boolean(profile && loadedProfile
+    && receipt.export_binding.redaction_profile_digest === exported.redaction_profile_digest
+    && receipt.export_binding.redaction_profile_digest === profile.profile_digest.digest
+    && loadedProfile.profile_digest === profile.profile_digest.digest
+    && action.export_authorization?.redaction_profile_digest === profile.profile_digest.digest
+    && action.export_authorization?.export_manifest_reference === receipt.exact_scope.target_reference);
+}
+
+function validateRemediationConsent(graph, receipt, action) {
+  if (!receipt.action_binding || receipt.collector_binding || receipt.export_binding || receipt.reboot_binding
+    || action.action_type !== "Remediation"
+    || receipt.action_binding.action_id !== receipt.exact_scope.authorized_action_id
+    || receipt.action_binding.action_id !== action.action_id
+    || receipt.action_binding.exact_target_reference !== receipt.exact_scope.target_reference
+    || action.remediation_authorization?.exact_target_reference !== receipt.exact_scope.target_reference
+    || receiptPassBinding(graph, receipt, action) === undefined
+    || graph.collections.collector_executions.some((item) => item.consent_receipt_ids.includes(receipt.receipt_id))) return false;
+  if (receipt.action_binding.finding_id !== undefined) {
+    const finding = oneBy(graph.collections.findings, "finding_id", receipt.action_binding.finding_id);
+    if (!finding) return false;
+    if (receipt.action_binding.related_collector_binding !== undefined) {
+      const definition = loadedCollectorBinding(graph, receipt.action_binding.related_collector_binding);
+      if (!definition || !findingUsesCollector(graph, finding, definition)) return false;
+    }
+  }
+  return true;
+}
+
+function validateRebootConsent(graph, receipt, action) {
+  if (!receipt.reboot_binding || receipt.collector_binding || receipt.export_binding || receipt.action_binding
+    || action.action_type !== "Reboot"
+    || receipt.reboot_binding.workflow_id !== receipt.exact_scope.target_reference
+    || action.reboot_authorization?.continuation_state_reference !== receipt.exact_scope.target_reference
+    || receiptPassBinding(graph, receipt, action) === undefined
+    || graph.collections.collector_executions.some((item) => item.consent_receipt_ids.includes(receipt.receipt_id))) return false;
+  const expectedStages = receipt.exact_scope.operation_code === "ScheduleRebootContinuation"
+    ? new Set(["Schedule"])
+    : new Set(["Perform", "Continue"]);
+  if (!expectedStages.has(receipt.reboot_binding.stage)) return false;
+  if (receipt.reboot_binding.stage === "Schedule" && action.reboot_authorization?.next_stage !== "RebootContinuation") return false;
+  if (receipt.reboot_binding.planned_by_collector !== undefined) {
+    const definition = loadedCollectorBinding(graph, receipt.reboot_binding.planned_by_collector);
+    if (!definition || !graph.collections.collector_executions.some((execution) =>
+      execution.collector_id === definition.collector_id
+        && execution.collector_definition_digest === definition.integrity.object_digest
+        && execution.pass_id === receipt.exact_scope.pass_id)) return false;
+  }
+  return true;
+}
+
+export function validateXobj011(graph, typeModels = XOBJ011_CONSENT_TYPE_MODELS) {
   const now = asTime(graph.validation_context.validation_time);
   if (now === undefined || !Array.isArray(graph.replay_history.consent_nonces)) return ["XOBJ_GRAPH_INPUT_MISSING"];
   const receipts = graph.collections.consent_receipts;
   const actions = graph.collections.action_logs.flatMap((log) => log.entries);
   const definitions = graph.collections.collector_definitions;
+  const run = graph.collections.audit_runs[0];
+  if (!run || duplicates(receipts.map((item) => item.receipt_id)) || duplicates(receipts.map((item) => item.nonce))) {
+    return ["CONSENT_SCOPE_INVALID"];
+  }
   for (const receipt of sorted(receipts, "receipt_id")) {
+    const model = typeModels[receipt.consent_type];
+    const operations = XOBJ011_OPERATIONS_BY_TYPE[receipt.consent_type];
     const action = oneBy(actions, "action_id", receipt.exact_scope.authorized_action_id);
-    const definition = receipt.collector_binding && definitions.find((item) => item.collector_id === receipt.collector_binding.collector_id
-      && item.integrity.object_digest === receipt.collector_binding.collector_definition_digest);
-    const execution = definition && graph.collections.collector_executions.find((item) => item.collector_id === definition.collector_id
-      && item.collector_definition_digest === definition.integrity.object_digest && item.pass_id === receipt.exact_scope.pass_id);
-    const pass = oneBy(graph.collections.audit_passes, "pass_id", receipt.exact_scope.pass_id);
-    if (receipt.audit_run_id !== graph.run_id || receipt.revocation.state !== "Active" || asTime(receipt.expires_at) <= now
+    const authorizationField = XOBJ011_AUTHORIZATION_FIELD_BY_TYPE[receipt.consent_type];
+    if (!model || !XOBJ011_CONSENT_VARIANTS.includes(model) || !operations?.has(receipt.exact_scope.operation_code)
+      || receipt.audit_run_id !== graph.run_id || receipt.revocation.state !== "Active" || asTime(receipt.expires_at) <= now
       || graph.replay_history.consent_nonces.includes(receipt.nonce) || receipt.exact_scope.single_use !== true
-      || !definition || !execution || !pass || !graph.collections.audit_runs[0].consent_receipt_ids.includes(receipt.receipt_id)
-      || !pass.consent_receipt_ids.includes(receipt.receipt_id) || !execution.consent_receipt_ids.includes(receipt.receipt_id)
-      || !action || !action.consent_receipt_ids.includes(receipt.receipt_id)
+      || !isSubset(receipt.approved_capabilities, receipt.requested_capabilities)
+      || !isSubset(receipt.approved_privacy_classes, receipt.requested_privacy_classes)
+      || !exactlyOnce(run.consent_receipt_ids, receipt.receipt_id)
+      || !action || !exactlyOnce(action.consent_receipt_ids, receipt.receipt_id)
+      || action.audit_run_id !== graph.run_id || action.operation.purpose_code !== receipt.purpose_code
       || action.operation.operation_code !== receipt.exact_scope.operation_code || action.operation.target_reference !== receipt.exact_scope.target_reference
-      || !definition.execution_context.consent_requirements.includes(receipt.consent_type)
-      || !definition.backend.capabilities.every((item) => receipt.approved_capabilities.includes(item))
-      || !definition.privacy_classes.every((item) => receipt.approved_privacy_classes.includes(item))
       || actions.filter((item) => item.consent_receipt_ids.includes(receipt.receipt_id)).length !== 1
-      || graph.collections.collector_executions.filter((item) => item.consent_receipt_ids.includes(receipt.receipt_id)).length !== 1) return ["CONSENT_SCOPE_INVALID"];
+      || (authorizationField !== undefined && action[authorizationField]?.consent_receipt_id !== receipt.receipt_id)) {
+      return ["CONSENT_SCOPE_INVALID"];
+    }
+    const validVariant = model === "CollectorExecution"
+      ? validateCollectorConsent(graph, receipt, action, definitions)
+      : model === "Export"
+        ? validateExportConsent(graph, receipt, action)
+        : model === "Remediation"
+          ? validateRemediationConsent(graph, receipt, action)
+          : model === "Reboot" && validateRebootConsent(graph, receipt, action);
+    if (!validVariant) return ["CONSENT_SCOPE_INVALID"];
   }
   for (const execution of graph.collections.collector_executions) {
     const definition = definitions.find((item) => item.collector_id === execution.collector_id && item.version === execution.collector_version);
     if (!definition) return ["CONSENT_SCOPE_INVALID"];
     for (const type of definition.execution_context.consent_requirements) {
-      if (!execution.consent_receipt_ids.some((id) => receipts.some((receipt) => receipt.receipt_id === id && receipt.consent_type === type))) return ["CONSENT_SCOPE_INVALID"];
+      if (typeModels[type] === "CollectorExecution"
+        && !execution.consent_receipt_ids.some((id) => receipts.some((receipt) => receipt.receipt_id === id && receipt.consent_type === type))) {
+        return ["CONSENT_SCOPE_INVALID"];
+      }
     }
   }
   return [];

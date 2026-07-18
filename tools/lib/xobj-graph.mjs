@@ -173,8 +173,17 @@ export function isXobjRecord(record) {
 }
 
 export function materializeXobjRecord(record) {
-  if (!isXobjRecord(record) || record.fixture.graph_ref !== "/base_graph" || !record.document.base_graph) throw new Error("XOBJ_GRAPH_INPUT_MISSING");
-  return materializeGraph(record.document.base_graph, record.fixture.mutations ?? []);
+  if (!isXobjRecord(record) || !record.document.base_graph || typeof record.fixture.graph_ref !== "string") {
+    throw new Error("XOBJ_GRAPH_INPUT_MISSING");
+  }
+  let setupMutations = [];
+  if (record.fixture.graph_ref !== "/base_graph") {
+    const match = /^\/consent_variant_graphs\/([A-Za-z][A-Za-z0-9]*)$/.exec(record.fixture.graph_ref);
+    const graphVariant = match && record.document.consent_variant_graphs?.[match[1]];
+    if (!Array.isArray(graphVariant)) throw new Error("XOBJ_GRAPH_INPUT_MISSING");
+    setupMutations = graphVariant;
+  }
+  return materializeGraph(record.document.base_graph, [...setupMutations, ...(record.fixture.mutations ?? [])]);
 }
 
 export function xobjSchemaSubjects(graph) {

@@ -1,8 +1,10 @@
 # SecApp Decision Log
 
-Status: architecture decisions through JCS-DIGEST1; accepted for design and independent recheck only
+Status: historical decisions retained; ARCH-FIX4/D-026 is WIP pending independent ARCH-REVIEW6 and is not an accepted architecture baseline
 
 An accepted design decision does not authorize runtime code, binary acquisition, elevation, dependency installation, deployment, commit, or push.
+
+Checkpoint `04351799ad780602bf73324336f40ab300c80323` is a WIP checkpoint. ARCH-REVIEW5 returned `fail_with_blockers`; a green local ARCH-FIX4 gate is only a candidate for ARCH-REVIEW6.
 
 ## Accepted design decisions
 
@@ -106,6 +108,18 @@ XOBJ-001 through XOBJ-018 use one bounded test-only materialized graph model and
 
 D-023 remains the historical dependency and full-schema-validator decision, but its original digest sub-gate was not sufficient: the reported 9/9 result did not exercise nonempty ProfileDigest ordering or byte-backed digests and allowed malformed direct JCS values to be accepted or to crash with raw exceptions. JCS-DIGEST1 supersedes that sufficiency boundary with official RFC 8785 serialization/property-order vectors, ECMAScript number cases, strict Unicode and direct-API fail-closed behavior, exact `field` ProfileDigest normalization, raw-byte FileDigest vectors, and normative ContentDigest text canonicalization. Passing remains a local design-contract gate, not provenance, runtime conformance, or a trust anchor.
 
+## Superseding WIP decision for independent review
+
+### D-026 (WIP): Supersede count-only and universal consent gate sufficiency
+
+ARCH-REVIEW5 reproduced two blockers against checkpoint `04351799ad780602bf73324336f40ab300c80323`. First, XOBJ-011 applied CollectorExecution/pass binding to every receipt and rejected schema-valid Export, Remediation, and Reboot graphs. Second, digest completeness compared only category counts, so deleting `JCS_RFC8785_SERIALIZATION_SAMPLE` and replacing it with a duplicate preserved exit 0. The count-only result was a false positive.
+
+ARCH-FIX4 makes XOBJ-011 discriminator-aware with four immutable models: `CollectorExecution`, `Export`, `Remediation`, and `Reboot`. All nine consent types remain in fail-closed dispatch. DefenderOffline retains the already documented collector-scoped model; no new reboot-scoped authority is introduced. Exact required variant sets, required positive/negative/substitution vector IDs, execution state, and skipped state now gate exit 0.
+
+Digest completeness now uses immutable exact required-ID sets for catalog digest, JCS conformance/direct API, ProfileDigest, FileDigest, ContentDigest, permanent schema guards, and checked arithmetic. Missing, duplicate, wrong-category, skipped, or unexecuted IDs fail with stable controlled codes, and six in-memory mutations run for every required ID. The RFC claim is limited to a covered conformance set with `full_corpus_claimed: false`.
+
+D-026 supersedes only the sufficiency claims of D-021/D-024/D-025; it does not erase their historical text or change D-025 ContentDigest semantics. The local result does not prove runtime authorization, provenance, Velociraptor compatibility, production readiness, or production-ready schemas. D-026 remains WIP until independent ARCH-REVIEW6.
+
 ## Open decisions before runtime
 
 | ID | Decision | Required evidence |
@@ -120,7 +134,7 @@ D-023 remains the historical dependency and full-schema-validator decision, but 
 | O-008 | Initial rules and severity rationale | Security review plus deterministic positive/negative examples |
 | O-009 | Supported Windows versions/editions | Standard/elevated behavior and unsupported-state test matrix |
 | O-010 | HTML renderer, localization, and CSP | Injection corpus and browser regression plan |
-| O-011 | Validator CI integration and independent recheck | Reproduce the installed pinned Draft 2020-12, XOBJ-GRAPH1, and JCS-DIGEST1 gates in deterministic CI, then perform ARCH-REVIEW5 |
+| O-011 | Validator CI integration and independent recheck | Reproduce the installed pinned Draft 2020-12, discriminator-aware XOBJ-GRAPH1, and exact-ID JCS-DIGEST1 gates in deterministic CI, then perform ARCH-REVIEW6 |
 | O-012 | External integrity trust anchor | Protected stored digest or detached signature design and key lifecycle |
 
 Until these decisions pass review, the permitted next action is independent architecture recheck, not runtime implementation.

@@ -32,7 +32,7 @@ Exit evidence:
 - open blockers are explicit;
 - no runtime code or backend binary is present.
 
-ARCH-FIX1 through ARCH-FIX3 can move Stage 0 only to independent recheck. SCHEMA-VALIDATION1 supplies the pinned development-only Draft 2020-12 gate, XOBJ-GRAPH1 makes XOBJ-001 through XOBJ-018 mandatory over fixed materialized graphs, and JCS-DIGEST1 supplies strict RFC 8785/ProfileDigest plus byte-backed FileDigest/ContentDigest coverage. CI integration and independent ARCH-REVIEW5 still remain; none of these validators is a runtime dependency. The earlier `fail_with_blockers` result continues to prohibit Stage 1 runtime work until the independent recheck accepts the architecture.
+Checkpoint `04351799ad780602bf73324336f40ab300c80323` is WIP, not the Stage 0 architecture baseline. ARCH-REVIEW5 returned `fail_with_blockers` after reproducing universal XOBJ-011 collector binding and count-only digest completeness. ARCH-FIX4 narrows those blockers with discriminator-aware consent models and immutable exact required digest IDs, while preserving D-025 semantics. Independent ARCH-REVIEW6 and CI integration still remain; none of these validators is a runtime dependency, provenance proof, Velociraptor compatibility experiment, production-readiness claim, or declaration that schemas are production-ready. Stage 1 remains prohibited until an independent review accepts the architecture.
 
 ## Stage 1: contract and backend compatibility experiment
 

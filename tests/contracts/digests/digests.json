@@ -2,6 +2,7 @@
   "canonicalization": "JCS-RFC8785",
   "algorithm": "SHA-256",
   "encoding": "LowerHex",
+  "case_controls": [],
   "jcs_conformance_vectors": [
     {
       "case_id": "JCS_RFC8785_SERIALIZATION_SAMPLE",
@@ -136,13 +137,32 @@
     { "case_id": "CONTENT_CRLF", "source_bytes": { "encoding": "Hex", "data": "610d0a620d0a" }, "canonical_hex": "610a620a", "expected_digest": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2" },
     { "case_id": "CONTENT_CR", "source_bytes": { "encoding": "Hex", "data": "610d62" }, "canonical_hex": "610a620a", "expected_digest": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2" },
     { "case_id": "CONTENT_BOM", "source_bytes": { "encoding": "Hex", "data": "efbbbf616263" }, "canonical_hex": "6162630a", "expected_digest": "edeaaff3f1774ad2888673770c6d64097e391bc362d7d6fb34982ddf0efd18cb" },
+    { "case_id": "CONTENT_BOM_ONLY", "source_bytes": { "encoding": "Hex", "data": "efbbbf" }, "canonical_hex": "0a", "expected_digest": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b" },
+    { "case_id": "CONTENT_LF_ONLY", "source_bytes": { "encoding": "Hex", "data": "0a" }, "canonical_hex": "0a", "expected_digest": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b" },
+    { "case_id": "CONTENT_MIXED_LINE_ENDINGS", "source_bytes": { "encoding": "Hex", "data": "610d620d0a630a" }, "canonical_hex": "610a620a630a", "expected_digest": "880553fca8fcea94e325ee2cfb48e5a985cc797f39a14cc6d3cedecfeb2ae4d2" },
     { "case_id": "CONTENT_FINAL_LF", "source_bytes": { "encoding": "Hex", "data": "6162630a" }, "canonical_hex": "6162630a", "expected_digest": "edeaaff3f1774ad2888673770c6d64097e391bc362d7d6fb34982ddf0efd18cb" },
     { "case_id": "CONTENT_UTF8", "source_bytes": { "encoding": "Base64", "data": "0J/RgNC40LLQtdGC" }, "canonical_hex": "d09fd180d0b8d0b2d0b5d1820a", "expected_digest": "dfeeecc1163e26fe6d1bc09cec65868b6c5dc9e4bb4f01ff2f6f5d0d3b0b7166" },
     { "case_id": "CONTENT_COMPOSED", "source_bytes": { "encoding": "Hex", "data": "c3a9" }, "canonical_hex": "c3a90a", "expected_digest": "edd3a863872a04239eb29ad4bc12fc892b3d4ae57cc7e786a3697816f8e141c2" },
     { "case_id": "CONTENT_DECOMPOSED", "source_bytes": { "encoding": "Hex", "data": "65cc81" }, "canonical_hex": "65cc810a", "expected_digest": "f979a211b00b61497349a7c753652a3d173550a368711a9f9f9845e6383db7cb" },
     { "case_id": "CONTENT_SUPPLEMENTARY", "source_bytes": { "encoding": "Hex", "data": "f09f9880" }, "canonical_hex": "f09f98800a", "expected_digest": "d744e0ee836148320d73e0d69631b60cc9eb4ec732cf9d78afd0d70661fcff31" },
     { "case_id": "CONTENT_NUL", "source_bytes": { "encoding": "Hex", "data": "610062" }, "canonical_hex": "6100620a", "expected_digest": "3a100994c4e38751871e6e8eef9adad2b20177fdeaf650daacdcd74f4c9421e3" },
-    { "case_id": "CONTENT_INVALID_UTF8", "source_bytes": { "encoding": "Hex", "data": "80" }, "expected_error": "DIGEST_CONTENT_UTF8_INVALID" }
+    { "case_id": "CONTENT_INVALID_UTF8", "source_bytes": { "encoding": "Hex", "data": "80" }, "expected_error": "DIGEST_CONTENT_UTF8_INVALID" },
+    { "case_id": "CONTENT_INVALID_UTF8_BINARY", "source_bytes": { "encoding": "Hex", "data": "fffec32800" }, "expected_error": "DIGEST_CONTENT_UTF8_INVALID" }
+  ],
+  "schema_guard_negative_cases": [
+    { "case_id": "SCHEMA_FORMAT_UUID_INVALID", "kind": "Format", "format": "uuid", "invalid_value": "not-a-uuid" },
+    { "case_id": "SCHEMA_FORMAT_DATE_TIME_INVALID", "kind": "Format", "format": "date-time", "invalid_value": "2026-13-99T25:61:61Z" },
+    { "case_id": "SCHEMA_FORMAT_URI_INVALID", "kind": "Format", "format": "uri", "invalid_value": "http://[" },
+    { "case_id": "SCHEMA_KEYWORD_UNKNOWN_ORDINARY_INVALID", "kind": "UnknownKeyword", "keyword": "ordinaryUnknownKeyword" },
+    { "case_id": "SCHEMA_KEYWORD_UNKNOWN_X_INVALID", "kind": "UnknownKeyword", "keyword": "x-unknown-jcs-test" },
+    { "case_id": "SCHEMA_NAMESPACE_UNKNOWN_MAJOR_INVALID", "kind": "Namespace", "schema": { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://schemas.secapp.dev/v2/synthetic.schema.json", "properties": { "schema_version": { "const": "1.0.0" } } } }
+  ],
+  "checked_arithmetic_cases": [
+    { "case_id": "CHECKED_ADD_MAX_SAFE_BOUNDARY", "operator": "checkedAdd", "operands": [9007199254740991, 0], "expected": 9007199254740991 },
+    { "case_id": "CHECKED_ADD_OVERFLOW", "operator": "checkedAdd", "operands": [9007199254740991, 1], "expected_error": "LIMIT_INTEGER_OVERFLOW" },
+    { "case_id": "CHECKED_MULTIPLY_MAX_SAFE_BOUNDARY", "operator": "checkedMultiply", "operands": [9007199254740991, 1], "expected": 9007199254740991 },
+    { "case_id": "CHECKED_MULTIPLY_OVERFLOW", "operator": "checkedMultiply", "operands": [9007199254740991, 2], "expected_error": "LIMIT_INTEGER_OVERFLOW" },
+    { "case_id": "CHECKED_MULTIPLY_ORDINARY", "operator": "checkedMultiply", "operands": [1024, 1024], "expected": 1048576 }
   ],
   "vectors": [
     {

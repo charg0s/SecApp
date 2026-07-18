@@ -1,6 +1,6 @@
 # SecApp Privacy and Storage Model
 
-Status: normative design policy; storage decisions below block runtime work
+Status: ARCH-FIX4 WIP normative design policy pending independent ARCH-REVIEW6; storage decisions below still block runtime work
 
 ## Principles
 
@@ -40,10 +40,11 @@ Unknown fields have no default class. They reject normalization or export.
 
 ConsentReceipt is a separate strict discriminated-union contract. It records user presence, exact authority binding, purpose code, consent type, requested and approved capabilities and privacy classes, presented/accepted/expiry times, consent-text and application versions, host-binding digest, one-time nonce, and revocation state.
 
-- Administrative, NetworkAccess, DefenderScan, DefenderOffline, MemoryAcquisition, and SensitiveDataCollection are collector-scoped and require collector plus run/pass/action/operation/target binding.
-- Export requires export plus run/action/operation/target binding, forbids pass and collector binding, and pins one RedactionProfile digest.
-- Remediation requires run/pass/action binding and the same exact target in both scope and action binding. A related collector is allowed only together with a finding ID.
-- Reboot requires run/pass/action plus workflow/stage binding. It may name only the collector that planned the workflow.
+- Administrative, NetworkAccess, DefenderScan, DefenderOffline, MemoryAcquisition, and SensitiveDataCollection use the CollectorExecution model and require collector definition/digest plus run, concrete pass, execution, action, operation, target, and purpose binding.
+- DefenderOffline is unambiguously collector-scoped in the current schema/decision model even though its exact operation participates in an offline workflow; it is not silently treated as a general Reboot receipt.
+- Export requires export plus run/action/operation/manifest-target binding, forbids receipt pass and collector-execution binding, and pins the loaded RedactionProfile digest.
+- Remediation requires run/action binding and the same exact target in scope, action binding, and authorization. Pass binding applies only to a concrete pass-scoped action (as required by the current v1 action contract). A related collector is allowed only together with a finding ID and verified relation.
+- Reboot requires run/action plus exact workflow/stage/operation binding and replay protection. Pass binding follows the current v1 reboot workflow; a collector is optional only as the explicit collector that planned that workflow.
 
 Foreign binding variants are rejected even if the required variant is also present.
 
@@ -67,7 +68,7 @@ Application validation enforces:
 
 - approved capabilities and privacy classes are subsets of their requested sets;
 - collector requirements are a subset of the union of exact, actually presented receipts, without treating unrelated receipt types as authority;
-- receipt run, pass, action, operation, target, collector/definition when applicable, and host bindings match;
+- receipt run, conditional pass, action, operation, target, collector/definition when applicable, and host bindings match;
 - export, remediation action/target, and reboot workflow/stage bindings match their discriminator-specific scope;
 - receipt is active and unexpired at launch;
 - nonce has not been consumed;
@@ -75,6 +76,8 @@ Application validation enforces:
 - one receipt cannot authorize a different run, pass, action, operation, target, collector, export, or broader scope.
 
 Failure is ConsentDenied. Consent is not inferred from elevation, a previous audit, a checkbox default, or possession of an old receipt.
+
+The XOBJ-011 gate proves the four exact binding models through separate schema-valid positive graphs and required negative/substitution graphs. Required, executable, executed, positive, and negative variant coverage is checked as exact immutable sets; count-only coverage is not accepted. This local synthetic gate is not runtime authorization, provenance, or production proof.
 
 ## ActionLog parameter privacy
 

@@ -1,6 +1,6 @@
 # SecApp Integrity and Cross-Object Validation Model
 
-Status: normative design contract through JCS-DIGEST1; no runtime implementation or provenance guarantee
+Status: ARCH-FIX4 WIP design contract pending independent ARCH-REVIEW6; no accepted baseline, runtime implementation, production-ready schema claim, or provenance guarantee
 
 ## Scope and validation phases
 
@@ -28,11 +28,19 @@ RFC 8785 property names are ordered by raw UTF-16 code units, independently of l
 
 Contract array normalization is a separate step from JCS property ordering. AuditManifest, ExportManifest, and RedactionProfile use the exact keys named by their contracts and the shared bytewise UTF-8 comparator; report or fixture enumeration uses a shared locale-independent code-unit comparator. No deterministic path uses `localeCompare`, `Intl.Collator`, or environmental locale/configuration.
 
+JCS-DIGEST1 claims only its covered conformance set. Machine output uses `rfc8785_conformance_status: covered_conformance_set_passed`, `conformance_claim: CoveredSet`, a covered case count, explicit official/derived vector IDs, and `full_corpus_claimed: false`. It does not claim execution of the complete official RFC corpus.
+
 ### ContentDigest and FileDigest byte contracts
 
 FileDigest hashes the exact materialized source bytes, including BOM, CR, LF, final newline state, NUL, and arbitrary byte values. Hex and Base64 are fixture transport encodings only; invalid, non-canonical, odd-length, or unsupported encodings are rejected before hashing.
 
-ContentDigest first decodes strict UTF-8, removes one leading U+FEFF BOM, converts CRLF and lone CR to LF, and appends LF when the logical text does not already end with LF. Empty text therefore canonicalizes to one LF byte. Existing LF multiplicity, NUL, supplementary characters, and composed/decomposed Unicode are otherwise preserved; invalid UTF-8 is rejected and NFC/NFD normalization is forbidden.
+ContentDigest first decodes strict UTF-8, removes one leading U+FEFF BOM, converts CRLF and lone CR to LF, and appends LF when the logical text does not already end with LF. Empty text therefore canonicalizes to one LF byte. Existing LF multiplicity, NUL, supplementary characters, and composed/decomposed Unicode are otherwise preserved; invalid UTF-8 is rejected and NFC/NFD normalization is forbidden. Permanent cases isolate BOM-only, LF-only, mixed CR/CRLF/LF, preserved NUL, and arbitrary invalid UTF-8 binary behavior.
+
+### Digest required-ID completeness
+
+Counts are not completeness evidence. The digest gate owns immutable exact required-ID sets for catalog digest cases, JCS conformance, direct API positives, direct API negatives, ProfileDigest, FileDigest, ContentDigest, permanent schema format/keyword/namespace guards, and checked arithmetic/checkedMultiply. Every required ID must exist exactly once in its assigned category, execute, remain unskipped, and produce its expected result. Optional cases are accepted only when explicitly marked additional and cannot mask a missing required ID.
+
+Missing, duplicate, unexecuted, skipped, category-mismatched, and unequal required sets use `DIGEST_REQUIRED_CASE_MISSING`, `DIGEST_REQUIRED_CASE_DUPLICATE`, `DIGEST_REQUIRED_CASE_NOT_EXECUTED`, `DIGEST_REQUIRED_CASE_SKIPPED`, `DIGEST_CASE_CATEGORY_MISMATCH`, and `DIGEST_REQUIRED_SET_MISMATCH`. Every run performs six in-memory mutations for every required ID: removal, replacement by another ID's duplicate, direct duplication, category change, skipped, and not executed.
 
 ### RedactionProfile ProfileDigest
 
@@ -120,7 +128,9 @@ One receipt authorizes only its exact operation code and target.
 | SensitiveDataCollection | CollectSensitiveData | Collector binding and enumerated sensitive privacy classes |
 | Export | Export | Exact export ID and RedactionProfile digest; no collector binding |
 
-Collector-scoped receipts (`Administrative`, `NetworkAccess`, `DefenderScan`, `DefenderOffline`, `MemoryAcquisition`, and `SensitiveDataCollection`) require a collector binding and pass ID. `Export` requires export and run binding and forbids collector/pass binding. `Remediation` requires an exact action/target plus run/pass binding; an optional related collector is permitted only when a finding binds it. `Reboot` requires an exact workflow/stage plus run/pass binding and may identify only the collector that planned it.
+XOBJ-011 dispatches four binding models. `CollectorExecution` applies only to `Administrative`, `NetworkAccess`, `DefenderScan`, `DefenderOffline`, `MemoryAcquisition`, and `SensitiveDataCollection` and requires collector definition/digest, execution, run, concrete pass, action, exact operation/target/purpose, and receipt membership. DefenderOffline remains collector-scoped under the existing schema and D-021; ARCH-FIX4 does not invent a reboot-scoped alternative.
+
+`Export` requires run, exact Export action/manifest target, export ID, and loaded RedactionProfile digest and forbids receipt-level pass or collector-execution use. `Remediation` requires run, action binding, exact remediation target/operation, and approved requested scope; pass binding is checked only when the action is pass-scoped (all current v1 Remediation actions are), while a related collector is allowed only through an explicit finding-bound relation. `Reboot` requires run, exact workflow/stage/operation, nonce/replay protection, and the pass required by the current v1 workflow; a collector is optional only as `planned_by_collector` for an explicitly collector-triggered workflow. No model inherits CollectorExecution binding merely because another model uses consent.
 
 Administrative never implies NetworkAccess. MemoryAcquisition never implies Remediation. Export never implies collection. `Reboot` plus `Remediate` is schema-invalid. Application validation rejects approved capability/privacy sets broader than requested, collector requirements not covered by presented receipts, receipt reuse, expiry, revocation, conflict, wrong host/run/pass/action/collector/target, binding-variant substitution, and nonce replay.
 
@@ -157,7 +167,7 @@ ARCH-FIX3 does not repurpose XOBJ-001 through XOBJ-018.
 | XOBJ-008 | Finalized object/file membership is exact | MANIFEST_MEMBERSHIP_MISMATCH | Reject finalization |
 | XOBJ-009 | Export source/profile/composition pins match | EXPORT_SOURCE_MISMATCH | Reject export |
 | XOBJ-010 | Timestamp containment and order are valid | TIMESTAMP_ORDER_INVALID | Reject object |
-| XOBJ-011 | Original consent binding checks remain mandatory | CONSENT_SCOPE_INVALID | ConsentDenied; do not launch |
+| XOBJ-011 | Consent type dispatches to exact CollectorExecution, Export, Remediation, or Reboot binding model; common scope/replay/substitution checks remain mandatory | CONSENT_SCOPE_INVALID | ConsentDenied; do not launch |
 | XOBJ-012 | Original ActionLog sequence/link checks remain mandatory | ACTION_LOG_CHAIN_INVALID | Reject log/finalization |
 | XOBJ-013 | Reboot state authentication/replay checks pass | REBOOT_STATE_INVALID | Refuse continuation |
 | XOBJ-014 | Rule graph IDs/references/reachability/acyclic/depth/count pass | RULE_GRAPH_INVALID | Reject rule |
@@ -170,7 +180,7 @@ ARCH-FIX3 does not repurpose XOBJ-001 through XOBJ-018.
 
 XOBJ-001 through XOBJ-018 are executable development/reference checks, not registry-only declarations. Their test-only input is one bounded materialized graph with an explicit `run_id` and deterministic collections for AuditRun, AuditPass, CollectorDefinition, CollectorExecution, Observation, EvidenceReference, Finding, ConsentReceipt, ActionLog, AuditManifest, ExportManifest, RedactionProfile, RebootContinuationState, and RuleDefinition. The graph also carries loaded collector/rule/profile/composition/manifest digest pins, consent and reboot replay history, an exact manifest-membership index, a canonical-field registry, a bounded transitive-capability graph, validation context, and aggregate size measurements.
 
-The fixed source is `tests/contracts/xobj/materialized-graphs.json`. It is marked test-only, contains only synthetic identifiers, contains no absolute path or executable fixture content, and uses a fixed base plus an allowlisted maximum of 64 `add`, `copy`, `remove`, or `replace` JSON-Pointer mutations. Materialization deep-clones the base, rejects missing collections, unknown collection kinds, absolute path values, invalid mutations, excessive depth/count/bytes, and then deep-freezes the result. Collection traversal and reported failures use stable identifier/rule order.
+The fixed source is `tests/contracts/xobj/materialized-graphs.json`. It is marked test-only, contains only synthetic identifiers, contains no absolute path or executable fixture content, and uses a fixed base plus data-only shared consent-variant setup and an allowlisted maximum of 64 combined `add`, `copy`, `remove`, or `replace` JSON-Pointer mutations. Materialization deep-clones the base, rejects missing collections, unknown collection kinds, absolute path values, invalid mutations, excessive depth/count/bytes, and then deep-freezes the result. Collection traversal and reported failures use stable identifier/rule order.
 
 Duplicate IDs are preserved during materialization rather than collapsed into a map. XOBJ-002 then rejects them with `EXECUTION_PASS_MISMATCH`. This preserves the required schema-valid targeted negative while ensuring no consumer can silently overwrite one duplicate with another. Missing required rule input is distinct from a detected integrity violation and returns `XOBJ_GRAPH_INPUT_MISSING`; sufficient graph input must never produce the former generic `APPLICATION_RULE_INPUT_MISSING` result.
 
@@ -183,6 +193,8 @@ The mandatory development validation order is:
 5. digest and integrity checks.
 
 Every registered XOBJ rule must have an implementation in the dispatch and at least one executed schema-valid positive and negative vector. Exit code 0 requires `registered_xobj_rules == executable_xobj_rules == covered_xobj_rules`, no uncovered rules, no skipped XOBJ vectors, and no XOBJ failure. Unknown rules, missing implementations, missing inputs, skipped vectors, and unexecuted vectors fail closed. The JSON result reports the three rule sets, vector counts, skipped count, exact primary-code map, and failures.
+
+ARCH-FIX4 adds a second exact-set guard for XOBJ-011. `required_consent_variants`, `executable_consent_variants`, `executed_consent_variants`, and `positively_covered_consent_variants` must all equal `[CollectorExecution, Export, Remediation, Reboot]`; `negatively_covered_consent_variants` must cover the same set, `uncovered_consent_variants` and `skipped_consent_variant_vectors` must be empty, all nine consent types must remain dispatched, and immutable required positive/negative/substitution vector IDs must execute successfully. Permanent self-tests delete each non-collector positive, remove dispatch, simulate universal collector binding, skip a variant, and simulate an accepted substitution.
 
 XOBJ-GRAPH1 is a development/reference validator for the current design contracts. It is not SecApp runtime code, does not establish provenance, and cannot prove source observations are truthful. A compromised host can still forge inputs or rewrite locally anchored state before presenting it to the validator.
 

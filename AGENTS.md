@@ -47,3 +47,8 @@ These instructions apply to the entire repository.
 - Use raw UTF-16 code-unit ordering for RFC 8785 property names and the shared bytewise UTF-8 comparator only for contract arrays that explicitly require it. Never use locale-aware comparison in deterministic validation or report output.
 - Compute ProfileDigest from the complete RedactionProfile after removing only `profile_digest.digest`; sort only `field_rules` by the exact `field` member, reject duplicates, and never fall back to legacy field names.
 - Keep permanent byte-backed FileDigest and ContentDigest fixtures. FileDigest hashes exact materialized bytes; ContentDigest decodes strict UTF-8, removes one leading BOM, normalizes CRLF/CR to LF, requires a final LF, and never normalizes Unicode.
+- Keep XOBJ-011 discriminator-aware: CollectorExecution, Export, Remediation, and Reboot use distinct binding models; DefenderOffline remains collector-scoped unless a later reviewed schema/decision changes it.
+- Fail the application gate unless required, executable, executed, positively covered, and negatively covered consent-variant sets are complete, with no skipped variant vector and every required substitution rejected.
+- Treat digest completeness as immutable exact required-ID sets, never case counts. Required IDs must be unique, correctly categorized, executed, unskipped, and expectation-matching; optional cases must be explicitly additional.
+- Limit RFC 8785 machine claims to the covered conformance set; never claim the full official corpus from the local vectors.
+- Treat checkpoint `04351799ad780602bf73324336f40ab300c80323` as WIP pending independent ARCH-REVIEW6, not as an accepted architecture baseline or production-ready schema set.

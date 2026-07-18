@@ -1120,6 +1120,586 @@
       "imported_records": 0
     }
   },
+  "consent_variant_graphs": {
+    "Export": [
+      {
+        "op": "add",
+        "path": "/collections/consent_receipts/-",
+        "value": {
+          "schema_version": "1.0.0",
+          "receipt_id": "00000000-0000-4000-8000-000000000602",
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "consent_type": "Export",
+          "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+          "exact_scope": {
+            "authorized_action_id": "00000000-0000-4000-8000-000000000802",
+            "operation_code": "Export",
+            "target_reference": "export:synthetic-package",
+            "single_use": true
+          },
+          "requested_capabilities": [],
+          "approved_capabilities": [],
+          "requested_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "approved_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "consent_text_version": "consent-text:1.0.0",
+          "presented_at": "2026-01-01T00:00:00Z",
+          "accepted_at": "2026-01-01T00:00:01Z",
+          "expires_at": "2026-01-01T01:00:00Z",
+          "nonce": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+          "user_presence": true,
+          "application_version": "0.1.0",
+          "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+          "revocation": {
+            "state": "Active"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "d7189ea973aa957d31e85f726cf17a99617af65b1734fc54bc03d28c90c8b9d8"
+          },
+          "export_binding": {
+            "export_id": "00000000-0000-4000-8000-000000000502",
+            "redaction_profile_digest": "795facf2f555b157ce5c4bf90af502b137aaa1bb70d7c888e1d73090fb6ffd72"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/action_logs/0/entries/-",
+        "value": {
+          "timestamp": "2026-01-01T00:09:30Z",
+          "sequence_number": 1,
+          "action_id": "00000000-0000-4000-8000-000000000802",
+          "action_type": "Export",
+          "actor": {
+            "kind": "SecApp",
+            "actor_id": "secapp:orchestrator"
+          },
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "pass_id": "00000000-0000-4000-8000-000000000011",
+          "operation": {
+            "operation_code": "Export",
+            "target_reference": "export:synthetic-package",
+            "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+          },
+          "consent_receipt_ids": [
+            "00000000-0000-4000-8000-000000000602"
+          ],
+          "result": "Started",
+          "privilege_level": "StandardUser",
+          "network_use": "Forbidden",
+          "filesystem_mutation_class": "ExportOutput",
+          "redacted_parameters": [],
+          "previous_entry_digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6",
+          "entry_digest": {
+            "digest_kind": "EntryDigest",
+            "logical_content": "ActionLogEntryObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "entry_digest"
+            ],
+            "previous_digest_included": true,
+            "digest": "29d19cd8d16fb063199d4931c0aaf50e174d92b1acc32b431830cd8181783aa1"
+          },
+          "export_authorization": {
+            "consent_receipt_id": "00000000-0000-4000-8000-000000000602",
+            "redaction_profile_digest": "795facf2f555b157ce5c4bf90af502b137aaa1bb70d7c888e1d73090fb6ffd72",
+            "export_manifest_reference": "export:synthetic-package"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_runs/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000602"
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_manifests/0/entries/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000602",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000602.json",
+          "media_type": "application/json",
+          "size_bytes": 1397,
+          "file_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "30e7c12abb122e2deb9c9ab0c68dca11fe04f9b1bf75037df214fca7bf3e194a"
+          },
+          "privacy_class": "SystemMetadata"
+        }
+      },
+      {
+        "op": "add",
+        "path": "/manifest_membership_index/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "object_kind": "ConsentReceipt",
+          "object_id": "00000000-0000-4000-8000-000000000602",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000602",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000602.json"
+        }
+      }
+    ],
+    "Remediation": [
+      {
+        "op": "add",
+        "path": "/collections/consent_receipts/-",
+        "value": {
+          "schema_version": "1.0.0",
+          "receipt_id": "00000000-0000-4000-8000-000000000603",
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "consent_type": "Remediation",
+          "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+          "exact_scope": {
+            "pass_id": "00000000-0000-4000-8000-000000000011",
+            "authorized_action_id": "00000000-0000-4000-8000-000000000803",
+            "operation_code": "Remediate",
+            "target_reference": "setting:synthetic-control",
+            "single_use": true
+          },
+          "requested_capabilities": [
+            "REGISTRY_WRITE"
+          ],
+          "approved_capabilities": [
+            "REGISTRY_WRITE"
+          ],
+          "requested_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "approved_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "consent_text_version": "consent-text:1.0.0",
+          "presented_at": "2026-01-01T00:00:00Z",
+          "accepted_at": "2026-01-01T00:00:01Z",
+          "expires_at": "2026-01-01T01:00:00Z",
+          "nonce": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+          "user_presence": true,
+          "application_version": "0.1.0",
+          "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+          "revocation": {
+            "state": "Active"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "73db89b44e3fd218803a0d1bafcfb85a7b611c6e15cbe5642b4f4a4f9beaf0c0"
+          },
+          "action_binding": {
+            "action_id": "00000000-0000-4000-8000-000000000803",
+            "exact_target_reference": "setting:synthetic-control"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/action_logs/0/entries/-",
+        "value": {
+          "timestamp": "2026-01-01T00:09:30Z",
+          "sequence_number": 1,
+          "action_id": "00000000-0000-4000-8000-000000000803",
+          "action_type": "Remediation",
+          "actor": {
+            "kind": "SecApp",
+            "actor_id": "secapp:orchestrator"
+          },
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "pass_id": "00000000-0000-4000-8000-000000000011",
+          "operation": {
+            "operation_code": "Remediate",
+            "target_reference": "setting:synthetic-control",
+            "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+          },
+          "consent_receipt_ids": [
+            "00000000-0000-4000-8000-000000000603"
+          ],
+          "result": "Started",
+          "privilege_level": "Elevated",
+          "network_use": "Forbidden",
+          "filesystem_mutation_class": "Remediation",
+          "redacted_parameters": [],
+          "previous_entry_digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6",
+          "entry_digest": {
+            "digest_kind": "EntryDigest",
+            "logical_content": "ActionLogEntryObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "entry_digest"
+            ],
+            "previous_digest_included": true,
+            "digest": "c858b1acf7a13734783c33afe9136aea4d344b19a700451dfaaf5ed35e08c8da"
+          },
+          "command_contract_id": "command-contract:synthetic-remediation",
+          "remediation_authorization": {
+            "consent_receipt_id": "00000000-0000-4000-8000-000000000603",
+            "exact_target_reference": "setting:synthetic-control",
+            "rollback_policy_id": "rollback:synthetic",
+            "precondition_policy_id": "precondition:synthetic",
+            "user_presence": true
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_runs/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000603"
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_manifests/0/entries/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000603",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000603.json",
+          "media_type": "application/json",
+          "size_bytes": 1397,
+          "file_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "30e7c12abb122e2deb9c9ab0c68dca11fe04f9b1bf75037df214fca7bf3e194a"
+          },
+          "privacy_class": "SystemMetadata"
+        }
+      },
+      {
+        "op": "add",
+        "path": "/manifest_membership_index/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "object_kind": "ConsentReceipt",
+          "object_id": "00000000-0000-4000-8000-000000000603",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000603",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000603.json"
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_passes/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000603"
+      }
+    ],
+    "Reboot": [
+      {
+        "op": "add",
+        "path": "/collections/consent_receipts/-",
+        "value": {
+          "schema_version": "1.0.0",
+          "receipt_id": "00000000-0000-4000-8000-000000000604",
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "consent_type": "Reboot",
+          "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+          "exact_scope": {
+            "pass_id": "00000000-0000-4000-8000-000000000011",
+            "authorized_action_id": "00000000-0000-4000-8000-000000000804",
+            "operation_code": "ScheduleRebootContinuation",
+            "target_reference": "workflow:synthetic-reboot",
+            "single_use": true
+          },
+          "requested_capabilities": [],
+          "approved_capabilities": [],
+          "requested_privacy_classes": [],
+          "approved_privacy_classes": [],
+          "consent_text_version": "consent-text:1.0.0",
+          "presented_at": "2026-01-01T00:00:00Z",
+          "accepted_at": "2026-01-01T00:00:01Z",
+          "expires_at": "2026-01-01T01:00:00Z",
+          "nonce": "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
+          "user_presence": true,
+          "application_version": "0.1.0",
+          "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+          "revocation": {
+            "state": "Active"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "4ab3b105061177862467a6a082e39bec0c1daeee5d8e2c05b7b10b38b6c5a0ca"
+          },
+          "reboot_binding": {
+            "workflow_id": "workflow:synthetic-reboot",
+            "stage": "Schedule"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/action_logs/0/entries/-",
+        "value": {
+          "timestamp": "2026-01-01T00:09:30Z",
+          "sequence_number": 1,
+          "action_id": "00000000-0000-4000-8000-000000000804",
+          "action_type": "Reboot",
+          "actor": {
+            "kind": "SecApp",
+            "actor_id": "secapp:orchestrator"
+          },
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "pass_id": "00000000-0000-4000-8000-000000000011",
+          "operation": {
+            "operation_code": "ScheduleRebootContinuation",
+            "target_reference": "workflow:synthetic-reboot",
+            "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+          },
+          "consent_receipt_ids": [
+            "00000000-0000-4000-8000-000000000604"
+          ],
+          "result": "Started",
+          "privilege_level": "StandardUser",
+          "network_use": "Forbidden",
+          "filesystem_mutation_class": "RebootState",
+          "redacted_parameters": [],
+          "previous_entry_digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6",
+          "entry_digest": {
+            "digest_kind": "EntryDigest",
+            "logical_content": "ActionLogEntryObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "entry_digest"
+            ],
+            "previous_digest_included": true,
+            "digest": "d9768ed409c139a7e1175ab7f555b458586c054754fcea66111e44fe8e6871c1"
+          },
+          "reboot_authorization": {
+            "consent_receipt_id": "00000000-0000-4000-8000-000000000604",
+            "continuation_state_reference": "workflow:synthetic-reboot",
+            "next_stage": "RebootContinuation"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_runs/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000604"
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_manifests/0/entries/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000604",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000604.json",
+          "media_type": "application/json",
+          "size_bytes": 1397,
+          "file_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "30e7c12abb122e2deb9c9ab0c68dca11fe04f9b1bf75037df214fca7bf3e194a"
+          },
+          "privacy_class": "SystemMetadata"
+        }
+      },
+      {
+        "op": "add",
+        "path": "/manifest_membership_index/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "object_kind": "ConsentReceipt",
+          "object_id": "00000000-0000-4000-8000-000000000604",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000604",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000604.json"
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_passes/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000604"
+      }
+    ],
+    "DefenderOffline": [
+      {
+        "op": "add",
+        "path": "/collections/consent_receipts/-",
+        "value": {
+          "schema_version": "1.0.0",
+          "receipt_id": "00000000-0000-4000-8000-000000000605",
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "consent_type": "DefenderOffline",
+          "purpose_code": "SYNTHETIC_CONTRACT_TEST",
+          "exact_scope": {
+            "pass_id": "00000000-0000-4000-8000-000000000011",
+            "authorized_action_id": "00000000-0000-4000-8000-000000000805",
+            "operation_code": "ScheduleDefenderOffline",
+            "target_reference": "workflow:defender-offline",
+            "single_use": true
+          },
+          "requested_capabilities": [
+            "NETWORK"
+          ],
+          "approved_capabilities": [
+            "NETWORK"
+          ],
+          "requested_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "approved_privacy_classes": [
+            "SystemMetadata"
+          ],
+          "consent_text_version": "consent-text:1.0.0",
+          "presented_at": "2026-01-01T00:00:00Z",
+          "accepted_at": "2026-01-01T00:00:01Z",
+          "expires_at": "2026-01-01T01:00:00Z",
+          "nonce": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+          "user_presence": true,
+          "application_version": "0.1.0",
+          "host_binding_digest": "413840c2cdaffd2a151a800ea8db1a8b18a39f01f948eec816c43072cfe33bb5",
+          "revocation": {
+            "state": "Active"
+          },
+          "integrity": {
+            "digest_kind": "ObjectDigest",
+            "algorithm": "SHA-256",
+            "canonicalization": "JCS-RFC8785",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "integrity.object_digest"
+            ],
+            "object_digest": "886dd155da8c66d367b07493907f9d6cd9f9788d5796b9391e0bf9f16577c603"
+          },
+          "collector_binding": {
+            "collector_id": "collector:secapp:synthetic-network",
+            "collector_definition_digest": "94f91dcf4e887ea9b3847ef4a478d93fce3d7a3eee439a1500e30801b7cd92b1"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/action_logs/0/entries/-",
+        "value": {
+          "timestamp": "2026-01-01T00:09:30Z",
+          "sequence_number": 1,
+          "action_id": "00000000-0000-4000-8000-000000000805",
+          "action_type": "Reboot",
+          "actor": {
+            "kind": "SecApp",
+            "actor_id": "secapp:orchestrator"
+          },
+          "audit_run_id": "00000000-0000-4000-8000-000000000001",
+          "pass_id": "00000000-0000-4000-8000-000000000011",
+          "operation": {
+            "operation_code": "ScheduleDefenderOffline",
+            "target_reference": "workflow:defender-offline",
+            "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+          },
+          "consent_receipt_ids": [
+            "00000000-0000-4000-8000-000000000605"
+          ],
+          "result": "Started",
+          "privilege_level": "StandardUser",
+          "network_use": "Forbidden",
+          "filesystem_mutation_class": "RebootState",
+          "redacted_parameters": [],
+          "previous_entry_digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6",
+          "entry_digest": {
+            "digest_kind": "EntryDigest",
+            "logical_content": "ActionLogEntryObject",
+            "canonicalization": "JCS-RFC8785",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "excluded_fields": [
+              "entry_digest"
+            ],
+            "previous_digest_included": true,
+            "digest": "d9768ed409c139a7e1175ab7f555b458586c054754fcea66111e44fe8e6871c1"
+          },
+          "reboot_authorization": {
+            "consent_receipt_id": "00000000-0000-4000-8000-000000000605",
+            "continuation_state_reference": "workflow:defender-offline",
+            "next_stage": "DefenderOffline"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_runs/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000605"
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_manifests/0/entries/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000605",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000605.json",
+          "media_type": "application/json",
+          "size_bytes": 1397,
+          "file_digest": {
+            "digest_kind": "FileDigest",
+            "logical_content": "StoredFileBytes",
+            "canonicalization": "RawBytes",
+            "algorithm": "SHA-256",
+            "encoding": "LowerHex",
+            "digest": "30e7c12abb122e2deb9c9ab0c68dca11fe04f9b1bf75037df214fca7bf3e194a"
+          },
+          "privacy_class": "SystemMetadata"
+        }
+      },
+      {
+        "op": "add",
+        "path": "/manifest_membership_index/-",
+        "value": {
+          "role": "ConsentReceipt",
+          "object_kind": "ConsentReceipt",
+          "object_id": "00000000-0000-4000-8000-000000000605",
+          "member_id": "consentreceipt:00000000-0000-4000-8000-000000000605",
+          "logical_path": "consent/00000000-0000-4000-8000-000000000605.json"
+        }
+      },
+      {
+        "op": "add",
+        "path": "/collections/audit_passes/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000605"
+      },
+      {
+        "op": "add",
+        "path": "/collections/collector_executions/0/consent_receipt_ids/-",
+        "value": "00000000-0000-4000-8000-000000000605"
+      },
+      {
+        "op": "replace",
+        "path": "/collections/collector_definitions/0/execution_context/consent_requirements",
+        "value": [
+          "NetworkAccess",
+          "DefenderOffline"
+        ]
+      }
+    ]
+  },
   "vectors": [
     {
       "vector_id": "XOBJ_001_GRAPH_VALID",
@@ -1218,7 +1798,11 @@
       "expected_application_valid": true,
       "rule_id": "XOBJ-011",
       "graph_ref": "/base_graph",
-      "mutations": []
+      "mutations": [],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "positive"
     },
     {
       "vector_id": "XOBJ_012_GRAPH_VALID",
@@ -1561,7 +2145,11 @@
           "path": "/collections/consent_receipts/0/collector_binding/collector_id",
           "value": "collector:secapp:other-network"
         }
-      ]
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
     },
     {
       "vector_id": "XOBJ_011_CONSENT_EXPIRED_INVALID",
@@ -1577,7 +2165,11 @@
           "path": "/validation_context/validation_time",
           "value": "2026-01-01T02:00:00Z"
         }
-      ]
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
     },
     {
       "vector_id": "XOBJ_011_CONSENT_REVOKED_INVALID",
@@ -1597,7 +2189,11 @@
             "reason_code": "UserRevoked"
           }
         }
-      ]
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
     },
     {
       "vector_id": "XOBJ_011_CONSENT_REPLAY_INVALID",
@@ -1613,7 +2209,476 @@
           "path": "/replay_history/consent_nonces/-",
           "value": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
         }
-      ]
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_EXPORT_VARIANT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Export",
+      "mutations": [],
+      "consent_variants": [
+        "Export"
+      ],
+      "consent_coverage": "positive"
+    },
+    {
+      "vector_id": "XOBJ_011_REMEDIATION_VARIANT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Remediation",
+      "mutations": [],
+      "consent_variants": [
+        "Remediation"
+      ],
+      "consent_coverage": "positive"
+    },
+    {
+      "vector_id": "XOBJ_011_REBOOT_VARIANT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Reboot",
+      "mutations": [],
+      "consent_variants": [
+        "Reboot"
+      ],
+      "consent_coverage": "positive"
+    },
+    {
+      "vector_id": "XOBJ_011_DEFENDER_OFFLINE_COLLECTOR_VARIANT_VALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": true,
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/DefenderOffline",
+      "mutations": [],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "positive"
+    },
+    {
+      "vector_id": "XOBJ_011_EXPORT_COLLECTOR_EXECUTION_BINDING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Export",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/collections/collector_executions/0/consent_receipt_ids/-",
+          "value": "00000000-0000-4000-8000-000000000602"
+        }
+      ],
+      "consent_variants": [
+        "Export"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_EXPORT_BINDING_TARGET_MISSING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Export",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/export_binding/export_id",
+          "value": "00000000-0000-4000-8000-000000000999"
+        }
+      ],
+      "consent_variants": [
+        "Export"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_EXPORT_REDACTION_PROFILE_DIGEST_MISMATCH_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Export",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/export_binding/redaction_profile_digest",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "consent_variants": [
+        "Export"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_EXPORT_OTHER_ACTION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Export",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/exact_scope/authorized_action_id",
+          "value": "00000000-0000-4000-8000-000000000801"
+        }
+      ],
+      "consent_variants": [
+        "Export"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_REMEDIATION_ACTION_BINDING_MISSING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Remediation",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/action_binding/action_id",
+          "value": "00000000-0000-4000-8000-000000000899"
+        }
+      ],
+      "consent_variants": [
+        "Remediation"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_REMEDIATION_OTHER_ACTION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Remediation",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/exact_scope/authorized_action_id",
+          "value": "00000000-0000-4000-8000-000000000801"
+        },
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/action_binding/action_id",
+          "value": "00000000-0000-4000-8000-000000000801"
+        }
+      ],
+      "consent_variants": [
+        "Remediation"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_REMEDIATION_TARGET_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Remediation",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/action_binding/exact_target_reference",
+          "value": "setting:other-control"
+        }
+      ],
+      "consent_variants": [
+        "Remediation"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_REBOOT_STAGE_BINDING_MISSING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Reboot",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/1/reboot_binding/stage",
+          "value": "Perform"
+        }
+      ],
+      "consent_variants": [
+        "Reboot"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_REBOOT_FOREIGN_WORKFLOW_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Reboot",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1/reboot_authorization/continuation_state_reference",
+          "value": "workflow:foreign-reboot"
+        }
+      ],
+      "consent_variants": [
+        "Reboot"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_COLLECTOR_EXECUTION_MISSING_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": "/collections/collector_executions/0/consent_receipt_ids/0"
+        }
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_COLLECTOR_OTHER_PASS_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/consent_receipts/0/exact_scope/pass_id",
+          "value": "00000000-0000-4000-8000-000000000099"
+        }
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_EXPORT_RECEIPT_FOR_REMEDIATION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Export",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1",
+          "value": {
+            "timestamp": "2026-01-01T00:09:30Z",
+            "sequence_number": 1,
+            "action_id": "00000000-0000-4000-8000-000000000802",
+            "action_type": "Remediation",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "00000000-0000-4000-8000-000000000001",
+            "pass_id": "00000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "Remediate",
+              "target_reference": "setting:synthetic-control",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "00000000-0000-4000-8000-000000000602"
+            ],
+            "result": "Started",
+            "privilege_level": "Elevated",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "Remediation",
+            "redacted_parameters": [],
+            "previous_entry_digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6",
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "c858b1acf7a13734783c33afe9136aea4d344b19a700451dfaaf5ed35e08c8da"
+            },
+            "command_contract_id": "command-contract:synthetic-remediation",
+            "remediation_authorization": {
+              "consent_receipt_id": "00000000-0000-4000-8000-000000000602",
+              "exact_target_reference": "setting:synthetic-control",
+              "rollback_policy_id": "rollback:synthetic",
+              "precondition_policy_id": "precondition:synthetic",
+              "user_presence": true
+            }
+          }
+        }
+      ],
+      "consent_variants": [
+        "Export",
+        "Remediation"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_REBOOT_RECEIPT_FOR_EXPORT_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Reboot",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": "/collections/action_logs/0/entries/1",
+          "value": {
+            "timestamp": "2026-01-01T00:09:30Z",
+            "sequence_number": 1,
+            "action_id": "00000000-0000-4000-8000-000000000804",
+            "action_type": "Export",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "00000000-0000-4000-8000-000000000001",
+            "pass_id": "00000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "Export",
+              "target_reference": "export:synthetic-package",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [
+              "00000000-0000-4000-8000-000000000604"
+            ],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "ExportOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6",
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "29d19cd8d16fb063199d4931c0aaf50e174d92b1acc32b431830cd8181783aa1"
+            },
+            "export_authorization": {
+              "consent_receipt_id": "00000000-0000-4000-8000-000000000604",
+              "redaction_profile_digest": "795facf2f555b157ce5c4bf90af502b137aaa1bb70d7c888e1d73090fb6ffd72",
+              "export_manifest_reference": "export:synthetic-package"
+            }
+          }
+        }
+      ],
+      "consent_variants": [
+        "Reboot",
+        "Export"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_APPROVED_CAPABILITIES_ESCALATION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/collections/consent_receipts/0/approved_capabilities/-",
+          "value": "MACHINE_STATE"
+        }
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_APPROVED_PRIVACY_ESCALATION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/base_graph",
+      "mutations": [
+        {
+          "op": "add",
+          "path": "/collections/consent_receipts/0/approved_privacy_classes/-",
+          "value": "Public"
+        }
+      ],
+      "consent_variants": [
+        "CollectorExecution"
+      ],
+      "consent_coverage": "negative"
+    },
+    {
+      "vector_id": "XOBJ_011_RECEIPT_REUSED_BY_SECOND_ACTION_INVALID",
+      "fixture_kind": "FullContractInstance",
+      "expected_schema_valid": true,
+      "expected_application_valid": false,
+      "expected_error_code": "CONSENT_SCOPE_INVALID",
+      "rule_id": "XOBJ-011",
+      "graph_ref": "/consent_variant_graphs/Export",
+      "mutations": [
+        {
+          "op": "copy",
+          "from": "/collections/action_logs/0/entries/1",
+          "path": "/collections/action_logs/0/entries/-"
+        }
+      ],
+      "consent_variants": [
+        "Export"
+      ],
+      "consent_coverage": "negative"
     },
     {
       "vector_id": "XOBJ_012_ACTION_SEQUENCE_INVALID",
@@ -1694,9 +2759,44 @@
       "graph_ref": "/base_graph",
       "mutations": [
         {
-          "op": "replace",
-          "path": "/collections/action_logs/0/entries/0/audit_run_id",
-          "value": "00000000-0000-4000-8000-000000000002"
+          "op": "add",
+          "path": "/collections/action_logs/0/entries/-",
+          "value": {
+            "timestamp": "2026-01-01T00:09:40Z",
+            "sequence_number": 1,
+            "action_id": "00000000-0000-4000-8000-000000000899",
+            "action_type": "EvaluateRules",
+            "actor": {
+              "kind": "SecApp",
+              "actor_id": "secapp:orchestrator"
+            },
+            "audit_run_id": "00000000-0000-4000-8000-000000000002",
+            "pass_id": "00000000-0000-4000-8000-000000000011",
+            "operation": {
+              "operation_code": "EvaluateRules",
+              "target_reference": "rule:synthetic-cross-run",
+              "purpose_code": "SYNTHETIC_CONTRACT_TEST"
+            },
+            "consent_receipt_ids": [],
+            "result": "Started",
+            "privilege_level": "StandardUser",
+            "network_use": "Forbidden",
+            "filesystem_mutation_class": "PrivateRunOutput",
+            "redacted_parameters": [],
+            "previous_entry_digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6",
+            "entry_digest": {
+              "digest_kind": "EntryDigest",
+              "logical_content": "ActionLogEntryObject",
+              "canonicalization": "JCS-RFC8785",
+              "algorithm": "SHA-256",
+              "encoding": "LowerHex",
+              "excluded_fields": [
+                "entry_digest"
+              ],
+              "previous_digest_included": true,
+              "digest": "9a573b67693b189873ee3860d524dda6edc180cc438d034397a4e268f42b15e6"
+            }
+          }
         }
       ]
     },

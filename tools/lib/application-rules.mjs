@@ -135,7 +135,7 @@ const OPERATION_BY_CONSENT = Object.freeze({
   SensitiveDataCollection: new Set(["CollectSensitiveData"]),
   Export: new Set(["Export"]),
   Remediation: new Set(["Remediate"]),
-  Reboot: new Set(["PerformRebootContinuation"])
+  Reboot: new Set(["ScheduleRebootContinuation", "PerformRebootContinuation"])
 });
 
 function isSubset(subset, superset) {
