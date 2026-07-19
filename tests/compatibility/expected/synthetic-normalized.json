@@ -1,0 +1,23 @@
+{
+  "compatibility_contract_version": 1,
+  "artifact": "SecApp.Compatibility.Synthetic",
+  "source": "Rows",
+  "rows": [
+    {
+      "schema_version": "1.0.0",
+      "synthetic_string": "alpha",
+      "synthetic_integer": 7,
+      "synthetic_boolean": true,
+      "row_order": 1,
+      "echo_value": "synthetic-echo"
+    },
+    {
+      "schema_version": "1.0.0",
+      "synthetic_string": "beta",
+      "synthetic_integer": 11,
+      "synthetic_boolean": false,
+      "row_order": 2,
+      "echo_value": "synthetic-echo"
+    }
+  ]
+}

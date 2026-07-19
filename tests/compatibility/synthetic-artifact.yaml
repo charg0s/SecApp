@@ -1,0 +1,24 @@
+name: SecApp.Compatibility.Synthetic
+description: |
+  Development-only compatibility artifact that returns two deterministic,
+  fully synthetic rows without reading host state or invoking side effects.
+type: CLIENT
+
+parameters:
+  - name: EchoValue
+    type: string
+    default: synthetic-default
+
+sources:
+  - name: Rows
+    query: |
+      SELECT SchemaVersion, SyntheticString, SyntheticInteger,
+             SyntheticBoolean, RowOrder, EchoValue
+      FROM foreach(row=[
+        dict(SchemaVersion="1.0.0", SyntheticString="alpha",
+             SyntheticInteger=7, SyntheticBoolean=TRUE, RowOrder=1,
+             EchoValue=EchoValue),
+        dict(SchemaVersion="1.0.0", SyntheticString="beta",
+             SyntheticInteger=11, SyntheticBoolean=FALSE, RowOrder=2,
+             EchoValue=EchoValue)
+      ])

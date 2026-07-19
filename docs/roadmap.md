@@ -1,6 +1,6 @@
 # SecApp Roadmap
 
-Status: sequencing proposal; no release dates are implied
+Status: Stage 0 accepted at `283da2e85dbdd7802308632aae29e4c2eea45400`; Stage 1 compatibility spike completed with blockers; no release dates are implied
 
 ## Guiding constraints
 
@@ -32,7 +32,7 @@ Exit evidence:
 - open blockers are explicit;
 - no runtime code or backend binary is present.
 
-Checkpoint `04351799ad780602bf73324336f40ab300c80323` is WIP, not the Stage 0 architecture baseline. ARCH-REVIEW5 returned `fail_with_blockers` after reproducing universal XOBJ-011 collector binding and count-only digest completeness. ARCH-FIX4 narrows those blockers with discriminator-aware consent models and immutable exact required digest IDs, while preserving D-025 semantics. Independent ARCH-REVIEW6 and CI integration still remain; none of these validators is a runtime dependency, provenance proof, Velociraptor compatibility experiment, production-readiness claim, or declaration that schemas are production-ready. Stage 1 remains prohibited until an independent review accepts the architecture.
+ARCH-REVIEW6 accepted baseline `283da2e85dbdd7802308632aae29e4c2eea45400` with no blockers or high-priority corrections and authorized only the separate VELOCIRAPTOR-ADAPTER-COMPAT1 experiment. This acceptance does not make any validator a runtime dependency, provenance proof, production-readiness claim, or declaration that schemas are production-ready.
 
 ## Stage 1: contract and backend compatibility experiment
 
@@ -62,6 +62,8 @@ Exit evidence:
 - repeatable tests against explicitly approved official versions;
 - captured formats represented only by synthetic/redacted fixtures;
 - recommendation confirmed or revised.
+
+VELOCIRAPTOR-ADAPTER-COMPAT1 tested the exact official v0.77.1 Windows AMD64 asset and ended `compatibility_partial_blockers_remain`. The verified invocation, JSON/ZIP import, error semantics, and blockers are recorded in [velociraptor-adapter-compatibility.md](velociraptor-adapter-compatibility.md). The permitted next gate is VELOCIRAPTOR-ADAPTER-COMPAT-REVIEW1, not production adapter implementation.
 
 ## Stage 2: security foundations
 

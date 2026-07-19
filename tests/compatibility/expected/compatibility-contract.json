@@ -1,0 +1,340 @@
+{
+  "compatibility_contract_version": 1,
+  "status": "compatibility_partial_blockers_remain",
+  "expected_backend_identity": {
+    "name": "Velociraptor",
+    "source_release": "v0.77.1",
+    "source_revision": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+    "asset_name": "velociraptor-v0.77.1-windows-amd64.exe",
+    "asset_sha256": "c91cf8a32731c4c45c148393bc7d2af688c392194a9fffc4535e8b583260d55e",
+    "architecture": "AMD64"
+  },
+  "observed_backend_identity": {
+    "asset_name": "velociraptor-v0.77.1-windows-amd64.exe",
+    "file_size_bytes": 70375416,
+    "file_sha256": "c91cf8a32731c4c45c148393bc7d2af688c392194a9fffc4535e8b583260d55e",
+    "detached_signature_status": "Valid",
+    "detached_signature_key_fingerprint": "0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1",
+    "authenticode_status": "ValidOfflineCacheOnlyNoRevocation",
+    "authenticode_signer_subject": "CN=Rapid7 LLC, O=Rapid7 LLC, L=Boston, S=Massachusetts, C=US",
+    "authenticode_signer_thumbprint_sha1": "8dd67269b148092ac5a14a4982c920c9fdca3b91",
+    "authenticode_timestamp_utc": "2026-06-22T15:37:08.0000000Z",
+    "runtime_version": "0.77.1",
+    "runtime_commit_reported": "3137c7f71",
+    "runtime_build_time_utc": "2026-06-22T15:35:00Z",
+    "runtime_compiler": "go1.25.3",
+    "runtime_system": "windows",
+    "runtime_architecture": "amd64",
+    "compatibility_test_started_utc": "2026-07-19T04:59:29.014Z"
+  },
+  "trust_contract": {
+    "required_before_execution": [
+      "official-release-asset-name-and-size-match",
+      "official-release-api-sha256-match",
+      "official-detached-signature-valid-under-docs-pinned-fingerprint",
+      "pe-amd64-policy-match",
+      "authenticode-valid-offline-cache-only-no-revocation",
+      "no-unexpected-alternate-data-stream",
+      "no-adjacent-dll",
+      "reported-version-and-commit-prefix-match-pin"
+    ],
+    "fail_closed_on_any_mismatch": true,
+    "authenticode_revocation_status_claimed": false,
+    "reproducible_build_identity_claimed": false
+  },
+  "process_contract": {
+    "executable_path": "absolute-path-to-independently-verified-cache-entry",
+    "working_directory": "fresh-empty-dedicated-directory-outside-repository",
+    "shell": false,
+    "stdin": "ignored",
+    "argument_transport": "separate-process-argument-array",
+    "environment_allowlist": [
+      "APPDATA",
+      "HOME",
+      "LANG",
+      "LC_ALL",
+      "LOCALAPPDATA",
+      "NO_COLOR",
+      "SystemRoot",
+      "TEMP",
+      "TMP",
+      "USERPROFILE",
+      "WINDIR",
+      "__COMPAT_LAYER"
+    ],
+    "locale": {
+      "LANG": "C",
+      "LC_ALL": "C"
+    },
+    "required_current-pin-uac_mode": "RunAsInvokerProcessEnvironmentOnly",
+    "stdout_encoding": "UTF-8-without-BOM",
+    "stderr_encoding": "UTF-8-without-BOM",
+    "external_timeout_required": true,
+    "external_cancellation_required": true
+  },
+  "invocations": {
+    "help": [
+      "--nobanner",
+      "--nocolor",
+      "--help"
+    ],
+    "version": [
+      "--nobanner",
+      "--nocolor",
+      "version"
+    ],
+    "builtin_definition": [
+      "--nobanner",
+      "--nocolor",
+      "artifacts",
+      "show",
+      "Windows.Network.ListeningPorts"
+    ],
+    "builtin_collect": [
+      "--nobanner",
+      "--nocolor",
+      "--max_wait=1",
+      "--tempdir=<fresh-run-temp>",
+      "artifacts",
+      "collect",
+      "--timeout=10",
+      "--progress_timeout=5",
+      "--format=json",
+      "--no-require_admin",
+      "Windows.Network.ListeningPorts"
+    ],
+    "custom_collect": [
+      "--nobanner",
+      "--nocolor",
+      "--max_wait=1",
+      "--tempdir=<fresh-run-temp>",
+      "--definitions=<verified-definitions-directory>",
+      "artifacts",
+      "collect",
+      "--timeout=10",
+      "--progress_timeout=5",
+      "--format=json",
+      "--no-require_admin",
+      "--args=EchoValue=synthetic-echo",
+      "SecApp.Compatibility.Synthetic"
+    ],
+    "custom_package": [
+      "--nobanner",
+      "--nocolor",
+      "--max_wait=1",
+      "--tempdir=<fresh-run-temp>",
+      "--definitions=<verified-definitions-directory>",
+      "artifacts",
+      "collect",
+      "--timeout=10",
+      "--progress_timeout=5",
+      "--format=json",
+      "--no-require_admin",
+      "--output=<new-external-output-path>",
+      "--args=EchoValue=synthetic-package",
+      "SecApp.Compatibility.Synthetic"
+    ]
+  },
+  "structured_output": {
+    "custom_stdout_framing": "JSONDocumentArray",
+    "builtin_stdout_framing": "ConcatenatedJSONDocumentArrays",
+    "package_result_framing": "JSONLines",
+    "custom_stdout_final_line_terminated": false,
+    "package_result_final_line_terminated": true,
+    "duplicate_keys_rejected": true,
+    "invalid_utf8_rejected": true,
+    "utf8_bom_rejected": true,
+    "partial_final_document_rejected": true,
+    "empty_stdout_after_known-empty-artifact": "SucceededWithZeroRecords",
+    "bounded_parser_limits_required": true
+  },
+  "determinism": {
+    "definitions_sha256": "0b93d5929c8612f60324e6ca41f4b4e4ef05053c5814ba33094d294192acf464",
+    "custom_raw_stdout_sha256_run_1": "e9c99221272bf4c9a41f255554c2279f4e4e090995f548a216fb7c812dc7504a",
+    "custom_raw_stdout_sha256_run_2": "e9c99221272bf4c9a41f255554c2279f4e4e090995f548a216fb7c812dc7504a",
+    "normalized_stdout_sha256_run_1": "b06facbec0e35560648b6069d88e2948832a9d5bb4ce06b5cdc851aadca49c76",
+    "normalized_stdout_sha256_run_2": "b06facbec0e35560648b6069d88e2948832a9d5bb4ce06b5cdc851aadca49c76",
+    "package_normalized_sha256": "3de82c3b5dade1c41723f1a38a86f15e31e5986c39cfd54a326f16079ddc26cb",
+    "raw_package_byte_identity_claimed": false
+  },
+  "observed_exit_semantics": {
+    "invalid_cli_argument": "exit-1-with-stderr",
+    "unknown_artifact_collect": "exit-0-empty-stdout-empty-stderr",
+    "unknown_artifact_show": "exit-1-with-stderr",
+    "missing_definitions_directory": "exit-1-with-stderr",
+    "missing_definition_file_verify": "exit-0-empty-stdout-empty-stderr",
+    "malformed_yaml_verify": "exit-1-with-stdout-and-stderr",
+    "malformed_vql_verify": "exit-1-with-stdout-and-stderr",
+    "malformed_definitions_collect": "exit-0-empty-stdout-empty-stderr",
+    "duplicate_definition_verify": "exit-0-empty-stdout-empty-stderr",
+    "duplicate_definition_collect": "exit-0-last-definition-selected",
+    "known_artifact_no_rows": "exit-0-empty-stdout-empty-stderr",
+    "cpu_limit": "exit-0",
+    "hard_memory_limit": "exit-2-go-panic",
+    "unavailable_package_output_path": "exit-0-no-output-no-package",
+    "existing_package_output_path": "exit-0-silent-overwrite"
+  },
+  "collector_execution_mapping": [
+    {
+      "scenario": "binary-absent",
+      "state": "BackendNotFound",
+      "error_code": "BackendNotFound",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "after-approved-binary-restoration"
+    },
+    {
+      "scenario": "binary-access-denied",
+      "state": "PolicyRejected",
+      "error_code": "PermissionDenied",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "after-launch-policy-correction"
+    },
+    {
+      "scenario": "invalid-pe",
+      "state": "PolicyRejected",
+      "error_code": "BackendRejected",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "no"
+    },
+    {
+      "scenario": "wrong-architecture",
+      "state": "PolicyRejected",
+      "error_code": "Unsupported",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "only-with-approved-compatible-asset"
+    },
+    {
+      "scenario": "version-mismatch",
+      "state": "PolicyRejected",
+      "error_code": "BackendRejected",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "only-after-contract-review"
+    },
+    {
+      "scenario": "checksum-or-signature-mismatch",
+      "state": "PolicyRejected",
+      "error_code": "IntegrityError",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "no"
+    },
+    {
+      "scenario": "invalid-cli-argument",
+      "state": "Failed",
+      "error_code": "ValidationError",
+      "backend_process_allowed": true,
+      "output_retained": "bounded-diagnostics-only",
+      "retry": "only-after-contract-correction"
+    },
+    {
+      "scenario": "unknown-artifact",
+      "state": "PolicyRejected",
+      "error_code": "ValidationError",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "only-after-reviewed-definition-change"
+    },
+    {
+      "scenario": "malformed-or-duplicate-definitions",
+      "state": "PolicyRejected",
+      "error_code": "ValidationError",
+      "backend_process_allowed": false,
+      "output_retained": false,
+      "retry": "only-after-definition-correction"
+    },
+    {
+      "scenario": "known-collector-no-rows",
+      "state": "Succeeded",
+      "error_code": null,
+      "backend_process_allowed": true,
+      "output_retained": "digests-and-zero-record-result",
+      "retry": "not-required"
+    },
+    {
+      "scenario": "malformed-output",
+      "state": "Failed",
+      "error_code": "ParseError",
+      "backend_process_allowed": true,
+      "output_retained": "bounded-private-diagnostic-if-policy-allows",
+      "retry": "only-after-contract-or-backend-correction"
+    },
+    {
+      "scenario": "timeout",
+      "state": "TimedOut",
+      "error_code": "Timeout",
+      "backend_process_allowed": true,
+      "output_retained": "bounded-diagnostics-only",
+      "retry": "policy-limited"
+    },
+    {
+      "scenario": "explicit-cancellation",
+      "state": "Cancelled",
+      "error_code": "Cancelled",
+      "backend_process_allowed": true,
+      "output_retained": "bounded-diagnostics-only",
+      "retry": "user-or-orchestrator-decision"
+    },
+    {
+      "scenario": "process-crash",
+      "state": "Failed",
+      "error_code": "Internal",
+      "backend_process_allowed": true,
+      "output_retained": "bounded-diagnostics-only",
+      "retry": "no-for-same-invocation"
+    },
+    {
+      "scenario": "unclassified-nonzero-exit",
+      "state": "Failed",
+      "error_code": "Internal",
+      "backend_process_allowed": true,
+      "output_retained": "bounded-diagnostics-only",
+      "retry": "classification-dependent"
+    },
+    {
+      "scenario": "valid-complete-prefix-after-limit",
+      "state": "Partial",
+      "error_code": "ResourceLimit",
+      "backend_process_allowed": true,
+      "output_retained": "only-complete-validated-records-with-truncation-marker",
+      "retry": "policy-limited"
+    },
+    {
+      "scenario": "invalid-utf8",
+      "state": "Failed",
+      "error_code": "ParseError",
+      "backend_process_allowed": true,
+      "output_retained": "digest-and-bounded-private-diagnostic-only",
+      "retry": "no-for-same-bytes"
+    },
+    {
+      "scenario": "output-over-limit-without-complete-prefix",
+      "state": "Failed",
+      "error_code": "ResourceLimit",
+      "backend_process_allowed": true,
+      "output_retained": "digest-and-bounded-private-diagnostic-only",
+      "retry": "policy-limited"
+    },
+    {
+      "scenario": "output-directory-unavailable",
+      "state": "Failed",
+      "error_code": "ImportError",
+      "backend_process_allowed": true,
+      "output_retained": false,
+      "retry": "after-new-output-path"
+    }
+  ],
+  "network_observation": "NoNetworkActivityObservedDuringTest",
+  "network_impossibility_claimed": false,
+  "production_adapter_decision": "NotReady",
+  "blockers": [
+    "VR-COMPAT-001-HIGHESTAVAILABLE-LAUNCH-POLICY",
+    "VR-COMPAT-002-HARD-MEMORY-LIMIT-PANIC",
+    "VR-COMPAT-003-WINDOWS-JOB-OBJECT-NOT-PROVEN",
+    "VR-COMPAT-004-SILENT-SUCCESS-REQUIRES-ADAPTER-PREFLIGHT-AND-POSTCONDITIONS"
+  ]
+}
