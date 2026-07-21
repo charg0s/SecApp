@@ -3,6 +3,25 @@
 Status: development-only compatibility evidence; this directory does not
 authorize or implement a production adapter.
 
+## Current product policy
+
+`TRUST-LAUNCH-DEFER-CHECKPOINT1` retains trust-launch source and normalized
+fixtures as WIP evidence, but it removes automatic backend execution from the
+permitted product path:
+
+```text
+TrustLaunchStatus = Deferred
+AutomaticBackendExecution = Disabled
+ProductionLauncher = NotImplemented
+VelociraptorInvocationFromSecApp = ForbiddenByDefault
+NextProductPath = ImportOnly
+```
+
+The executable probe instructions below are historical development references,
+not SecApp runtime behavior or current authorization to run them. The future
+import-only workflow requires a separate `AUDIT-PACKAGE-IMPORT1` stage and is
+not implemented here.
+
 The committed YAML and JSON files are deterministic and fully synthetic. No
 Velociraptor executable, collection ZIP, raw stdout/stderr, certificate, host
 identity, username, SID, address, process list, or other machine evidence may

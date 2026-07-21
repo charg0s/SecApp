@@ -2,15 +2,17 @@
 
 Experiment: `VELOCIRAPTOR-ADAPTER-COMPAT1`
 
-Status: `compatibility_partial_blockers_remain`
+Status: `compatibility_partial_blockers_remain`; trust-launch product path `Deferred`
 
 Date: 2026-07-19
 
 This document records a development-only compatibility spike against one
 verified Velociraptor release asset. It is not a production adapter, runtime
 readiness declaration, updater policy, server design, or authorization to run
-additional collectors. The required next gate is a separate
-`VELOCIRAPTOR-ADAPTER-COMPAT-REVIEW1`.
+additional collectors. The later `TRUST-LAUNCH-DEFER-CHECKPOINT1` decision
+supersedes the earlier next-gate recommendation: automatic backend execution
+is disabled, no production launcher exists, and import-only is the next product
+direction.
 
 ## 1. Preflight
 
@@ -705,3 +707,43 @@ performed.
 Decision: the spike establishes a concrete v0.77.1 contract suitable for
 independent review, but the contract is not yet ready to authorize a production
 adapter. Final status is `compatibility_partial_blockers_remain`.
+
+## 25. TRUST-LAUNCH-DEFER-CHECKPOINT1
+
+The trust-launch prototype sources and normalized expected contract are
+preserved as a WIP compatibility checkpoint. The following observations were
+confirmed before this documentation-only checkpoint and were not rerun here:
+
+- compile-only passed;
+- the private execution root and file locking were partially implemented;
+- the environment allowlist passed;
+- `TL-JOB-001` through `TL-JOB-010` passed;
+- the parent/child tree terminated without known orphan processes;
+- timeout and cancellation cleanup passed;
+- Velociraptor was never launched through the trust-launch prototype.
+
+The following blockers remain open:
+
+1. Adjacent marker `probe.dll` can be created in the execution directory.
+2. The restricted child retains linked-token metadata.
+3. No acceptable production non-elevated launch mechanism has been selected.
+4. Protection against reparse replacement has not been proven.
+5. Initial module inventory is not completed before resume.
+6. Runtime module observation is not a preventive loader policy.
+7. Four runtime modules remain categorized as `Unknown`.
+8. Verified source bytes are not proven to be the mapped process image.
+9. A production-safe DLL/image-load context is not implemented.
+
+The resulting product policy is normative and fail closed:
+
+```text
+TrustLaunchStatus = Deferred
+AutomaticBackendExecution = Disabled
+ProductionLauncher = NotImplemented
+VelociraptorInvocationFromSecApp = ForbiddenByDefault
+NextProductPath = ImportOnly
+```
+
+No trust-launch probe, native-helper compilation, or Velociraptor execution is
+part of this checkpoint. `AUDIT-PACKAGE-IMPORT1` remains a separate future
+stage and was not started here.

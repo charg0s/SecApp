@@ -1,6 +1,6 @@
 # SecApp Decision Log
 
-Status: architecture baseline accepted by ARCH-REVIEW6; VELOCIRAPTOR-ADAPTER-COMPAT1 completed with compatibility blockers
+Status: architecture baseline accepted by ARCH-REVIEW6; trust-launch is deferred; import-only is the next product direction
 
 An accepted design decision does not authorize runtime code, binary acquisition, elevation, dependency installation, deployment, commit, or push.
 
@@ -124,6 +124,35 @@ D-026 supersedes only the sufficiency claims of D-021/D-024/D-025; it does not e
 
 VELOCIRAPTOR-ADAPTER-COMPAT1 authenticated and exercised the exact official v0.77.1 Windows AMD64 asset. Direct JSON, custom `--definitions`, bounded ZIP import, external timeout/cancellation, and literal argument transport are reproducible for the tested pin. Production implementation remains blocked by the `highestAvailable` launch boundary, the `--hard_memory_limit` panic, unproven Windows Job Object descendant containment, and silent-success cases that require strict preflight/postconditions. [velociraptor-adapter-compatibility.md](velociraptor-adapter-compatibility.md) is the normative experiment record. The decision authorizes only VELOCIRAPTOR-ADAPTER-COMPAT-REVIEW1, not adapter runtime work.
 
+### D-028: Defer trust-launch and select import-only as the next product path
+
+`TRUST-LAUNCH-DEFER-CHECKPOINT1` preserves the trust-launch sources and
+normalized result contract above baseline
+`942d2a15b7145f9ed1e5be46507c06fdcbe1544d` as a WIP compatibility
+checkpoint. Prior compile-only and synthetic prototype observations remain
+development evidence only. Velociraptor was not invoked through this
+prototype, and this decision authorizes neither a production launcher nor a
+SecApp runtime adapter.
+
+The product policy is fail closed and normative:
+
+```text
+TrustLaunchStatus = Deferred
+AutomaticBackendExecution = Disabled
+ProductionLauncher = NotImplemented
+VelociraptorInvocationFromSecApp = ForbiddenByDefault
+NextProductPath = ImportOnly
+```
+
+The unresolved adjacent-DLL, linked-token, non-elevated-launch, reparse,
+pre-resume module-inventory, preventive loader-policy, unknown-module,
+verified-bytes-to-mapped-image, and production-safe image-load-context
+blockers remain open. The detailed checkpoint is recorded in
+[velociraptor-adapter-compatibility.md](velociraptor-adapter-compatibility.md)
+and [the trust-launch fixture README](../tests/compatibility/trust-launch/README.md).
+Import-only development requires the separate `AUDIT-PACKAGE-IMPORT1` stage;
+it is not started by this decision.
+
 ## Open decisions before runtime
 
 | ID | Decision | Required evidence |
@@ -141,4 +170,6 @@ VELOCIRAPTOR-ADAPTER-COMPAT1 authenticated and exercised the exact official v0.7
 | O-011 | Validator CI integration and independent recheck | Reproduce the installed pinned Draft 2020-12, discriminator-aware XOBJ-GRAPH1, and exact-ID JCS-DIGEST1 gates in deterministic CI, then perform ARCH-REVIEW6 |
 | O-012 | External integrity trust anchor | Protected stored digest or detached signature design and key lifecycle |
 
-Until the remaining decisions and compatibility blockers pass review, the permitted next action is VELOCIRAPTOR-ADAPTER-COMPAT-REVIEW1, not runtime implementation.
+Automatic Velociraptor execution remains forbidden by default. The permitted
+next product direction is the separately authorized `AUDIT-PACKAGE-IMPORT1`
+import-only workflow, not runtime launcher or adapter implementation.

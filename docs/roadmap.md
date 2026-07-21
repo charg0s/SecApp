@@ -1,6 +1,6 @@
 # SecApp Roadmap
 
-Status: Stage 0 accepted at `283da2e85dbdd7802308632aae29e4c2eea45400`; Stage 1 compatibility spike completed with blockers; no release dates are implied
+Status: Stage 0 accepted at `283da2e85dbdd7802308632aae29e4c2eea45400`; trust-launch deferred with blockers; import-only is next; no release dates are implied
 
 ## Guiding constraints
 
@@ -64,6 +64,28 @@ Exit evidence:
 - recommendation confirmed or revised.
 
 VELOCIRAPTOR-ADAPTER-COMPAT1 tested the exact official v0.77.1 Windows AMD64 asset and ended `compatibility_partial_blockers_remain`. The verified invocation, JSON/ZIP import, error semantics, and blockers are recorded in [velociraptor-adapter-compatibility.md](velociraptor-adapter-compatibility.md). The permitted next gate is VELOCIRAPTOR-ADAPTER-COMPAT-REVIEW1, not production adapter implementation.
+
+### TRUST-LAUNCH-DEFER-CHECKPOINT1 disposition
+
+The subsequent development-only trust-launch prototype supplied partial
+evidence for private execution roots, file locking, environment allowlisting,
+Job Object test behavior, and cleanup. It did not invoke Velociraptor and did
+not resolve the loader, token, reparse, executable-image binding, or acceptable
+non-elevated production-launch boundaries. Its source and normalized contract
+are retained only as a WIP checkpoint.
+
+```text
+TrustLaunchStatus = Deferred
+AutomaticBackendExecution = Disabled
+ProductionLauncher = NotImplemented
+VelociraptorInvocationFromSecApp = ForbiddenByDefault
+NextProductPath = ImportOnly
+```
+
+`AUDIT-PACKAGE-IMPORT1` is the next product direction and requires its own
+authorization. It is not part of this checkpoint. Stages that depend on a
+backend launcher remain blocked and are not authorized by the import-only
+direction.
 
 ## Stage 2: security foundations
 

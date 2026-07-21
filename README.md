@@ -8,6 +8,27 @@ SecApp is a fully open local security auditing and forensic collection system fo
 - Network access, administrative operations, rebooting, memory scanning, and remediation require separate, explicit consent.
 - The project is at an early design stage.
 
+## Trust-launch disposition
+
+`TRUST-LAUNCH-DEFER-CHECKPOINT1` preserves the development-only trust-launch
+prototype and its normalized contract as WIP evidence. It does not authorize
+native-helper compilation, trust-launch probes, a production adapter, or any
+Velociraptor invocation from SecApp. Automatic backend execution is disabled
+fail closed, and the next product direction is an import-only workflow under a
+separately authorized stage.
+
+```text
+TrustLaunchStatus = Deferred
+AutomaticBackendExecution = Disabled
+ProductionLauncher = NotImplemented
+VelociraptorInvocationFromSecApp = ForbiddenByDefault
+NextProductPath = ImportOnly
+```
+
+The confirmed prototype observations and unresolved blockers are recorded in
+[the trust-launch checkpoint](tests/compatibility/trust-launch/README.md).
+`AUDIT-PACKAGE-IMPORT1` is not started by this checkpoint.
+
 Architecture checkpoint `04351799ad780602bf73324336f40ab300c80323` is a WIP checkpoint, not an accepted baseline. ARCH-REVIEW5 ended `fail_with_blockers`; ARCH-FIX4 narrows the two reproduced local-gate blockers, but the result still requires independent ARCH-REVIEW6. The local gates do not declare the schemas production-ready and do not prove runtime behavior, provenance, Velociraptor compatibility, or production safety.
 
 ## Development-only schema validation

@@ -1,0 +1,324 @@
+{
+  "contract_version": 1,
+  "stage": "VELOCIRAPTOR-ADAPTER-TRUST-LAUNCH1",
+  "status": "trust_launch_partial_blockers_remain",
+  "readiness": {
+    "production_adapter_ready": false,
+    "mandatory_cases_complete": false,
+    "criteria": [
+      {
+        "criterion_id": "path_file_race_protected",
+        "required": true,
+        "prototype_result": false
+      },
+      {
+        "criterion_id": "non_elevated_per_process_launch",
+        "required": true,
+        "prototype_result": false
+      },
+      {
+        "criterion_id": "job_before_workload",
+        "required": true,
+        "prototype_result": true
+      },
+      {
+        "criterion_id": "descendants_contained",
+        "required": true,
+        "prototype_result": true
+      },
+      {
+        "criterion_id": "kill_close_cancel_cleanup",
+        "required": true,
+        "prototype_result": true
+      },
+      {
+        "criterion_id": "loader_and_root_fail_closed",
+        "required": true,
+        "prototype_result": false
+      },
+      {
+        "criterion_id": "verified_identity_maintained",
+        "required": true,
+        "prototype_result": false
+      },
+      {
+        "criterion_id": "mandatory_tests_unskipped",
+        "required": true,
+        "prototype_result": false
+      }
+    ]
+  },
+  "backend_pin": {
+    "release": "v0.77.1",
+    "source_commit": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+    "asset_name": "velociraptor-v0.77.1-windows-amd64.exe",
+    "sha256": "c91cf8a32731c4c45c148393bc7d2af688c392194a9fffc4535e8b583260d55e",
+    "authenticode_signer": "Rapid7 LLC",
+    "openpgp_fingerprint": "0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1"
+  },
+  "threat_model": {
+    "assurance": "WIP prototype evidence only; TrustLaunchStatus = Deferred; AutomaticBackendExecution = Disabled; ProductionLauncher = NotImplemented; VelociraptorInvocationFromSecApp = ForbiddenByDefault; NextProductPath = ImportOnly",
+    "in_scope": [
+      "UnprivilegedConcurrentProcess",
+      "SameUserTokenProcess",
+      "ExecutableReplaceOrRename",
+      "ExecutableMutationAfterVerification",
+      "AdjacentDllPlacement",
+      "ReparseOrPathRedirection",
+      "UnintendedElevation",
+      "DescendantEscapeFromCleanup"
+    ],
+    "out_of_scope": [
+      "KernelCompromise",
+      "SystemOrAdministratorAdversaryBypassingUserModeProtections",
+      "FirmwareCompromise",
+      "CompromisedWindowsLoaderOrCodeIntegrityInfrastructure"
+    ]
+  },
+  "accepted_path_classes": [
+    "PrivateExecutionRoot",
+    "System32",
+    "WindowsComponentStore"
+  ],
+  "allowed_velociraptor_commands": [
+    "version",
+    "help",
+    "synthetic_custom_artifact"
+  ],
+  "mandatory_cases": [
+    {
+      "case_id": "TL-ID-001-SOURCE-HANDLE",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-002-DESTINATION-COPY",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-003-DESTINATION-MISMATCH",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-004-WRITE-LOCK",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-005-REPLACE-LOCK",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-006-DELETE-LOCK",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-007-FILE-RENAME-LOCK",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-008-EXEC-DIRECTORY-MUTATION",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-009-ADJACENT-MARKER",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-010-REPARSE-REPLACEMENT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ID-011-UNLOCK-CONTROL",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-TOK-001-CURRENT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-TOK-002-DEFAULT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-TOK-003-RUNASINVOKER",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-TOK-004-RESTRICTED-ATTEMPT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-TOK-005-CHILD",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-001-ATOMIC-ASSIGN",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-002-NESTED",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-003-NORMAL",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-004-TIMEOUT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-005-CANCEL",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-006-TREE",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-007-KILL-CLOSE",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-008-ACTIVE-LIMIT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-009-ASSIGNMENT-FAIL",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-JOB-010-NO-ORPHAN",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-IMG-001-IMPORTS",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-IMG-002-MITIGATION",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-IMG-003-INITIAL",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-IMG-004-RUNTIME",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-IMG-005-UNEXPECTED-MODULE-REJECT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-HND-001-EXPLICIT-LIST",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-ENV-001-ALLOWLIST",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-VR-001-PRECONDITIONS",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-VR-002-VERSION",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-VR-003-HELP",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-VR-004-SYNTHETIC",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-CLEAN-001-NO-HELPERS",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-CLEAN-002-NO-VELOCIRAPTOR",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-CLEAN-003-RUN-ROOT",
+      "required_outcome": "Pass"
+    }
+  ],
+  "false_positive_cases": [
+    {
+      "case_id": "TL-FP-001-EXPECTED-SHA256",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-002-SOURCE-FILE-ID",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-003-DESTINATION-FILE-ID",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-004-FILE-LOCK",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-005-WRITE-REPLACE",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-006-ADJACENT-MARKER",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-007-ROOT-REPARSE",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-008-JOB-ASSIGNMENT",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-009-CHILD-JOB-MEMBERSHIP",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-010-DESCENDANT-SURVIVAL",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-011-CHILD-ELEVATION",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-012-LINKED-TOKEN",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-013-UNEXPECTED-MODULE",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-014-MITIGATION-MISSING",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-015-HANDLE-LEAK",
+      "required_outcome": "Pass"
+    },
+    {
+      "case_id": "TL-FP-016-SILENT-FALLBACK",
+      "required_outcome": "Pass"
+    }
+  ],
+  "privacy": {
+    "synthetic_only": true,
+    "contains_absolute_paths": false,
+    "contains_account_identity": false,
+    "contains_raw_module_paths": false,
+    "contains_process_ids": false,
+    "contains_raw_output": false
+  }
+}
