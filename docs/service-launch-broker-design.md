@@ -1,5 +1,10 @@
 # SERVICE-LAUNCH-BROKER-DESIGN1
 
+Deferred from the MVP by [D-062 / DIRECT-STANDARD-MVP1](direct-standard-mvp.md).
+The user selected a direct same-user Standard first release. This service design
+and its unresolved gates remain historical research, not prerequisites for that
+separate route and not permission to install a service.
+
 Date: 2026-10-11. User-approved direction: continue designing the service-based
 launcher, without installing anything or changing system settings. This is an
 author design, not an independently accepted mechanism or an implementation.

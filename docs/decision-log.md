@@ -1015,6 +1015,194 @@ of all seven documentation changes and correction of inventory/consent ordering.
 No blocking documentary findings remain. This is not runtime or installation
 acceptance.
 
+### D-062: Deliver the first version without a service or elevated collection
+
+On 2026-11-06 the user explicitly accepted the proposed direct Standard MVP:
+ordinary same-user execution on a trusted Windows/session, one fixed read-only
+check after confirmation, authenticated executable, bounded lifecycle and private
+report. Service and elevated checks move to a later version, not permanent removal.
+This supersedes D-058/D-061's retained-service direction for the first release.
+
+The finite path is [DIRECT-STANDARD-MVP1](direct-standard-mvp.md). Service/RPC
+handoff and SCM creation-time proof are no longer gates for this route. Historical
+failures remain unchanged. Actual Standard rights, wrong-image prevention,
+command/startup effects, offline behavior, output/tree cleanup, honest coverage
+and hostile-input safety remain. No UAC, service, grant, audited-setting mutation,
+new dependency or Git operation is authorized by this decision. The old planner
+and published contracts are unchanged; no generic readiness override is added.
+
+Independent admission: AcceptedRequirementsDirectMvpOnly and
+AcceptedPureDefenderAdapterPreviewSliceForImplementation. The first code slice
+is a bounded decoder, separate report and explicit-file preview with synthetic
+tests. It does not fabricate import/Observation/CollectorExecution acceptance or
+prove real collection. Native launcher implementation/execution retains its
+concrete source/effects review, not the deferred service requirements.
+
+### D-063: Allow scoped backend event logging; ask instead of complex workarounds
+
+On 2026-11-06 the user explicitly permitted the described Velociraptor event-source
+registration and normal startup logging. The user also directed that additional
+permissions be requested with an explanation of what they allow and why they are
+needed, rather than pursuing complex workarounds to avoid asking.
+
+For the pinned v0.77.3 startup path, this permits creating the `Velociraptor`
+source under `HKLM\SYSTEM\CurrentControlSet\Services\EventLog\Application` and
+the upstream values `CustomSource` DWORD 1, `EventMessageFile` REG_EXPAND_SZ
+`%SystemRoot%\System32\EventCreate.exe`, and `TypesSupported` DWORD 7. It also
+permits the normal startup argv event, including the existing `.NET Runtime`
+fallback. The setting/event may persist. No secrets or collected data belong
+in argv; local paths can identify the user and should be avoided where possible.
+Existing OS retention/forwarding is not changed, and no logs are erased.
+
+This replaces the requirement to preventively deny that exact source-registration
+attempt in the direct MVP. It does not accept arbitrary registry writes, ACL
+changes, modification/repair of existing source registrations, UAC/elevation,
+services, protection-setting changes, network collection, or remediation. An
+access-denied outcome is not permission to escalate or repair. Any extra right
+must be requested for a concrete operation with its purpose, scope, persistence
+and risks before use; permission to register logging is not permission to run
+the whole check as Administrator. Prefer the standard supported launch route;
+if it needs an additional permission, ask instead of inventing a complex bypass.
+
+This is development/operator scope, not a reusable product consent token or
+runtime acceptance. The remaining launch, config/offline, lifecycle and output
+checks still apply. No backend was executed, Windows setting changed, or Git
+commit/push performed when recording this decision.
+
+### D-064: Permit one fixed elevated control run through user-confirmed UAC
+
+On 2026-11-06 the user approved preparing and performing one control run through
+normal Windows UAC, after preparation/review. Elevation applies only to the
+small SecApp helper and the unmodified pinned Velociraptor backend, never the
+ordinary controller/UI or a persistent service. The exact operation reads
+`AMRunningMode` and `RealTimeProtectionEnabled` from the local Defender WMI
+provider. No other query, remote host, artifact, command or automatic retry is
+authorized. The user personally confirms UAC; the agent does not click it.
+
+The user was explicitly told that administrative rights technically permit more
+than reading: a fixed command is not a read-only sandbox. This narrowly supersedes
+the Standard-only/no-UAC condition for this one control run, not the ordinary
+default or the separate consent requirement for later elevated operations.
+It does not permit services, audited security-setting changes, network collection,
+remediation, reboot, credential use, ACL repair or broader registry changes.
+D-063's exact event-source registration and normal event logging remain allowed.
+
+The implementation and concrete working-data/lifetime contract are recorded in
+[DIRECT-STANDARD-MVP1](direct-standard-mvp.md#d-064-one-elevated-control-run).
+Compile outputs, empty config and bounded private transport stay outside Git in
+an owned GUID run directory. Existing permissions are inspected, not changed.
+The original backend is not modified; its pinned bytes are locked and rehashed.
+The later D-065 workspace decision permits a verified private copy.
+Each prepared directory permits only one UAC attempt, not an automatic retry.
+No current schema, old planner or Standard operation admission is changed.
+Authorization is not proof that the helper/build/runtime or resulting data pass.
+
+### D-065: Create new private SecApp workspaces without changing existing ACLs
+
+On 2026-11-06 the user explicitly authorized new SecApp working directories with
+the explained private rights, while prohibiting changes to existing directories
+and other projects. This addresses the previous compile-only PRIVATE_ACCESS
+refusal; it does not relax the private-data policy or authorize ACL repair.
+
+Each attempt creates a new `C:\Dev\SecApp-Control-<run-id>` directory outside Git.
+Creation supplies a protected DACL, current-user owner, and exactly three normal
+inheritable FullControl allow entries: current user, SYSTEM and Administrators.
+The GUID name must not already exist. Existing ancestors are opened/checked, not
+given new permissions. The volume must support persistent ACLs. Namespace handles
+exclude delete sharing and verify directory type, absence of reparse points and
+final path; this is not a guarantee against every metadata change or same-user
+tampering on an untrusted host.
+
+Source, manifest, build output and a streamed CREATE_NEW copy of the already pinned
+backend inherit the new directory's rights. Source ACLs are not transferred. The
+original backend remains unchanged, and both source/copy bytes are hash-checked.
+The controller defines a small in-memory Win32 filesystem bridge without disk
+bootstrap compilation; the actual helper compiler uses only the new workspace
+for output/TEMP/TMP. No new download, installation, service, registry change beyond
+D-063, or general elevated collection is authorized. D-064's one UAC attempt,
+fixed operation and manual confirmation still apply. Authorization and source
+review are not evidence of a completed build or successful collection.
+
+The first AppData-location attempts stopped after creating empty directories but
+before the compiler: the normalized leaf path was redirected into the desktop
+host's per-package LocalCache. No mismatched path was accepted. The fixed `C:\Dev`
+development location avoids this AppData projection without changing Windows or
+the host package's virtualization settings. Existing parent directories retain
+their permissions. The original acquisition file may still be virtualized: only
+its read-locked, length/hash-verified bytes are streamed into the new private
+destination; it is never executed in place. Destination namespace checks remain
+strict. This is a local development layout, not a portable installation contract.
+
+Observed follow-through: compile-only succeeded; after independent exact-build
+review the one D-064 UAC control attempt completed and its bounded result was
+accepted by the SecApp reader. The helper reported backend exit 0, root exit,
+empty Job and closed streams; controller exit confirmed helper completion. Exact
+owned cleanup removed temporary files/new directories; the original backend hash
+remained unchanged. Only normalized development outcomes are recorded here, never
+actual security values or raw evidence. This does not authorize repeated runs or
+promote the Standard route, general runtime or native failure-path coverage.
+
+### D-066: Implement an interactive fixed Defender check, without another live run
+
+The user agreed to turn the working control slice into a launch/confirmation/result
+workflow. This pass implements that command and checks source plus synthetic data;
+it does not renew D-064's consumed one-off execution authority. No helper build,
+backend execution or UAC is performed as part of this implementation pass.
+
+`npm run check:defender` accepts only an ordinary Windows terminal and no operation
+flags. Before preparation it describes the new private directory/build/copy.
+Before collection it shows the fixed two WMI fields, elevated helper/backend,
+helper digest, EventLog effect, limits, data handling and narrow coverage. A typed
+phrase is bound to the immutable prepared run/digest; UAC is a separate elevation
+confirmation. EOF, timeout, wrong text, redirected input or unknown arguments do
+not authorize collection. No unattended mode, arbitrary query or retry is added.
+
+The existing C# helper/Workspace sources and manifest remain pinned and unchanged.
+The wrapper pins its controller too and uses the fixed supported Windows PowerShell
+path, not an inherited variable as executable authority. The controller now uses
+an exclusive zero-byte `controller.lock` to serialize preparation/run/discard for
+one GUID. An unstarted prepared discard requires the exact fresh file set and pins.
+Success cleanup requires an observed helper exit 0 and a strict run-bound complete
+lifecycle receipt; a JSON claim or kill request alone cannot authorize cleanup.
+
+Cleanup removes only known data files under retained directory handles. It keeps
+the private leaf and empty lock file, reporting `workspace_removed=false`; no
+recursive/delete-after-unlock path or existing ACL change is introduced. Failed or
+unknown lifetime/cleanup remains an explicit operator follow-up, not an automatic
+retry. A versioned internal envelope distinguishes actual helper exit, bounded
+result bytes and data cleanup; the original raw helper JSON mode is preserved.
+These private development transports are not published AuditRun/schema revisions.
+
+Independent recheck: AcceptedInteractiveDefenderCliSourceAndSyntheticTestImplementationOnly.
+The interpreter-override and actual-helper-exit findings were fixed and covered by
+negative tests. The author ran 656/656 Node tests (76 new), all npm validators and
+26 separate pure PowerShell receipt vectors; zero failures/skips. The reviewer did
+not execute tests. No new native build, backend run, UAC, system-setting change or
+Git publication occurred in D-066. Its subsequent live acceptance is D-067 below.
+
+### D-067: One operator-confirmed acceptance of the interactive Defender command
+
+The user explicitly authorized one acceptance run of the new command, with UAC
+confirmed personally and no system-settings changes. Preflight matched the pinned
+sources and found the exact EventLog source already registered with the expected
+three values; no new registration was needed. Existing permissions/settings were
+not repaired or changed. The operator received a visible ordinary terminal and
+entered the collection confirmation and UAC themselves; no automated input was used.
+
+The terminal process exited with the command's propagated exit code 0. Under the
+checked command's success contract this requires a closed controller, actual helper
+exit 0, complete bound lifecycle, useful decoded data (not NotTested), and confirmed
+payload-file cleanup. Post-run inspection independently found only a zero-byte
+controller.lock in the new private workspace. Its protected three-entry DACL, the
+original backend digest, and the same EventLog values passed read-only checks.
+
+No raw terminal output, field values, screenshots, result transport or run-path
+identifiers are stored in the repository. The agent observed the process exit and
+filesystem postcondition, not the terminal's visual content. This records one
+successful interactive path, not a compromised-host guarantee, a full security
+audit, or qualification of native failure/timeout/cancel paths. No automatic
+repeat, dependency install, service change, commit or push was performed.
+
 ## Open decisions before runtime
 
 | ID | Decision | Required evidence |
@@ -1036,5 +1224,6 @@ acceptance.
 
 Direct-launch development is authorized under D-032 alongside the working
 import-only path. Automatic/background execution remains disabled, and actual
-execution remains blocked by unresolved technical gates, not by D-028's
-superseded development restriction.
+general production execution remains blocked by unresolved technical gates, not
+by D-028's superseded development restriction. The narrowly scoped, completed
+D-064/D-065 control run above is not general runtime acceptance.

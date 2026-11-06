@@ -1,5 +1,11 @@
 # TRUSTED-HOST-MVP1
 
+Current precedence: [D-062 / DIRECT-STANDARD-MVP1](direct-standard-mvp.md) moves
+the first release to direct same-user Standard execution without a service.
+Service/elevated work below is deferred, not repaired or required for that route.
+The trusted-host limitation and applicable data/launch safety requirements remain.
+This document retains the earlier D-058/D-061 scope as history.
+
 Date: 2026-11-06. D-058 records the user's approval of ordinary development,
 bounded backend integration and a broader trusted-host first-release scope.
 This supersedes D-056's confirmation-only exception in

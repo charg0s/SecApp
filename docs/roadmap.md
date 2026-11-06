@@ -2,7 +2,24 @@
 
 Status: Stage 0 accepted at `283da2e85dbdd7802308632aae29e4c2eea45400`; direct-launch development reopened with unresolved technical blockers; import-only core implemented pending independent review; no release dates are implied
 
-## Current release target: trusted host MVP (D-058 / D-061)
+## Current release target: direct Standard MVP (D-062)
+
+[DIRECT-STANDARD-MVP1](direct-standard-mvp.md) is the user-approved current path:
+one fixed read-only Defender check, ordinary rights, explicit confirmation,
+bounded execution/cancellation and private reporting on a trusted host.
+Service/RPC/elevated work is deferred, not part of this release's critical path.
+
+1. Bounded raw-output adapter and supplied-file report preview: implemented in
+   this slice, with synthetic tests; no live collection claim.
+2. Direct Standard launcher: next, including backend trust/startup effects, fixed
+   operation, resource/output limits and owned cleanup; not implemented yet.
+3. Useful live check -> report/minimal UI, plus targeted refusal/cancel acceptance.
+
+No automatic elevation or permission to alter audited settings is added. A
+NotTested-only report or synthetic preview is not MVP completion. The QP-0 service
+path remains historical/deferred, not a prerequisite for this direct route.
+
+## Historical trusted-host/service target (D-058 / D-061)
 
 The user approved [TRUSTED-HOST-MVP1](trusted-host-mvp.md) on 2026-11-06,
 broadening D-056 beyond confirmation alone. The first release assumes trusted
@@ -21,9 +38,14 @@ verification and the actual `highestAvailable` manifest, flags current dependenc
 review work and records the historical LocalService candidate. D-061 permits
 a virtual-account proposal with necessary service-only rights at a future exact,
 separately confirmed installation; [the rights table](broker-bootstrap-contract.md#8-d-061-scoped-service-account-rights-proposal)
-is a candidate, not an accepted manifest or current grant. Next resolve that
-account's pre-exposure RPC binding and initial object security, then the remaining
-bounded Standard launcher/effects and release-trust slice; implement/test only
+is a candidate, not an accepted manifest or current grant. The
+[QP-0 feasibility review](broker-rpc-feasibility-review.md) finds the current
+two-binding RPC candidate NoGoForNativeImplementation: no missing guarantee is
+closed by compilation or a test plan. Its explicit-token-handle/typed-context
+alternative requires a concrete contract-equivalence review before adoption.
+Next resolve that account's pre-exposure RPC binding and initial object security,
+then the remaining bounded Standard launcher/effects and release-trust slice;
+implement/test only
 after its independent acceptance. Version -> separately confirmed Help ->
 reviewed read-only protection collection -> private assessment/report -> minimal
 UI/package acceptance.

@@ -12,6 +12,11 @@ proposes a per-service virtual account; sections 1-7 retain the prior LocalServi
 research and its limitations. No transport or native mechanism is accepted by
 this account-direction change, and the blocked admission statuses below remain.
 
+QP-0 follow-up: [BROKER-RPC-FEASIBILITY1](broker-rpc-feasibility-review.md) records
+NoGoForNativeImplementation for the current two-binding candidate and a separate
+explicit-token-handle alternative for contract review only. It does not replace
+this contract, accept token transfer or admit QP-1.
+
 ```text
 ContractReview = AcceptedDocumentaryBootstrapCandidateContractOnly
 NativeImplementationAdmission = BlockedPendingConcreteGaps
@@ -699,9 +704,12 @@ bounds; application checks after unmarshalling are not an allocation boundary.
 Retain the earlier one-action/four-pending admission and application data budgets;
 account for both request and reply buffers and reserve cancel capacity before
 accepting work. They are not RPC-runtime or kernel-memory ceilings. MaxRpcSize
-does not apply to LRPC and MaxCalls is best-effort, so bounded logical records
-alone cannot close broker-wide resource/flood protection.
-[RpcServerRegisterIf3](https://learn.microsoft.com/en-us/windows/win32/api/rpcdce/nf-rpcdce-rpcserverregisterif3).
+does not apply to LRPC. RpcServerRegisterIf3.MaxCalls is ignored for the proposed
+non-autolisten interface; the process-wide RpcServerListen.MaxCalls is a suggested
+limit, not an absolute bound. Bounded logical records alone therefore cannot
+close broker-wide resource/flood protection.
+[RpcServerRegisterIf3](https://learn.microsoft.com/en-us/windows/win32/api/rpcdce/nf-rpcdce-rpcserverregisterif3),
+[RpcServerListen](https://learn.microsoft.com/en-us/windows/win32/api/rpcdce/nf-rpcdce-rpcserverlisten).
 
 RPC_C_OPT_CALL_TIMEOUT is ignored for local/async calls. A synchronous call with
 that option cannot enforce the proposed 5-second handshake or 10-second action

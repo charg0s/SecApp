@@ -6,9 +6,78 @@ SecApp is a fully open local security auditing and forensic collection system fo
 - Collection, risk assessment, and the user interface are separated.
 - Checks are read-only by default.
 - Network access, administrative operations, rebooting, memory scanning, and remediation require separate, explicit consent.
-- The project is at an early design stage.
+- A fixed, user-confirmed development launcher has completed one live Defender control check; a general product launcher is not delivered yet.
 
-## Current first-release scope: trusted host MVP (D-058 / D-061)
+## Current first-release scope: direct Standard MVP (D-062)
+
+The user approved [DIRECT-STANDARD-MVP1](docs/direct-standard-mvp.md): one
+manually confirmed fixed read-only check under ordinary user rights on a trusted
+Windows/session. The service and elevated collection are deferred from the MVP.
+No UAC, audited-security-setting change or automatic scan belongs to this path.
+D-063 permits only the pinned backend's event-source registration and normal
+startup logging. Further permissions must be explained and requested explicitly;
+prefer a supported straightforward path over complex permission workarounds.
+
+D-064 additionally authorizes preparation and **one** explicitly confirmed UAC
+control run: only the helper and pinned backend are elevated, for the same two
+Defender fields. `tools/backend/defender-control` contains that route's candidate;
+compile-only and run are separate, and no run is part of npm test. This is not
+general elevated collection, a service installation or production acceptance.
+D-065 permits creation of new private SecApp working directories and a verified
+private backend copy. It does not permit changing existing directory permissions
+or touching other projects. Build/run results remain separate from authorization.
+
+On 2026-11-06 that single control run completed successfully: the pinned backend
+exited with code 0, the helper reported an empty Job/closed streams, and SecApp's
+bounded reader rendered a useful two-field result. Temporary control-run data and
+binaries were removed after confirmed helper exit. No real result is stored here.
+This is one working development slice, not a full audit or production acceptance.
+
+The interactive development command is now implemented (D-066):
+
+```text
+npm.cmd run check:defender -- --help
+npm.cmd run check:defender
+```
+
+Run it from an ordinary interactive Windows terminal in this checkout. It prepares
+a new private workspace, shows the exact two-field scope and effects, asks for the
+displayed one-use phrase, then requests Windows UAC. No `--yes`, redirected-input
+consent or automatic retry exists. It needs the already acquired pinned backend;
+there is no download/install step. The current fixed development layout requires
+`C:\Windows`, `C:\Dev`, and the documented acquisition path.
+
+On confirmed success the temporary data files are removed; the private directory
+and its empty `controller.lock` remain, and the command says so. On uncertain
+lifetime/cleanup, keep that directory for explicit follow-up; do not blindly delete
+it or kill processes by name. Output is private terminal text, not an AuditRun or
+an exported report. On 2026-11-06 a separately authorized interactive acceptance
+run passed (D-067): CLI exit 0, useful result accepted by the bounded decoder,
+and post-run inspection confirmed only the empty coordination file remained.
+The source EventLog registration already existed and its checked values were
+unchanged. This is one successful end-to-end path, not native failure-path coverage.
+
+The first implemented slice decodes a bounded two-field Defender result and
+renders a private text/HTML preview. It never launches Velociraptor or claims
+that supplied output proves successful collection. Try the synthetic example:
+
+```text
+node tools/preview-defender-check.mjs --input tests/backend/fixtures/defender-normal.synthetic.jsonl
+npm run test:direct-defender
+```
+
+The pure direct-operation policy now fixes the candidate EXE digest, query,
+empty working-config file, environment names and resource limits. Its bounded
+output gate rejects errors, cancellation and incomplete streams; it still returns
+only an unverified preview and cannot start a process or grant launch admission.
+
+The narrow interactive command now has one successful end-to-end acceptance.
+Ordinary non-elevated launch, broader native failure/cancellation coverage and
+release packaging remain unqualified; the successful path does not settle them.
+Service/RPC qualification is not on this route.
+D-062 and its scoped D-063 through D-067 additions take precedence over historical plans.
+
+## Historical trusted-host/service scope (D-058 / D-061)
 
 On 2026-11-06 the user approved [TRUSTED-HOST-MVP1](docs/trusted-host-mvp.md):
 ordinary development and controlled integration for a trusted Windows/session,
@@ -18,7 +87,7 @@ safe launch, offline/private data handling and exact consent stay mandatory.
 Installation changes require a presented exact manifest and explicit confirmation.
 Historical strict tests are not marked Passed; no execution flag is enabled.
 
-The linked document is authoritative for current permission and gate applicability.
+This historical scope is superseded by D-062 where it retains the service direction.
 Historical stage descriptions below retain their original results and boundaries.
 
 [BACKEND-DIAGNOSTIC-CONTRACT1](docs/backend-diagnostic-contract.md) specifies the
