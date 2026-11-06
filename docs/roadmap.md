@@ -1,19 +1,28 @@
 # SecApp Roadmap
 
-Status: Stage 0 accepted at `283da2e85dbdd7802308632aae29e4c2eea45400`; direct-launch development reopened with unresolved technical blockers; import-only core implemented pending independent review; no release dates are implied
+Status: the narrow elevated Defender CLI passed live acceptance (D-067); the local desktop wrapper and shared report (D-068) passed narrow manual acceptance for opening, pre-run cancellation, live result and explicit HTML save (D-069). General launcher/release packaging remain undelivered. No release dates are implied.
 
 ## Current release target: direct Standard MVP (D-062)
 
 [DIRECT-STANDARD-MVP1](direct-standard-mvp.md) is the user-approved current path:
 one fixed read-only Defender check, ordinary rights, explicit confirmation,
 bounded execution/cancellation and private reporting on a trusted host.
-Service/RPC/elevated work is deferred, not part of this release's critical path.
+Service/RPC remains deferred. D-064 through D-069 add a narrow explicitly confirmed
+elevated control route; they do not deliver a general elevated collector.
 
 1. Bounded raw-output adapter and supplied-file report preview: implemented in
    this slice, with synthetic tests; no live collection claim.
-2. Direct Standard launcher: next, including backend trust/startup effects, fixed
-   operation, resource/output limits and owned cleanup; not implemented yet.
-3. Useful live check -> report/minimal UI, plus targeted refusal/cancel acceptance.
+2. The fixed UAC control launcher and interactive CLI have one successful real
+   acceptance (D-067). Ordinary non-elevated launch is still unqualified, not a
+   reason to repeat the already accepted narrow CLI success path.
+3. A unified private report and local Windows Forms UI are implemented (D-068).
+   Narrow operator acceptance passed (D-069): window opening, preparation-only
+   cancellation, the personally confirmed live path, report review and explicit
+   HTML saving. The real report remains outside Git. This does not qualify all
+   native failures, UAC refusal, export cancel/overwrite, DPI or keyboard behavior.
+4. Release packaging remains: development paths/prerequisites are not portable.
+   Additional read-only collectors are a later, separately reviewed scope; they
+   are not silently enabled by the UI. Service/RPC research stays off this route.
 
 No automatic elevation or permission to alter audited settings is added. A
 NotTested-only report or synthetic preview is not MVP completion. The QP-0 service

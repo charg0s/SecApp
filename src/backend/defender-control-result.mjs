@@ -39,6 +39,11 @@ export function decodeDefenderControlResult(bytes, expectedRunId) {
   return reading;
 }
 
+export function assertDefenderControlReading(reading) {
+  if (!readings.has(reading)) fail("CONTROL_READING_INVALID");
+  return reading;
+}
+
 export function renderDefenderControlReading(reading) {
   // No caller-defined report/strings enter output. The preview renderer is not
   // relabelled as an accepted AuditRun or cryptographically attested collection.

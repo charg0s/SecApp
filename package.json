@@ -17,6 +17,8 @@
     "test:backend-plan": "node --test tests/backend/test-launch-plan.mjs",
     "test:direct-defender": "node --test tests/backend/test-direct-defender-output.mjs tests/backend/test-direct-defender-operation.mjs tests/backend/test-defender-control-result.mjs",
     "check:defender": "node tools/check-defender.mjs",
+    "start": "node tools/secapp.mjs",
+    "test:defender-ui": "node --test tests/backend/test-defender-desktop.mjs",
     "test:defender-check": "node --test tests/backend/test-defender-interactive-flow.mjs tests/backend/test-defender-check-executor.mjs",
     "test:backend-native-result": "node --test tests/backend/test-native-result.mjs",
     "test:native-boundary-result": "node --test tests/backend/test-native-boundary-result.mjs",
@@ -28,7 +30,7 @@
     "test:maintenance-recovery-v2": "node --test tests/maintenance/test-maintenance-recovery-v2.mjs tests/maintenance/test-maintenance-recovery-fixes.mjs tests/maintenance/test-maintenance-recovery-recheck.mjs",
     "test:composed-boundary": "node --test tests/maintenance/test-composed-boundary.mjs",
     "test:composed-recovery": "node --test tests/maintenance/test-composed-recovery.mjs",
-    "test": "npm run validate:all && npm run test:import && npm run test:assessment && npm run test:backend-plan && npm run test:backend-native-result && npm run test:native-boundary-result && npm run test:deployment-model && npm run test:maintenance-protocol && npm run test:maintenance-persistence && npm run test:maintenance-composition && npm run test:maintenance-store-codec && npm run test:maintenance-recovery-v2 && npm run test:composed-boundary && npm run test:composed-recovery && npm run test:direct-defender && npm run test:defender-check"
+    "test": "npm run validate:all && npm run test:import && npm run test:assessment && npm run test:backend-plan && npm run test:backend-native-result && npm run test:native-boundary-result && npm run test:deployment-model && npm run test:maintenance-protocol && npm run test:maintenance-persistence && npm run test:maintenance-composition && npm run test:maintenance-store-codec && npm run test:maintenance-recovery-v2 && npm run test:composed-boundary && npm run test:composed-recovery && npm run test:direct-defender && npm run test:defender-check && npm run test:defender-ui"
   },
   "devDependencies": {
     "ajv": "8.20.0",

@@ -1,6 +1,7 @@
 // Pure command flow. Effects are supplied by the local CLI, never by CLI flags.
 import { parseJsonObjectBytes } from "../import/import-json.mjs";
-import { decodeDefenderControlResult, renderDefenderControlReading } from "./defender-control-result.mjs";
+import { decodeDefenderControlResult } from "./defender-control-result.mjs";
+import { createDefenderCheckReport, renderDefenderCheckText } from "../reporting/defender-check-report.mjs";
 
 export const DEFENDER_BUILD_PINS = Object.freeze({
   source_sha256: "bbb16bf75a7bbc58db76d13df4ee5f68f304ad4d4935577fb59d5b85554bdc9e",
@@ -51,7 +52,7 @@ export function defenderConfirmation(build) {
   return `СОБРАТЬ ${build.run_id.slice(0, 8)}`;
 }
 function directory(build) { return `C:\\Dev\\SecApp-Control-${build.run_id}`; }
-function offer(build) {
+function offer(build, desktop) {
   return ["\nСостав проверки:",
     "  AMRunningMode — режим Microsoft Defender.",
     "  RealTimeProtectionEnabled — включена ли защита в реальном времени.",
@@ -59,42 +60,53 @@ function offer(build) {
     "Повышение прав: только локальный помощник SecApp и Velociraptor v0.77.3.",
     "UAC может показать неизвестного издателя у локально собранного помощника.",
     "Административные права технически шире чтения; это не read-only sandbox.",
-    "Разрешённый побочный эффект: регистрация источника Velociraptor в журнале Windows",
-    "и обычная стартовая запись (включая возможный источник .NET Runtime).",
+    desktop ? "Источник Velociraptor в журнале Windows должен уже существовать; окно его не регистрирует."
+      : "Разрешённый побочный эффект: регистрация источника Velociraptor в журнале Windows",
+    "Обычная стартовая запись остаётся побочным эффектом (включая возможный источник .NET Runtime).",
     "Системные настройки защиты не меняются; службы, исправления, перезагрузка",
     "и сетевая коллекция не выполняются. Политику пересылки журналов Windows не меняем.",
     "Лимит helper: 30 с, аварийный watchdog: 40 с; stdout: 4096 байт, Job: 512 MiB.",
     "Общий таймер CLI для ожидания UAC/контроллера: 180 с; это не гарантия остановки kernel I/O.",
     `Новый закрытый каталог: ${directory(build)}`,
     `SHA-256 помощника: ${build.helper_sha256}`,
-    "Результат выводится в этот терминал (он может сохранять scrollback). Автоэкспорта нет.",
+    desktop ? "Результат показывается в окне; HTML сохраняется только по отдельному нажатию. Автоэкспорта нет."
+      : "Результат выводится в этот терминал (он может сохранять scrollback). Автоэкспорта нет.",
     "После подтверждённого успеха удаляются файлы данных; каталог и пустой controller.lock остаются.",
     `Для ОДНОГО сбора этих двух полей введите: ${defenderConfirmation(build)}`,
     "Любой другой ответ, EOF или 120 с без подтверждения — отмена. Затем потребуется UAC.", ""].join("\n");
 }
 
 export async function runDefenderCheckCommand(args, io) {
+  if (!Array.isArray(args) || args.some((arg) => typeof arg !== "string")) return 1;
+  if (args.length === 1 && args[0] === "--help") { io.stdout(DEFENDER_CHECK_USAGE); return 0; }
+  if (args.length !== 0) { io.stderr("DEFENDER_CHECK_ARGUMENTS\n" + DEFENDER_CHECK_USAGE); return 1; }
+  if (io.platform !== "win32" || io.interactive !== true) {
+    io.stderr("Нужен обычный интерактивный терминал Windows; перенаправленный ввод не считается согласием.\n");
+    return 1;
+  }
+  return runDefenderCheckSession(io);
+}
+
+// Shared single-operation workflow. The desktop owns its own explicit input gate;
+// it does not spoof the CLI's TTY check or pass an automatic confirmation flag.
+export async function runDefenderCheckSession(io) {
   let build, runStarted = false, discardAttempted = false;
   const say = (text) => io.stdout(text);
   const warn = (text) => { try { io.stderr(text); } catch { /* Broken terminal: no raw exception. */ } };
   async function discard() {
     discardAttempted = true;
+    io.phase?.("Discarding");
     if (!acceptedDiscard(await io.discard(build), build)) fail();
     say(`Подготовленные данные удалены. Служебный каталог и пустой lock сохранены: ${directory(build)}\n`);
   }
   try {
-    if (!Array.isArray(args) || args.some((arg) => typeof arg !== "string")) fail();
-    if (args.length === 1 && args[0] === "--help") { say(DEFENDER_CHECK_USAGE); return 0; }
-    if (args.length !== 0) { warn("DEFENDER_CHECK_ARGUMENTS\n" + DEFENDER_CHECK_USAGE); return 1; }
-    if (io.platform !== "win32" || io.interactive !== true) {
-      warn("Нужен обычный интерактивный терминал Windows; перенаправленный ввод не считается согласием.\n");
-      return 1;
-    }
+    io.phase?.("Preparing");
     say("SecApp: подготовка одной проверки Defender. Пока сбор не запускается.\n"
       + "Будут созданы новая закрытая папка C:\\Dev\\SecApp-Control-<id>, локальная сборка\n"
       + "помощника и проверенная копия уже полученного Velociraptor. Скачивания нет.\n");
     build = decodeDefenderBuild(await io.prepare());
-    say(offer(build));
+    io.phase?.("AwaitingConfirmation");
+    say(offer(build, io.presentation === "desktop"));
     const answer = await io.prompt();
     if (typeof answer !== "string" || answer.length > 64 || answer !== defenderConfirmation(build)) {
       await discard();
@@ -102,9 +114,12 @@ export async function runDefenderCheckCommand(args, io) {
       return 3;
     }
     runStarted = true; // No subsequent code path can retry or discard-as-unstarted.
+    io.phase?.("Running");
     say("Подтвердите UAC для SecAppDefenderControl.exe. Ожидание результата…\n");
     const result = decodeDefenderRunEnvelope(await io.run(build), build);
-    say(renderDefenderControlReading(result.reading));
+    const report = createDefenderCheckReport(result.reading, { dataFilesRemoved: result.dataFilesRemoved });
+    io.report?.(report);
+    say(renderDefenderCheckText(report));
     if (!result.dataFilesRemoved) {
       warn(`Очистка данных не подтверждена; проверьте закрытый каталог: ${directory(build)}\n`);
       return 1;

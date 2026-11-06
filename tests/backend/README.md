@@ -1,5 +1,20 @@
 # Backend development tests
 
+## Minimal desktop and shared report
+
+`npm run test:defender-ui` runs synthetic desktop/session/report tests. No window,
+PowerShell controller, helper, UAC or Velociraptor is started. State-bound consent,
+replay/expiry, disconnect, malformed transport, missing data, cleanup warnings,
+shared CLI rendering and private inert HTML are covered.
+
+`Test-DefenderWindowLayout.ps1` is a separate Windows PowerShell 5.1 test: it parses
+the view and constructs only controls, without showing a window or reading real
+registry/identity/backend data. No native helper compilation or UI automation is
+involved. Neither suite claims visual or live GUI acceptance; see
+[the desktop scope](../../docs/defender-desktop-mvp.md).
+
+## Existing synthetic backend tests
+
 `test-launch-plan.mjs` contains pure synthetic planning/CLI/schema tests, not native launch tests.
 The only subprocess is the Node planner entrypoint. No Velociraptor binary,
 signature/key/cache, helper compilation, token, Job, module, DLL, handle,

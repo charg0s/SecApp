@@ -6,9 +6,42 @@ SecApp is a fully open local security auditing and forensic collection system fo
 - Collection, risk assessment, and the user interface are separated.
 - Checks are read-only by default.
 - Network access, administrative operations, rebooting, memory scanning, and remediation require separate, explicit consent.
-- A fixed, user-confirmed development launcher has completed one live Defender control check; a general product launcher is not delivered yet.
+- The fixed, user-confirmed Defender desktop path has passed narrow manual acceptance, including report saving; a general product launcher is not delivered yet.
 
 ## Current first-release scope: direct Standard MVP (D-062)
+
+### Local desktop window and unified report (D-068 / D-069)
+
+```text
+npm.cmd start
+```
+
+An ordinary local Windows Forms window now wraps the same fixed Defender workflow.
+Opening it does not build a helper or collect data. Choose preparation, review the
+exact scope, type the one-use phrase, and personally confirm UAC. The window stays
+non-elevated. Existing event-source values are checked read-only before preparation
+and confirmation; missing/different values block the action, not repair Windows.
+
+The window and CLI share one private two-field report. Other protection areas are
+explicitly not tested. HTML saving is a separate user action to a new local file;
+there is no auto-save, overwrite, auto-open, server, telemetry or new dependency.
+See [desktop scope and acceptance](docs/defender-desktop-mvp.md).
+
+On 2026-11-06 the operator confirmed that the window opened after its hidden-start
+flag was removed, exercised cancellation before collection, and supplied the
+completed live report. A separately saved HTML report was inspected outside Git:
+UTF-8, the two-field result and limitations were intact, with no scripts, forms or
+external resources. This is the narrow manual acceptance recorded in D-069, not a
+claim based only on the older CLI acceptance or synthetic tests.
+
+Cleanup was reported by the accepted UI result; this GUI acceptance did not add an
+independent runtime-directory/ACL audit. Full visual/DPI/keyboard coverage, native
+failure/refusal paths and export cancellation/overwrite acceptance remain open.
+Development paths and prerequisites still apply: this is not yet a portable USB
+release or an offline boot environment. Closing without saving loses the in-memory
+report; reopening does not restore it or automatically repeat collection.
+
+### Approved underlying collection scope
 
 The user approved [DIRECT-STANDARD-MVP1](docs/direct-standard-mvp.md): one
 manually confirmed fixed read-only check under ordinary user rights on a trusted
@@ -75,7 +108,7 @@ The narrow interactive command now has one successful end-to-end acceptance.
 Ordinary non-elevated launch, broader native failure/cancellation coverage and
 release packaging remain unqualified; the successful path does not settle them.
 Service/RPC qualification is not on this route.
-D-062 and its scoped D-063 through D-067 additions take precedence over historical plans.
+D-062 and its scoped D-063 through D-069 additions take precedence over historical plans.
 
 ## Historical trusted-host/service scope (D-058 / D-061)
 

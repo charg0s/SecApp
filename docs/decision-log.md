@@ -1203,6 +1203,55 @@ successful interactive path, not a compromised-host guarantee, a full security
 audit, or qualification of native failure/timeout/cancel paths. No automatic
 repeat, dependency install, service change, commit or push was performed.
 
+### D-068: Minimal local Defender window and one private report
+
+The user authorized a minimal interface and unified report around the accepted
+Defender control check, retaining personally confirmed UAC and no system-settings
+changes. `npm start` now opens an ordinary Windows Forms view; merely opening it
+does not prepare or collect. A preparation button, exact one-use phrase and then
+manual UAC gate the unchanged fixed operation. No service, browser server, network,
+new dependency or broader collector is introduced. Existing event-source values
+are checked read-only before preparation/confirmation; no repair is attempted.
+
+The CLI and window share a normalized private two-field report. Separate HTML save
+uses a chosen new local file, without overwrite, automatic export or raw evidence.
+Missing coverage stays NotTested, other areas remain untested, and reported helper
+completion is not cryptographic attestation or a compromised-host guarantee.
+Source/synthetic tests and non-visible Windows Forms control construction are the
+evidence for this slice, not live GUI acceptance. No helper build, Velociraptor run,
+UAC interaction, system change, commit or push occurred in this implementation pass.
+See [scope and acceptance](defender-desktop-mvp.md). Subsequent manual results are
+recorded separately in D-069; the implementation-only claims above are historical.
+
+### D-069: Narrow manual desktop acceptance and source checkpoint
+
+On 2026-11-06 the user requested manual acceptance of the Defender window. The first
+opening did not display a window. Removing the UI host's hidden-start flag fixed
+the operator-visible opening; a synthetic source assertion preserves that setting.
+This did not change the pinned native helper/controller or their launch limits.
+
+The operator exercised preparation-only cancellation and supplied the successful
+discard/no-collection message. They then supplied a useful completed report from
+the personally confirmed live path, including the cleanup notice. After closing
+that window before saving, they requested another opening and provided a saved
+HTML report from a later manually confirmed session. Read-only file inspection
+confirmed UTF-8, the expected two-field report/limitations, and absence of scripts,
+forms and external resources. No automated collection confirmation or UAC action
+was used. No audited-setting modification was authorized by this acceptance.
+
+This records narrow manual acceptance, not blanket GUI/native/production acceptance.
+Cleanup is recorded as reported by the accepted UI output, not as a new independent
+filesystem/ACL audit; saved HTML source inspection is not browser-rendering proof.
+Remaining visual, refusal/failure and export-negative cases stay unqualified in
+[the acceptance record](defender-desktop-mvp.md#d-069-narrow-manual-acceptance-2026-11-06).
+
+The user explicitly requested documenting these outcomes and committing/pushing
+the current implementation. Only source, synthetic tests and normalized documents
+are included. The real report, field values, raw output, run IDs, runtime paths,
+per-run digests, binaries, acquisition material and caches remain outside Git.
+The checkpoint itself does not rerun Velociraptor, compile a helper, request UAC or
+change Windows. The development layout is still not portable or an offline scanner.
+
 ## Open decisions before runtime
 
 | ID | Decision | Required evidence |
