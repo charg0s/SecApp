@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/backend/launch-plan.schema.json",
+  "title": "SecApp non-executable backend launch plan",
+  "description": "Public planning metadata only. Not an execution authority or evidence that a binary, host, or native boundary was verified.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan_kind",
+    "privacy_class",
+    "status",
+    "reason",
+    "development_authorized",
+    "execution_enabled",
+    "production_launcher",
+    "operation",
+    "backend_pin",
+    "binary_verification",
+    "provenance_claim",
+    "command_template",
+    "limits",
+    "blockers",
+    "required_before_launch",
+    "plan_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "plan_kind": {
+      "const": "BackendLaunchPlan"
+    },
+    "privacy_class": {
+      "const": "Public"
+    },
+    "status": {
+      "const": "Blocked"
+    },
+    "reason": {
+      "const": "LAUNCH_PREREQUISITES_UNRESOLVED"
+    },
+    "development_authorized": {
+      "const": true
+    },
+    "execution_enabled": {
+      "const": false
+    },
+    "production_launcher": {
+      "const": "NotImplemented"
+    },
+    "operation": {
+      "enum": [
+        "Version",
+        "Help"
+      ]
+    },
+    "backend_pin": {
+      "const": {
+        "release": "v0.77.1",
+        "source_commit": "3137c7f714ab344dd37d0df1d5393573e41b30a5",
+        "asset_name": "velociraptor-v0.77.1-windows-amd64.exe",
+        "sha256": "c91cf8a32731c4c45c148393bc7d2af688c392194a9fffc4535e8b583260d55e",
+        "size_bytes": 70375416,
+        "openpgp_fingerprint": "0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1"
+      }
+    },
+    "binary_verification": {
+      "const": "NotPerformed"
+    },
+    "provenance_claim": {
+      "const": "NotEstablished"
+    },
+    "command_template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "argv",
+        "shell",
+        "stdin",
+        "working_directory",
+        "environment",
+        "elevation"
+      ],
+      "properties": {
+        "argv": {
+          "enum": [
+            [
+              "--nobanner",
+              "--nocolor",
+              "version"
+            ],
+            [
+              "--nobanner",
+              "--nocolor",
+              "--help"
+            ]
+          ]
+        },
+        "shell": {
+          "const": false
+        },
+        "stdin": {
+          "const": "Closed"
+        },
+        "working_directory": {
+          "const": "PrivateRunDirectory"
+        },
+        "environment": {
+          "const": "ReviewedAllowlistOnly"
+        },
+        "elevation": {
+          "const": "Forbidden"
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timeout_ms",
+        "stdout_limit_bytes",
+        "stderr_limit_bytes"
+      ],
+      "properties": {
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "stdout_limit_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65536
+        },
+        "stderr_limit_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65536
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-ADJACENT-DLL"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-LINKED-TOKEN"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-NON-ELEVATED-MECHANISM"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-REPARSE-REPLACEMENT"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-INITIAL-INVENTORY"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-PREVENTIVE-LOAD-POLICY"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-UNKNOWN-MODULES"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-IMAGE-BYTE-BINDING"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "description",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "const": "TL-PRODUCTION-LOAD-CONTEXT"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "status": {
+              "const": "Open"
+            }
+          }
+        }
+      ],
+      "items": false
+    },
+    "required_before_launch": {
+      "const": [
+        "ReviewedNativeSupervisor",
+        "CurrentBinaryTrustVerification",
+        "PrivateRunStoragePolicy",
+        "ReviewedOfflineEnforcement",
+        "BoundedOutputAndTreeCleanup",
+        "ExactActionAuthorization",
+        "IndependentLaunchReview"
+      ]
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "operation"
+        ],
+        "properties": {
+          "operation": {
+            "const": "Version"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "command_template": {
+            "type": "object",
+            "properties": {
+              "argv": {
+                "const": [
+                  "--nobanner",
+                  "--nocolor",
+                  "version"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "operation"
+        ],
+        "properties": {
+          "operation": {
+            "const": "Help"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "command_template": {
+            "type": "object",
+            "properties": {
+              "argv": {
+                "const": [
+                  "--nobanner",
+                  "--nocolor",
+                  "--help"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

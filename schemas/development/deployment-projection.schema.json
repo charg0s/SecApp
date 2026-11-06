@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/development/deployment-projection.schema.json",
+  "title": "SecApp non-executing deployment projection v1",
+  "description": "Synthetic model result, never installation or launch authority. Digests detect changes only; recompute the model for relational validation, not just this shape schema.",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "model_kind", "privacy_class", "provenance", "simulated_at", "scenario_digest", "operation", "state", "reason", "states", "projected_snapshot", "minimum_security_floor", "confirmation_consumed_in_model", "outcome", "effects", "installer_status", "launch_status", "result_digest"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "model_kind": { "const": "DeploymentProjection" },
+    "privacy_class": { "const": "PublicSynthetic" },
+    "provenance": { "const": "SyntheticModelOnly" },
+    "simulated_at": { "$ref": "deployment-scenario.schema.json#/$defs/timestamp" },
+    "scenario_digest": { "$ref": "deployment-scenario.schema.json#/$defs/digest" },
+    "operation": { "$ref": "deployment-scenario.schema.json#/$defs/operation" },
+    "state": { "$ref": "#/$defs/state" },
+    "reason": { "enum": ["None", "GenerationMismatch", "OperationScopeMismatch", "SecurityEpochRejected", "ConfirmationMissing", "ConfirmationDeclined", "ConfirmationBindingMismatch", "ConfirmationTimeRejected", "ConfirmationReplay", "SnapshotBelowFloor", "ExplicitRecoveryRequired", "CleanupIncomplete", "CancelledBeforePublish", "Busy", "RebootRequired", "Fail", "Crash", "TrustUnavailable", "RollbackUnavailable"] },
+    "states": { "type": "array", "minItems": 1, "maxItems": 33, "items": { "$ref": "#/$defs/state" } },
+    "projected_snapshot": { "oneOf": [{ "type": "null" }, { "$ref": "deployment-scenario.schema.json#/$defs/snapshot" }] },
+    "minimum_security_floor": { "$ref": "deployment-scenario.schema.json#/$defs/integer" },
+    "confirmation_consumed_in_model": { "type": "boolean" },
+    "outcome": { "enum": ["NotCommitted", "Unknown", "Uninstalled", "BackendNotEnrolled", "InstalledLaunchBlocked"] },
+    "effects": {
+      "type": "object", "additionalProperties": false,
+      "required": ["installation_enabled", "backend_execution_enabled", "uac_enabled", "network_enabled", "reboot_enabled", "user_data_deletion_enabled", "automatic_recovery_enabled", "filesystem_writes_enabled"],
+      "properties": {
+        "installation_enabled": { "const": false }, "backend_execution_enabled": { "const": false },
+        "uac_enabled": { "const": false }, "network_enabled": { "const": false },
+        "reboot_enabled": { "const": false }, "user_data_deletion_enabled": { "const": false },
+        "automatic_recovery_enabled": { "const": false }, "filesystem_writes_enabled": { "const": false }
+      }
+    },
+    "installer_status": { "const": "NotImplemented" },
+    "launch_status": { "const": "Blocked" },
+    "result_digest": { "$ref": "deployment-scenario.schema.json#/$defs/digest" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "enum": ["PublishPending", "RecoveryRequired"] } } },
+      "then": { "properties": { "projected_snapshot": { "type": "null" }, "outcome": { "const": "Unknown" } } },
+      "else": { "properties": { "projected_snapshot": { "$ref": "deployment-scenario.schema.json#/$defs/snapshot" } } }
+    },
+    {
+      "if": { "properties": { "state": { "enum": ["Committed", "CleanupPending", "Completed"] } } },
+      "then": { "properties": { "confirmation_consumed_in_model": { "const": true }, "outcome": { "enum": ["Uninstalled", "BackendNotEnrolled", "InstalledLaunchBlocked"] } } }
+    },
+    {
+      "if": { "properties": { "state": { "enum": ["Requested", "Prepared", "Staged", "Verified", "Rejected", "Cancelled", "Deferred"] } } },
+      "then": { "properties": { "outcome": { "const": "NotCommitted" } } }
+    }
+  ],
+  "$defs": {
+    "state": { "enum": ["Requested", "Prepared", "Staged", "Verified", "PublishPending", "Committed", "CleanupPending", "Completed", "Rejected", "Cancelled", "Deferred", "RecoveryRequired"] }
+  }
+}

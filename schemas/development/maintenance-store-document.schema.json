@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/development/maintenance-store-document.schema.json",
+  "title": "Synthetic maintenance store snapshot document",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "model_kind", "privacy_class", "provenance", "simulated_at",
+    "usage", "execution_enabled", "minimum", "storage", "document_digest"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "model_kind": { "const": "MaintenanceStoreDocument" },
+    "privacy_class": { "const": "PublicSynthetic" },
+    "provenance": { "const": "SyntheticModelOnly" },
+    "simulated_at": {
+      "type": "string", "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "usage": { "const": "SyntheticReferenceOnly" },
+    "execution_enabled": { "const": false },
+    "minimum": {
+      "$ref": "https://schemas.secapp.dev/v1/development/maintenance-persistence-scenario.schema.json#/$defs/watermarks"
+    },
+    "storage": {
+      "$ref": "https://schemas.secapp.dev/v1/development/maintenance-persistence-scenario.schema.json#/$defs/storage"
+    },
+    "document_digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

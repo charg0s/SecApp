@@ -1,7 +1,11 @@
 # Velociraptor trust-launch reference prototype
 
-Status: WIP development-only Windows compatibility/security checkpoint;
-trust-launch is deferred and automatic backend execution is disabled.
+Status: historical WIP development-only Windows compatibility/security checkpoint.
+Its deferred disposition and unresolved results below are retained unchanged.
+Direct-launch development was subsequently reopened by user authorization under
+[D-032](../../../docs/decision-log.md); that does not authorize running this
+diagnostic wrapper or promote any result here to production readiness. Current
+implementation stages are in [the launch design](../../../docs/backend-launch-design.md).
 
 This directory contains only deterministic, privacy-safe source fixtures and
 the expected contract for `VELOCIRAPTOR-ADAPTER-TRUST-LAUNCH1`. It does not

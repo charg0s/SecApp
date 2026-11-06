@@ -1,0 +1,916 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/development/maintenance-persistence-scenario.schema.json",
+  "title": "Synthetic maintenance persistence scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "privacy_class",
+    "provenance",
+    "simulated_at",
+    "model_kind",
+    "storage",
+    "minimum",
+    "intent",
+    "coordinator",
+    "events"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "privacy_class": {
+      "const": "PublicSynthetic"
+    },
+    "provenance": {
+      "const": "SyntheticModelOnly"
+    },
+    "simulated_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "model_kind": {
+      "const": "MaintenancePersistenceScenario"
+    },
+    "storage": {
+      "$ref": "#/$defs/storage"
+    },
+    "minimum": {
+      "$ref": "#/$defs/watermarks"
+    },
+    "intent": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/intent"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coordinator": {
+      "type": "string",
+      "enum": [
+        "Held",
+        "Busy",
+        "Unknown"
+      ]
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "record_kind",
+              "result"
+            ],
+            "properties": {
+              "kind": {
+                "const": "WriteRecord"
+              },
+              "record_kind": {
+                "type": "string",
+                "enum": [
+                  "Reserve",
+                  "Block",
+                  "Commit",
+                  "Complete"
+                ]
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "Complete",
+                  "NotWritten",
+                  "Torn",
+                  "Unknown"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "target",
+              "result"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Flush"
+              },
+              "target": {
+                "type": "string",
+                "enum": [
+                  "Journal",
+                  "Head",
+                  "Checkpoint"
+                ]
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "DurableHypothesis",
+                  "Failed",
+                  "Unknown"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "target",
+              "result"
+            ],
+            "properties": {
+              "kind": {
+                "const": "ReadBack"
+              },
+              "target": {
+                "type": "string",
+                "enum": [
+                  "Journal",
+                  "Head",
+                  "Checkpoint"
+                ]
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "Matches",
+                  "Mismatch",
+                  "Unknown"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "result"
+            ],
+            "properties": {
+              "kind": {
+                "const": "WriteHead"
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "Complete",
+                  "NotWritten",
+                  "Torn",
+                  "Unknown"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "result"
+            ],
+            "properties": {
+              "kind": {
+                "const": "ObserveQuiescence"
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "Quiescent",
+                  "Busy",
+                  "Unknown"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "phase",
+              "delivery"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Acknowledge"
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "Admission",
+                  "Result"
+                ]
+              },
+              "delivery": {
+                "type": "string",
+                "enum": [
+                  "Delivered",
+                  "Lost"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "transaction_id",
+              "counter"
+            ],
+            "properties": {
+              "kind": {
+                "const": "QueryStatus"
+              },
+              "transaction_id": {
+                "type": "string",
+                "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+                "maxLength": 64
+              },
+              "counter": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Crash"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "result"
+            ],
+            "properties": {
+              "kind": {
+                "const": "WriteCheckpoint"
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "Complete",
+                  "NotWritten",
+                  "Torn",
+                  "Unknown"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "result"
+            ],
+            "properties": {
+              "kind": {
+                "const": "RetireJournal"
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "Complete",
+                  "NotWritten",
+                  "Unknown"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "machine_id",
+        "sequence",
+        "counter",
+        "generation",
+        "security_floor",
+        "selection_digest",
+        "selection_epoch",
+        "last_transaction_id",
+        "anchor_digest"
+      ],
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "counter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "security_floor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "selection_digest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "selection_epoch": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "last_transaction_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "anchor_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "machine_id": {
+          "type": "string",
+          "enum": [
+            "synthetic-machine-a",
+            "synthetic-machine-b"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "selection_digest": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "selection_digest"
+            ]
+          },
+          "then": {
+            "properties": {
+              "selection_epoch": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "transaction_id",
+        "origin_transaction_id",
+        "recovery_target",
+        "expected_state_digest",
+        "selection_digest",
+        "selection_epoch",
+        "confirmation",
+        "intent_digest",
+        "confirmation_digest"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "Maintenance",
+            "Recovery"
+          ]
+        },
+        "transaction_id": {
+          "type": "string",
+          "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+          "maxLength": 64
+        },
+        "origin_transaction_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recovery_target": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "FinalizeCandidate",
+                "RestorePermittedPrevious",
+                "FinishCommittedCleanup"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_state_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "selection_digest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "selection_epoch": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "confirmation": {
+          "type": "string",
+          "enum": [
+            "ApprovedSynthetic",
+            "Declined",
+            "Unknown"
+          ]
+        },
+        "intent_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "confirmation_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "selection_digest": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "selection_digest"
+            ]
+          },
+          "then": {
+            "properties": {
+              "selection_epoch": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "Maintenance"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "origin_transaction_id": {
+                "type": "null"
+              },
+              "recovery_target": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "origin_transaction_id": {
+                "type": "string",
+                "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+                "maxLength": 64
+              },
+              "recovery_target": {
+                "type": "string",
+                "enum": [
+                  "FinalizeCandidate",
+                  "RestorePermittedPrevious",
+                  "FinishCommittedCleanup"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "record": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sequence",
+            "record_kind",
+            "transaction_id",
+            "intent",
+            "previous_digest",
+            "record_digest"
+          ],
+          "properties": {
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "record_kind": {
+              "const": "Reserve"
+            },
+            "transaction_id": {
+              "type": "string",
+              "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+              "maxLength": 64
+            },
+            "intent": {
+              "$ref": "#/$defs/intent"
+            },
+            "previous_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "record_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sequence",
+            "record_kind",
+            "transaction_id",
+            "intent",
+            "previous_digest",
+            "record_digest"
+          ],
+          "properties": {
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "record_kind": {
+              "const": "Block"
+            },
+            "transaction_id": {
+              "type": "string",
+              "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+              "maxLength": 64
+            },
+            "intent": {
+              "type": "null"
+            },
+            "previous_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "record_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sequence",
+            "record_kind",
+            "transaction_id",
+            "intent",
+            "previous_digest",
+            "record_digest"
+          ],
+          "properties": {
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "record_kind": {
+              "const": "Commit"
+            },
+            "transaction_id": {
+              "type": "string",
+              "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+              "maxLength": 64
+            },
+            "intent": {
+              "type": "null"
+            },
+            "previous_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "record_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sequence",
+            "record_kind",
+            "transaction_id",
+            "intent",
+            "previous_digest",
+            "record_digest"
+          ],
+          "properties": {
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "record_kind": {
+              "const": "Complete"
+            },
+            "transaction_id": {
+              "type": "string",
+              "pattern": "^synthetic-tx-[1-9][0-9]{0,15}$",
+              "maxLength": 64
+            },
+            "intent": {
+              "type": "null"
+            },
+            "previous_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "record_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      ]
+    },
+    "head": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "machine_id",
+        "sequence",
+        "tail_digest",
+        "counter",
+        "generation",
+        "generation_floor",
+        "security_floor",
+        "phase",
+        "selection_digest",
+        "selection_epoch",
+        "head_digest"
+      ],
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "tail_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "counter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "generation_floor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "security_floor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "phase": {
+          "type": "string",
+          "enum": [
+            "Stable",
+            "Admitted",
+            "Blocked",
+            "Committed"
+          ]
+        },
+        "selection_digest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "selection_epoch": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "head_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "machine_id": {
+          "type": "string",
+          "enum": [
+            "synthetic-machine-a",
+            "synthetic-machine-b"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "selection_digest": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "selection_digest"
+            ]
+          },
+          "then": {
+            "properties": {
+              "selection_epoch": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "Blocked"
+              }
+            },
+            "required": [
+              "phase"
+            ]
+          },
+          "then": {
+            "properties": {
+              "selection_digest": {
+                "type": "null"
+              },
+              "selection_epoch": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anchor",
+        "records",
+        "head",
+        "integrity",
+        "checkpoint_candidate"
+      ],
+      "properties": {
+        "anchor": {
+          "$ref": "#/$defs/anchor"
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/record"
+          }
+        },
+        "head": {
+          "$ref": "#/$defs/head"
+        },
+        "integrity": {
+          "type": "string",
+          "enum": [
+            "Known",
+            "Unknown"
+          ]
+        },
+        "checkpoint_candidate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/anchor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "watermarks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "counter",
+        "generation",
+        "security_floor"
+      ],
+      "properties": {
+        "counter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "security_floor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    }
+  }
+}

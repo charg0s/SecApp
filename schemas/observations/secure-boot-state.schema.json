@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:secapp:observation:secure-boot-state:1",
+  "title": "Imported Secure Boot state",
+  "description": "All fields are SensitiveSecurityData. Reported configuration does not constitute boot-chain or firmware attestation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "state": { "type": "string", "enum": ["Enabled", "Disabled", "Unknown", "Unsupported"] }
+  },
+  "examples": [{ "schema_version": "1.0.0", "state": "Enabled" }]
+}

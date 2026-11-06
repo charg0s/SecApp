@@ -1,0 +1,573 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/development/maintenance-projection.schema.json",
+  "title": "Non-executing synthetic maintenance protocol projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "model_kind",
+    "privacy_class",
+    "provenance",
+    "simulated_at",
+    "state",
+    "reason",
+    "offer_digest",
+    "offer_expires_at_ms",
+    "transaction_id",
+    "admission",
+    "counter_floor",
+    "security_floor",
+    "projected_store",
+    "outcome",
+    "control_frames",
+    "payload_frames",
+    "payload_bytes",
+    "events_processed",
+    "last_status",
+    "reply_lost",
+    "installer_status",
+    "launch_status",
+    "effects",
+    "scenario_digest",
+    "result_digest",
+    "confirmation_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "model_kind": {
+      "const": "MaintenanceProtocolProjection"
+    },
+    "privacy_class": {
+      "const": "PublicSynthetic"
+    },
+    "provenance": {
+      "const": "SyntheticModelOnly"
+    },
+    "simulated_at": {
+      "type": "string",
+      "format": "date-time",
+      "minLength": 20,
+      "maxLength": 20,
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "state": {
+      "enum": [
+        "AwaitPeer",
+        "AwaitHello",
+        "AwaitBind",
+        "Bound",
+        "Proposed",
+        "Reviewed",
+        "Offered",
+        "Confirmed",
+        "Admitted",
+        "PayloadVerified",
+        "PublishPending",
+        "Committed",
+        "CleanupPending",
+        "Completed",
+        "Rejected",
+        "Aborted",
+        "RecoveryRequired"
+      ]
+    },
+    "reason": {
+      "enum": [
+        "None",
+        "PeerRejected",
+        "StorageUnknown",
+        "StorageInvalid",
+        "BindingMismatch",
+        "SequenceRejected",
+        "OrderRejected",
+        "DigestMismatch",
+        "LimitExceeded",
+        "ClockRejected",
+        "Expired",
+        "ScopeRejected",
+        "ReplayRejected",
+        "GenerationRejected",
+        "EpochRejected",
+        "TrustRejected",
+        "ConsentDeclined",
+        "HeadChanged",
+        "AdmissionNotWritten",
+        "PersistenceUncertain",
+        "RuntimeBusy",
+        "PayloadRejected",
+        "Cancelled",
+        "Disconnect",
+        "Crash",
+        "ClockUncertain",
+        "TrustUnavailable",
+        "CleanupIncomplete"
+      ]
+    },
+    "offer_digest": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "offer_expires_at_ms": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      ]
+    },
+    "transaction_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+        }
+      ]
+    },
+    "admission": {
+      "enum": [
+        "NotConsumed",
+        "ConsumedInModel",
+        "Unknown"
+      ]
+    },
+    "counter_floor": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "security_floor": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "projected_store": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "machine_id",
+            "counter",
+            "generation",
+            "security_floor",
+            "selection",
+            "journal",
+            "last_result"
+          ],
+          "properties": {
+            "machine_id": {
+              "enum": [
+                "synthetic-machine-a",
+                "synthetic-machine-b"
+              ]
+            },
+            "counter": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "security_floor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "selection": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                }
+              ]
+            },
+            "journal": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "origin_transaction_id",
+                    "phase",
+                    "highest_generation",
+                    "reserved_floor",
+                    "previous",
+                    "candidate",
+                    "lineage",
+                    "journal_digest"
+                  ],
+                  "properties": {
+                    "origin_transaction_id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                    },
+                    "phase": {
+                      "enum": [
+                        "Admitted",
+                        "PublishPending",
+                        "Committed"
+                      ]
+                    },
+                    "highest_generation": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "reserved_floor": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "previous": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                        }
+                      ]
+                    },
+                    "candidate": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                        }
+                      ]
+                    },
+                    "lineage": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 16,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "transaction_id",
+                          "counter",
+                          "offer_digest",
+                          "confirmation_digest"
+                        ],
+                        "properties": {
+                          "transaction_id": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                          },
+                          "counter": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 9007199254740991
+                          },
+                          "offer_digest": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "confirmation_digest": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^[0-9a-f]{64}$"
+                          }
+                        }
+                      }
+                    },
+                    "journal_digest": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64,
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                }
+              ]
+            },
+            "last_result": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "transaction_id",
+                    "counter",
+                    "offer_digest",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "transaction_id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                    },
+                    "counter": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9007199254740991
+                    },
+                    "offer_digest": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64,
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "outcome": {
+                      "enum": [
+                        "NotCommitted",
+                        "Unknown",
+                        "Uninstalled",
+                        "BackendNotEnrolled",
+                        "InstalledLaunchBlocked"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "NotCommitted",
+        "Unknown",
+        "Uninstalled",
+        "BackendNotEnrolled",
+        "InstalledLaunchBlocked"
+      ]
+    },
+    "control_frames": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "payload_frames": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "payload_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "events_processed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "last_status": {
+      "enum": [
+        "NotQueried",
+        "Active",
+        "Completed",
+        "Retired",
+        "RecoveryRequired"
+      ]
+    },
+    "reply_lost": {
+      "type": "boolean"
+    },
+    "installer_status": {
+      "const": "NotImplemented"
+    },
+    "launch_status": {
+      "const": "Blocked"
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filesystem_writes_enabled",
+        "ipc_enabled",
+        "installation_enabled",
+        "backend_execution_enabled",
+        "uac_enabled",
+        "network_enabled",
+        "reboot_enabled",
+        "user_data_deletion_enabled",
+        "automatic_recovery_enabled"
+      ],
+      "properties": {
+        "filesystem_writes_enabled": {
+          "const": false
+        },
+        "ipc_enabled": {
+          "const": false
+        },
+        "installation_enabled": {
+          "const": false
+        },
+        "backend_execution_enabled": {
+          "const": false
+        },
+        "uac_enabled": {
+          "const": false
+        },
+        "network_enabled": {
+          "const": false
+        },
+        "reboot_enabled": {
+          "const": false
+        },
+        "user_data_deletion_enabled": {
+          "const": false
+        },
+        "automatic_recovery_enabled": {
+          "const": false
+        }
+      }
+    },
+    "scenario_digest": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "result_digest": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "confirmation_digest": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "RecoveryRequired"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "projected_store": {
+            "type": "null"
+          },
+          "outcome": {
+            "const": "Unknown"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "PublishPending"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "projected_store": {
+            "type": "null"
+          },
+          "outcome": {
+            "const": "Unknown"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "Committed",
+              "CleanupPending",
+              "Completed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "const": "ConsumedInModel"
+          },
+          "projected_store": {
+            "$ref": "https://schemas.secapp.dev/v1/development/maintenance-scenario.schema.json#/$defs/store"
+          },
+          "outcome": {
+            "enum": [
+              "Uninstalled",
+              "BackendNotEnrolled",
+              "InstalledLaunchBlocked"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "admission": {
+            "const": "Unknown"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "RecoveryRequired"
+          }
+        }
+      }
+    }
+  ]
+}

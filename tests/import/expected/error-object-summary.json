@@ -1,0 +1,10 @@
+{
+  "status": "Accepted",
+  "package_kind": "JsonObject",
+  "imported_object_count": 1,
+  "contract_counts": {
+    "ErrorObject": 1
+  },
+  "integrity_claim": "ModificationDetectionOnly",
+  "provenance_claim": "NotEstablished"
+}

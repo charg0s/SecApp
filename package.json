@@ -10,7 +10,22 @@
     "validate:application": "node tools/validate-application-rules.mjs",
     "validate:digests": "node tools/validate-digests.mjs",
     "validate:all": "npm run validate:schemas && npm run validate:contracts && npm run validate:application && npm run validate:digests",
-    "test": "npm run validate:all"
+    "import": "node tools/import-audit-package.mjs",
+    "test:import": "node --test tests/import/test-audit-package-import.mjs tests/import/test-import-cli.mjs",
+    "test:assessment": "node --test tests/assessment/test-windows-protection.mjs",
+    "backend:plan": "node tools/plan-backend-launch.mjs",
+    "test:backend-plan": "node --test tests/backend/test-launch-plan.mjs",
+    "test:backend-native-result": "node --test tests/backend/test-native-result.mjs",
+    "test:native-boundary-result": "node --test tests/backend/test-native-boundary-result.mjs",
+    "test:deployment-model": "node --test tests/deployment/test-deployment-model.mjs",
+    "test:maintenance-protocol": "node --test tests/maintenance/test-maintenance-protocol.mjs",
+    "test:maintenance-persistence": "node --test tests/maintenance/test-maintenance-persistence.mjs",
+    "test:maintenance-composition": "node --test tests/maintenance/test-maintenance-composition.mjs",
+    "test:maintenance-store-codec": "node --test tests/maintenance/test-maintenance-store-codec.mjs",
+    "test:maintenance-recovery-v2": "node --test tests/maintenance/test-maintenance-recovery-v2.mjs tests/maintenance/test-maintenance-recovery-fixes.mjs tests/maintenance/test-maintenance-recovery-recheck.mjs",
+    "test:composed-boundary": "node --test tests/maintenance/test-composed-boundary.mjs",
+    "test:composed-recovery": "node --test tests/maintenance/test-composed-recovery.mjs",
+    "test": "npm run validate:all && npm run test:import && npm run test:assessment && npm run test:backend-plan && npm run test:backend-native-result && npm run test:native-boundary-result && npm run test:deployment-model && npm run test:maintenance-protocol && npm run test:maintenance-persistence && npm run test:maintenance-composition && npm run test:maintenance-store-codec && npm run test:maintenance-recovery-v2 && npm run test:composed-boundary && npm run test:composed-recovery"
   },
   "devDependencies": {
     "ajv": "8.20.0",

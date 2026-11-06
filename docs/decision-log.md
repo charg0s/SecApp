@@ -1,6 +1,6 @@
 # SecApp Decision Log
 
-Status: architecture baseline accepted by ARCH-REVIEW6; trust-launch is deferred; import-only is the next product direction
+Status: architecture baseline accepted by ARCH-REVIEW6; direct-launch development reopened by user authorization, technical launch gates unresolved; import-only core implemented pending independent review
 
 An accepted design decision does not authorize runtime code, binary acquisition, elevation, dependency installation, deployment, commit, or push.
 
@@ -150,8 +150,870 @@ verified-bytes-to-mapped-image, and production-safe image-load-context
 blockers remain open. The detailed checkpoint is recorded in
 [velociraptor-adapter-compatibility.md](velociraptor-adapter-compatibility.md)
 and [the trust-launch fixture README](../tests/compatibility/trust-launch/README.md).
-Import-only development requires the separate `AUDIT-PACKAGE-IMPORT1` stage;
-it is not started by this decision.
+Import-only development required the separate `AUDIT-PACKAGE-IMPORT1` stage;
+that stage is now implemented as a bounded local importer and does not start or
+authorize a backend launcher.
+
+### D-029: Use a bounded reference import core
+
+`AUDIT-PACKAGE-IMPORT1` adopts dependency boundary Variant A. The
+production-neutral `src/import/` core uses only Node standard-library APIs and
+the existing side-effect-free strict JSON/JCS primitives. It performs bounded
+stable-file reads, strict JSON/JSONL parsing, a restricted in-memory ZIP
+profile, exact manifest membership, FileDigest/object/manifest digest checks,
+cross-object import references, normalization, and privacy-safe results. It
+does not extract archives to disk, invoke a process, use the network, elevate,
+collect, remediate, or import a development command entrypoint.
+
+Full Draft 2020-12 validation remains an explicit reference callback boundary.
+The original lockfile-pinned Ajv connection was test-only; missing reference validation
+fails closed and Ajv is not promoted to a production dependency. The ZIP
+profile is single-disk, non-ZIP64, non-encrypted, regular-file-only, and rejects
+prefix/self-extracting data, nested archives, executable content, symlinks,
+path ambiguity, unsupported methods/features, CRC mismatch, undeclared
+membership, and resource-limit violations.
+
+An accepted import asserts modification detection relative to the imported
+bytes and manifest only. It always records that provenance and host truth are
+not established. The committed fixtures are synthetic JSON/JSONL; ZIP cases
+are generated in memory during the automated suite and removed afterward.
+This implementation checkpoint does not authorize automatic backend execution
+or make the schemas, source host, package producer, or SecApp runtime
+production-ready.
+
+### D-030: Expose the bounded importer through a reference CLI
+
+The local import command reuses one pinned, offline Draft 2020-12 adapter for
+both CLI and synthetic tests. This extends D-029's test-only adapter placement
+to development/reference tooling without promoting Ajv to a production
+dependency. The dependency-free importer still fails closed without the
+explicit validation callback.
+
+The CLI requires a selected local file, never loads schemas from input or the
+network, and emits summary-only output with controlled exit codes. Every
+result labels assessment as not performed and validation as import-contract
+checks. It does not authorize imported actions or make imported findings
+trusted. Complete application validation, domain evaluation, storage, UI,
+release packaging, and independent review remain open.
+
+The import hardening rejects excessive depth before recursive parsing,
+non-I-JSON values, over-limit JSONL records during framing, ZIP filename BOM
+normalization, and bytes after a DEFLATE stream. Windows source-path syntax
+also rejects UNC variants, device aliases, and alternate streams. This is not
+a proof of native filesystem race or reparse protection.
+
+### D-031: Evaluate an explicit imported snapshot with a private reference report
+
+An explicit `--assess windows-protection-v1` extends the D-030 CLI with four
+strict versioned Observation payloads, six deterministic checks, and private
+text/JSON/standalone-HTML output. Plain import retains its summary-only,
+assessment-not-performed behavior. The assessment uses the existing pinned
+development-only validator; no dependency or existing core schema changes.
+
+The profile binds payload schema, area, subject, and SensitiveSecurityData
+classification; rejects duplicate domains and mixed runs; and preserves
+missing, unsupported, or failed inputs as NotTested. Expected reported values
+mean only NoConcernReported, not host safety. Confidence, severity, and status
+remain independent. The profile's chosen severity levels are provisional
+SecApp review priorities, not externally validated risk ratings.
+
+The report records source, profile, schema, observation, and report digests
+for reproducibility, without claiming a protected trust anchor, provenance,
+or freshness. Its validation scope is ImportedObservationProfile, not full
+application/XOBJ/consent validation. It is not an AuditRun or an ExportManifest.
+All output is SensitiveSecurityData and stdout-only; app-managed persistent
+storage and public export are still blocked on their own policies. The HTML
+renderer escapes text, uses a restrictive CSP, and has no scripts or external
+assets. See [the profile contract](windows-protection-import.md).
+
+Independent rule/security review, browser regression coverage, supported
+external producers/converters, real-host end-to-end testing, and release
+packaging remain open. Nothing here authorizes collection or backend launch.
+
+### D-032: Reopen direct-launch development without promoting WIP evidence
+
+The user explicitly lifted the earlier development restriction and requested
+work on launching Velociraptor from SecApp. This supersedes D-028's deferral as
+a work restriction. It does not turn its nine unresolved blockers into passes,
+approve an elevated/networked collector, or authorize unrelated system changes.
+Automatic/background execution remains disabled; a future launch must be an
+explicitly selected operation, bounded by its own policy and technical gates.
+
+`BACKEND-LAUNCH-PLAN1` implements a pure, non-executable planner for fixed
+Version/Help operations, immutable historical identity pinning, lowering-only
+time/output limits, a deterministic plan digest, and exact unresolved-gate
+reporting. It has no executable path, force flag, arbitrary argv/VQL/config,
+process API, native helper, readiness callback, or cached authorization token.
+It cannot verify an installed binary or grant launch authority. Its tests are
+synthetic and do not run the trust-launch matrix or Velociraptor.
+
+The intended implementation boundary is a narrow native process supervisor,
+not the diagnostic PowerShell wrapper or unrestricted Node process creation.
+This selects responsibility boundaries only: an acceptable non-elevated launch
+mechanism and preventive image-load policy are still not selected or proven.
+The unchanged threat model includes concurrent same-user interference.
+Weakening that model, treating Unknown as allowed, or using observation in
+place of prevention would require an explicit reviewed decision, not a fallback.
+
+Current status is DesignReopened / development Authorized / production launcher
+NotImplemented / invocation BlockedPendingTechnicalGates. The first proposed
+real workload is version identity verification, then help, then a reviewed
+constant synthetic artifact. Machine collection and its Observation mapping
+come later. The version step is not permission to collect or evidence that a
+backend is trusted. See [backend-launch-design.md](backend-launch-design.md).
+
+### D-033: Preserve optional, explicitly consented elevated auditing
+
+The user clarified that future SecApp must support checks with the necessary
+administrative rights after user confirmation. Standard-user launch remains
+the default; it is not a product-wide prohibition on elevation. This reaffirms
+the existing Standard / optional Elevated AuditPass model rather than changing
+core contract schemas or authorizing an administrative action now.
+
+An elevated pass requires a displayed exact check/data/privilege scope,
+Administrative consent bound to each action under the existing single-use
+ConsentReceipt model, and a reviewed Windows elevation path. UAC approval or
+an already-elevated parent alone is not SecApp scope authorization. Keep the UI
+and untrusted-data parsing unprivileged; use a narrow, temporary elevated helper
+only for approved read-only work. No automatic fallback, prompt retry loop,
+persistent service, or blanket "always administrator" mode is selected.
+
+Administrative consent does not imply network, scans, memory, sensitive data,
+reboot, remediation, or export consent. Scope expansion needs a separate user
+decision and matching authorities. Declined, cancelled, failed, or insufficient
+elevation preserves valid Standard results and NotTested coverage for checks
+not performed. Necessary rights mean least privilege for reviewed checks, not
+unbounded authority or a promise of complete visibility.
+
+The Version/Help planner retains elevation Forbidden for those diagnostics;
+that field is not the future product policy. Elevated launcher implementation,
+UAC/IPC/helper trust, private storage, replay handling, and failure/cleanup tests
+remain open. See [the two-pass launch design](backend-launch-design.md).
+
+### D-034: Validate a separate bounded self-launch experiment, not a production launcher
+
+The user approved the proposed narrow native-synthetic stage. The new
+BACKEND-NATIVE-SYNTHETIC1 helper compiles locally with an existing compiler
+outside the repository and launches only itself in fixed synthetic modes.
+It does not use the old TrustLaunchProbe matrix, Velociraptor, UAC, network,
+collectors, DLL/module/reparse probes, or Windows configuration changes.
+
+All ten cases passed in three runs of the final source: current/restricted
+child control, timeout/cancellation tree cleanup, individual stream limits,
+nonzero exit, a root leaving a pipe-holding leaf, pre-create cancellation,
+and failure before resume. Atomic Job assignment, bounded draining and cleanup,
+and explicit child rights checks are experiment mechanisms, not independently
+reviewed product security claims. A count-only tree assertion was replaced by
+a synthetic leaf handshake after the independent result checker rejected it.
+
+Only normalized outcomes and source/manifest hashes are retained. No compiled
+binary, raw pipe/compiler output, machine identity, path, or token dump is
+added. Temporary build removal succeeded. Exact record-ID/lifecycle negatives
+run in npm test without compiling or invoking native code. The recorded digest
+does not authenticate the compiler or prove verified bytes became a mapped image.
+
+Linked-token metadata remained Present despite effective non-elevated child
+rights. This does not waive the historical linked-token criterion or select a
+production token mechanism. All nine original gates remain open. Concurrent
+same-user image/root interference, preventive loading, genuinely non-admin and
+elevated-parent matrices, supervisor-crash/IPC cancellation, private storage,
+and independent review remain work. Optional Elevated support from D-033 is
+unchanged and not exercised. A real Version/Help invocation is not authorized
+by this experiment. See [the recorded scope](../tests/backend/native-synthetic/README.md).
+
+### D-035: Separate image-trust obligations and request a deployment decision
+
+BACKEND-IMAGE-TRUST-DESIGN1 is a design-only continuation. The user separately
+permitted reading official Microsoft Learn documentation; no downloads of
+software, native execution/probes, UAC, installation or Windows changes occurred.
+The review distinguishes verified source bytes, protected file placement,
+creation-time loader prevention, initial mapping evidence, later observation
+and process/IPC integrity. Passing one does not substitute for another.
+
+The documented APIs do not justify inherited SetDefaultDllDirectories policy,
+System32-only enforcement from PreferSystem32Images, arbitrary publisher
+allowlisting from signature mitigation flags, a trustworthy empty pre-resume
+module list, or mapped-byte proof from a pathname. The linked-token and all
+other historical criteria remain unchanged. Facts, inferences and primary
+sources are recorded in [the image-trust design](backend-image-trust-design.md).
+
+A protected versioned installation is the preferred candidate for review,
+keeping normal Standard checks unelevated and setup/update consent separate
+from optional Elevated collection. It is not accepted as a complete isolation
+solution, and its deployment choice DEPLOY-001 was pending at this stage
+(subsequently approved for design in D-036). Portable
+same-user staging is not promoted to production; AppContainer/separate-principal
+and managed App Control remain alternatives, not implicit fallbacks. No service
+or device policy is selected or authorized by this decision.
+
+Sixteen acceptance vectors are Planned/NotRun, not new pass evidence. No
+planner, contract schema, native source, expected trust-launch result or
+dependency changes are made. Obtain the deployment-design choice before
+implementation; later installer/native-test/backend execution needs its own
+specific authorization. Do not solve feasibility by silently weakening the
+same-user threat model or declaring Unknown acceptable.
+
+### D-036: Approve protected-installation design, not installation or collection
+
+The user explicitly confirmed DEPLOY-001 for further installer design, while
+excluding installation and Windows changes. Its status is ApprovedForDesign.
+This resolves the protected versus portable product direction; it does not
+approve an installer implementation, native test, UAC request or backend launch.
+
+PROTECTED-INSTALLER-DESIGN1 specifies a signed x64 per-machine MSI authoring
+target for SecApp-owned files, separate fixed maintenance consent, protected
+code/policy/selector ownership, private staging, exact release admission and
+side-by-side generation/recovery requirements. The authoring framework, signing
+infrastructure, OS/filesystem matrix and concrete concurrency/durability
+mechanisms remain implementation prerequisites, not assumed capabilities.
+
+Velociraptor stays external and unmodified, not bundled into the MSI. Separate
+future enrollment must authenticate the exact official asset without running
+it. Installation never grants collector authority, launches a backend for a
+health check, starts an elevated UI, or reuses Administrative collector consent
+for maintenance. Ordinary operation remains Standard; optional Elevated checks
+still need their own exact approval. No persistent updater/service is selected.
+
+Recovery must distinguish MSI rollback from selector/enrollment state and must
+not restore a revoked or below-floor version. Repair/uninstall are explicit and
+bounded to owned objects; user evidence is preserved and security-floor reset
+is not an ordinary reinstall feature. Busy, uncertain commit, missing trust or
+reboot-required states cannot become ready/success assertions. Runtime storage
+and all nine launch gates remain open.
+
+Twenty-two installer acceptance cases are Planned/NotRun. This stage modifies
+documents only, with no schema/package/dependency/native-code change. The next
+proposed artifact is a pure non-executing deployment-plan/lifecycle contract,
+not an executable installer. See [the installer design](protected-installation-design.md).
+
+### D-037: Implement a pure deployment model without maintenance authority
+
+The user accepted DEPLOYMENT-PLAN-CONTRACT1 as the next non-executing step.
+Two versioned development-only schemas and a bounded pure state model now
+represent Install, Update, EnrollBackend, Repair and Uninstall. They preserve
+separate maintenance versus collector scope without changing immutable core
+ConsentReceipt/ActionLog contracts. Synthetic confirmations bind exact machine,
+operation, complete old/new tuple, manifest/policy digests and generation, with
+modeled expiry and declared nonce replay rejection. These checks are not
+authentication, a real single-use store or consent for installation.
+
+The model rejects generation overflow and epoch rollback, preserves the floor
+across uninstall/reinstall, makes publication uncertainty RecoveryRequired,
+and keeps committed selection on cleanup failure. No automatic recovery,
+backend health check, elevated UI, host writer or installer invocation exists.
+Every projection disables installation and backend execution; a completed model
+is not a Ready result. Production disk/journal retention, authentication,
+admission/lease primitives and recovery execution remain unresolved.
+
+The exact DP-001 through DP-040 pure vector set joins the existing offline
+development gate. It is not native acceptance evidence: the 22 PI cases and
+all nine launch gates retain their prior status. The next boundary is review
+of protocol trust, durable state and recovery, not implicit MSI/native execution.
+See [the contract and limitations](deployment-plan-contract.md).
+
+### D-038: Design maintenance authority at the helper, not in the ordinary UI
+
+The user accepted the next protocol-design step. MAINTENANCE-PROTOCOL-DESIGN1
+records a local helper-owned named-pipe candidate, exact peer/offer binding,
+helper-owned operation confirmation and protected consume-before-effect
+admission. The ordinary UI remains an untrusted requester. A PID, SID, pipe name,
+challenge, hash or successful UAC prompt does not prove UI integrity or authorize
+the exact maintenance scope. A post-UAC helper dialog is not automatically a
+Windows secure-desktop interaction; confirmation integrity remains a gate.
+
+No client Approve/Commit, arbitrary path/command, reusable receipt or shared UI
+secret is accepted. Release metadata is independently authenticated before the
+offer; bounded byte intake follows durable admission. A lost reply permits only
+status inquiry, not execution retry. Counter/floor state survives compaction and
+uninstall. Unknown durability, missing state or publication ambiguity blocks
+progress; explicit recovery needs fresh scope confirmation and never lowers the
+floor or restores an old generation number. MSI and selector rollback remain
+separate transaction domains. Alternate-admin credentials do not authorize
+profile writes, audit collection or an elevated SecApp UI.
+
+This is a documentation/research proposal, not an accepted native mechanism or
+production wire schema. Twenty-eight MP cases are Planned/NotRun, and all PI,
+image and launch gates are unchanged. Existing schemas, pure model, runtime
+sources and dependencies are unchanged. Next is a separate development-only
+message/replay/recovery contract model, followed by independent review before
+any native implementation. See [the protocol design](maintenance-protocol-design.md).
+
+### D-039: Implement synthetic maintenance contracts without native authority
+
+The user authorized implementation while retaining the stated execution,
+installation, system-change, dependency/network and Git-publication restrictions.
+MAINTENANCE-PROTOCOL-CONTRACT1 supplies three versioned development schemas and
+a strict in-memory model, not production helper/IPC code. Existing deployment
+and core audit/consent schemas remain unchanged; pinned Ajv remains dev-only.
+
+Wire messages cannot perform helper-local confirmation, verification, reserve
+or commit actions. Synthetic offers bind the full context, scope and handshake;
+confirmation records additionally bind the approver. Modeled durable admission
+consumes a counter before intake, uncertain persistence yields RecoveryRequired,
+and lost replies permit status inquiry rather than duplicate effects. Recovery
+is a disjoint freshly confirmed request and cannot lower the floor or reuse an
+old generation. Every projection keeps all host effects disabled.
+
+MPC-001 through MPC-048 are pure reference vectors, with an exact-ID completeness
+check. They do not close MP/PI/native launch cases. Payloads are metadata only;
+OS peer identity, signatures, user presence, durable storage, stream framing,
+power-loss behavior and native phase watchdogs remain unimplemented. The next
+boundary is review and selection of those concrete mechanisms, not an implicit
+native experiment or launch. See [the contract](maintenance-protocol-contract.md).
+
+### D-040: Narrow maintenance mechanisms without claiming native acceptance
+
+MAINTENANCE-MECHANISM-REVIEW1 is author self-review under the retained restrictions,
+not independent security sign-off. Official Microsoft Learn research supports
+continuing the protected short-lived helper/local-pipe direction. Stable protected
+coordination files and a bounded append-record journal/compact head are selected
+as candidates for further modeling, not deployed mechanisms. A free gate handle
+does not prove post-crash tree quiescence; UAC does not confirm the exact operation;
+flush/replace calls do not alone prove cross-file durability. These remain blockers.
+
+The pure reference model now permits an exact journal-bound null recovery target
+with no payload, fresh confirmation/counter and preserved generation/floor rules.
+This covers interrupted Uninstall and restoration of a prior uninstalled state;
+it does not add data deletion, implicit candidate abandonment or native recovery.
+MPC-049..053 extend the original exact-ID tests. Existing schemas, dependencies,
+native source and evidence remain unchanged. All host effects stay disabled.
+
+Next is MAINTENANCE-PERSISTENCE-MODEL1, a pure synthetic fault model separating
+write, flush, head publication, acknowledgement and crash observations. Native
+code, installation/UAC and backend execution still require separate authorization
+and prerequisite independent review. See [the review](maintenance-mechanism-review.md).
+
+### D-041: Model persistence uncertainty without implementing a protected store
+
+The user authorized MAINTENANCE-PERSISTENCE-MODEL1 under the retained restrictions.
+It adds separate development-only scenario/projection schemas and a pure bounded
+fault model; existing protocol/deployment/core schemas and dependencies remain
+unchanged. Normal maintenance scope is an upstream hypothesis, not a new receipt
+or production authorization format.
+
+Journal and head write, flush, re-read and acknowledgment are separate modeled
+events. NotWritten is known absence of effects, while failed/unknown flush or
+torn write preserves conservative possible consumption/generation/floor and
+blocks selection. Fresh recovery retains original lineage; compaction cannot
+retire records before a matching checkpoint/head sequence. Unknown state never
+becomes a new installation. DurableHypothesis is not native durability evidence.
+
+MPS-001..040 and exact-ID completeness join npm test. No filesystem writer,
+storage bytes/decoder, native APIs, IPC, UAC, installer or backend execution are
+added. All MMR, TL, IT, PI and MP blockers remain open. Next is composition review,
+not an implicit host experiment. See [the contract](maintenance-persistence-model.md).
+
+### D-042: Compare maintenance models without creating a production authority bridge
+
+MAINTENANCE-COMPOSITION-REVIEW1 is a bounded author self-review with paired
+synthetic traces, not independent acceptance or a formal refinement proof.
+MCC-001..024 and exact-ID completeness join npm test. No schemas, dependencies,
+native source, evidence or system state are changed.
+
+The review reproduced two discrepancies: local protocol work could continue
+after a lost reply without querying current status, and a fresh persistence
+session labeled unresolved publication Active. The protocol now suspends all
+progress except QueryStatus/Interrupt while the reply is lost. Persistence
+returns RecoveryRequired for the pending lineage until fresh recovery admission.
+Counters, generations, floors and known committed state remain preserved.
+
+The persistence model does not check full maintenance operation scope, and its
+digests are not interchangeable with protocol confirmation. Stricter storage
+uncertainty must win over an abstract protocol outcome. No combined Ready result,
+authorization adapter or native implementation is added. All prior trust gates
+remain open. The next bounded slice is MAINTENANCE-STORE-CODEC1, an in-memory
+byte-format/codec contract, not a host store. See
+[the review and unresolved obligations](maintenance-composition-review.md).
+
+### D-043: Serialize synthetic storage snapshots without implementing persistence
+
+The user authorized MAINTENANCE-STORE-CODEC1 under the retained restrictions.
+It adds a separate immutable development document schema and an in-memory
+whole-snapshot codec. The fixed versioned frame contains an exact bounded length,
+SHA-256 over its prefix/payload, and canonical UTF-8 JSON. Existing schema
+documents, models, dependencies, native source and evidence remain unchanged.
+
+Encoding/decoding checks document and component digests, record links, synthetic
+machine consistency and declared conservative minima. Explicitly Known snapshots
+without an incomplete checkpoint must also pass the existing pure replay check.
+Unknown/checkpoint hypotheses are preserved, not repaired or promoted. A digest
+is not authentication, a serialized minimum is not an external trust anchor,
+and a successfully decoded document grants no operation or launch authority.
+
+MSC-001..036 and exact-ID completeness join npm test. There is no file writer,
+append-record persistence implementation, session resume, native API, installer,
+IPC, UAC or backend execution. All prior launch/maintenance blockers remain open.
+Next design work must address explicit retirement, capacity and interrupted
+checkpoint policies; native work still requires independent prerequisite review
+and separate authorization. See [the format and limitations](maintenance-store-codec.md).
+
+### D-044: Define explicit retirement, capacity and checkpoint recovery policy
+
+MAINTENANCE-RECOVERY-POLICY1 is documentation-only policy for the next versioned
+synthetic model, not a runtime implementation or independent acceptance. It
+defines fresh, disjoint confirmation for logical retirement of an ordinary
+Admitted unpublished candidate, terminal metadata compaction and checkpoint
+reconciliation. Consumed counters and prior selection/generation/floor remain
+preserved; metadata authority does not delete payloads or user data.
+
+Future admission must reserve its complete logical record/byte budget plus
+metadata-maintenance capacity, rather than discovering exhaustion after admission.
+The selected nominal budgets are six records for ordinary/publication work,
+four for cleanup-only/retirement and two for explicit metadata compaction or
+checkpoint reconciliation. A full legacy journal without that space remains
+blocked; no truncate/reset/emergency-store workaround is selected. Repeated
+failures can still exhaust the bounded reserve.
+
+Checkpoint eligibility requires exact agreement of the reconstructed terminal
+old state, candidate and either permitted head, not checksum agreement alone.
+Reconciliation still needs a newly consumed counter and newly bound checkpoint;
+unknown evidence never becomes Known through classification. RP-001..030 are
+Planned/NotRun requirements, not added executable-test evidence.
+
+No code, schemas, package metadata, dependencies, native files or evidence change
+in this stage. Next is MAINTENANCE-RECOVERY-MODEL2 with separate major-family
+development contracts and pure tests; no in-place v1 schema change, migration or
+host adapter. MMR-004/MMR-006 and all other native/launch gates remain open. See
+[the policy](maintenance-recovery-policy.md).
+
+### D-045: Implement synthetic recovery v2 without enabling native effects
+
+The user authorized continuation and separately permitted read-only Velociraptor
+execution, expressly excluding creation, deletion or changes to system settings.
+This does not authorize installation, services, registry/ACL/PATH changes, UAC,
+network, remediation or arbitrary collectors, nor waive any trust prerequisite.
+
+MAINTENANCE-RECOVERY-MODEL2 implements D-044 in a separate major-family development
+schema, pure model and SA_MSC02 snapshot codec. v1 schemas/models/codecs/tests are
+byte-identical. Fresh metadata authority retires only an unpublished ordinary
+candidate, compacts terminal state, or reconciles exact eligible checkpoint
+representations. Counters/lineage and conservative minima survive interruption;
+metadata operations preserve selection/generation/floor and never delete payloads.
+
+Admission reserves nominal 6/4/2 record budgets and bounded bytes before any
+consumption. Reconciliation records fresh authority before deriving its new
+checkpoint and retains the old chain/candidate until verified retirement. Unknown
+or exhausted control states block; no availability guarantee or emergency store
+is invented. RP-001..030 plus exact-ID completeness are executable synthetic
+tests, including all durable-step interruptions and v1/v2 reader rejection.
+
+This is author-reviewed development evidence, not an independent acceptance or
+host durability proof. No physical writer, native API, installation, backend
+execution, migration, commit or push is part of this stage. All MMR/TL blockers
+remain Open. Next is independent recovery/composition and trust-boundary review;
+see [the implementation and limits](maintenance-recovery-model-v2.md).
+
+### D-046: Correct recovery-model review findings without widening authority
+
+The user authorized correcting the four reproduced author-review findings.
+MAINTENANCE-RECOVERY-FIX1 tightens candidate epoch checks to include the currently
+selected epoch, preserves conservative minima from every verified replay prefix,
+rejects unexplained terminal-anchor generation gaps, and makes expiry exclusive
+at preparation and admission. Newly generated default offers expire five minutes
+after simulated_at; existing input authority is never renewed or rewritten.
+
+MRF-001..012 plus exact-ID completeness cover positive and negative cases,
+including independently framed codec inputs and paired protocol/v2 expiry
+boundaries. The first run against the unchanged implementation reproduced the
+defects; after correction the new suite and unchanged RP suite pass. All schemas,
+v1 code/tests, original v2 tests/codec/fixtures, lockfile, dependencies and native
+source remain unchanged. These are WIP implementation corrections to existing
+invariants, not a format migration or native acceptance.
+
+The original corrupt journal is retained even when its strongest known prefix
+minima are preserved; no truncate/reset/repair or implicit recovery is introduced.
+All MMR/TL blockers stay Open. Independent recheck and composed-boundary review
+are still required. No native/backend invocation, system mutation, installation,
+UAC, network, commit or push occurs. See [the fixes and evidence](maintenance-recovery-fixes.md).
+
+### D-047: Correct independent recovery findings without promoting model authority
+
+The user authorized fixing the separate review's three reproduced findings and
+rechecking them. MAINTENANCE-RECOVERY-FIX2 validates supported finite canonical
+timestamps in every current/historical offer container, rejects terminal anchor
+operation/outcome pairs that no valid transition can produce, and limits
+publication-related transaction status to the queried unresolved lineage.
+Historical expiry is not reapplied against current time; a retired query does not
+clear current reply loss or turn global recovery uncertainty into known selection.
+
+MRR-001..010 plus exact-ID completeness first reproduced five failing cases
+against unchanged FIX1 code (with five passing controls), then passed after the
+corrections. A separate strict schema gate proves schema-valid semantic negatives.
+The suite joins the existing command without changing dependencies, schemas,
+wire fields, digest domains, the codec, v1, RP/MRF or native sources. No migration
+or physical persistence mechanism is introduced.
+
+See [the findings, corrections and recheck record](maintenance-recovery-recheck.md)
+for the bounded independent disposition. All MMR/TL blockers remain Open; no
+native/backend execution, system mutation, installation, UAC, network, commit or
+push is authorized by this model correction or its test results.
+
+### D-048: Compare original synthetic models without creating a production bridge
+
+The user authorized COMPOSED-BOUNDARY-CONTRACT1 after the composed review found
+that recovery v2's opaque digest/epoch does not itself enforce deployment's full
+operation scope. A private test-only checker now recomputes deployment, protocol
+v1 and recovery v2 from their original scenarios, requires explicit full-tuple,
+operation, counter/origin, generation/floor, context and clock correspondence,
+and compares every supplied output claim against recomputation.
+
+Only four complete boundaries of five ordinary operations from a declared fresh
+stable anchor are covered. Recovery/metadata operations and historical terminal
+mapping have no implicit analogue. v2's conservative Unknown selection at Commit
+is retained even where other models expose a selected tuple. Every successful
+comparison is non-authority with execution disabled and launch blocked.
+
+CBC-001..030 plus completeness join npm test without changing models, codecs,
+schemas, dependencies or native code. No production bridge, migration, launcher,
+host writer, native probe, UAC or system change is introduced. All MMR/TL blockers
+remain Open. See [the bounded contract and review disposition](composed-boundary-contract.md).
+
+### D-049: Bind recovery to complete synthetic history without promoting snapshots
+
+The user authorized the recovery/historical follow-up to D-048 and independent
+recheck. COMPOSED-RECOVERY-CONTRACT1 adds a private test-only checker that replays
+one ordinary origin and up to three fresh recovery attempts. Deployment remains
+the original scope witness; finalization, permitted restoration and cleanup must
+each pass their own protocol/v2 admission. Whole restart stores, historical
+lineage, tuple mappings, counters, generations, floors, contexts and clocks must
+correspond; no standalone Known snapshot or rehashed claim replaces history.
+
+Status observations remain read-only and cannot grant new authority. The v2
+metadata-only operations have no implicit protocol/deployment analogue. Unknown
+selection and the committed status asymmetry remain conservative. No production
+bridge, schema/model change, physical persistence or native operation is added.
+CRH-001..025 plus completeness join npm test; existing suites and all MMR/TL
+blockers remain unchanged. See [the exact scope and review](composed-recovery-contract.md).
+
+The independent review's challenge-role freshness finding was reproduced by
+CRH-025, corrected with a common challenge-label set, and closed by focused
+recheck. The combined CBC/CRH scope received bounded PASS, not native acceptance.
+
+### D-050: Keep authorized native observations separate from production acceptance
+
+The user explicitly authorized compiling and running a separate synthetic native
+harness on the primary computer for DLL/image, IPC and abrupt test-process exit
+checks. This does not authorize Velociraptor in this experiment, UAC, installation,
+dependencies or changes to ACLs, registry, PATH, services or system settings.
+
+NATIVE-BOUNDARY-EXPERIMENT1 records seven observations from three final-source
+runs. PreferSystem32 did not prevent an explicit local fixture mapping; a
+same-user sibling obtained the requested dangerous process rights without using
+them for injection. MicrosoftOnly blocked that inert managed PE after startup;
+bounded pipe matching and one abrupt-supervisor cleanup case also completed.
+Image pathname/hash agreement remains explicitly weaker than mapped-byte proof.
+No startup-loader, authenticated IPC, protected root or lease-atomicity claim is
+made. The unchanged historical helper types are reused, not its old test matrix.
+
+Only source and normalized synthetic results are retained. Binaries were built
+outside Git and removed. Thirty-three pure record/source-binding tests join npm
+test; native execution remains explicit and manual. The planner, native evidence
+from earlier stages, schemas and dependencies remain unchanged. All TL/MMR
+blockers stay Open. See [the experiment and limits](../tests/backend/native-boundary/README.md).
+
+### D-051: Recommend a separate-identity launch broker without authorizing a service
+
+The user approved the small first-release plan and asked to choose a safe launch
+mechanism without system changes. BACKEND-LAUNCH-MECHANISM-SELECTION1 recommends
+an SCM-bootstrapped, separate-identity narrow broker plus a constrained Standard
+worker as the next candidate for design approval. The observed default same-user
+candidate is insufficient; this is not a proof that all service-free alternatives
+are impossible. AppContainer is possible additional containment, not by itself
+authenticated bootstrap or exact human-action confirmation.
+
+A service would change the prior no-service direction. At this recommendation
+checkpoint the product decision was PendingUserApproval (resolved later by
+D-052); persistent registration, service code, host installation,
+ACL/account changes and UAC remain unauthorized. No account or privilege bundle
+is approved by name, and collector identity must not silently change to a service
+profile or inherit broker privileges. Loader prevention, mapped-image binding,
+consent, offline/storage and composed lifecycle remain separate blocking gates.
+
+The [selection document](backend-launch-mechanism-selection.md) records alternatives
+and eight Planned/NotRun acceptance checkpoints. No runtime, schema, model,
+dependency, historical result or planner flag changes; all TL/MMR blockers remain
+Open. This is an author recommendation, not independent native acceptance.
+
+### D-052: Approve the launch-service direction for design only
+
+On 2026-10-11 the user accepted the service-based direction and explicitly asked
+to continue design without installation or system changes. This resolves D-051's
+PendingUserApproval and supersedes DEPLOY-001's no-service choice only for one
+narrow SCM launch broker. It does not authorize service implementation,
+registration, account/privilege/ACL changes, UAC, dependencies or native trials.
+
+[SERVICE-LAUNCH-BROKER-DESIGN1](service-launch-broker-design.md) proposes demand
+start, a separate broker identity, one active Standard operation and a protected
+supervisor in the requesting user's session. The broker cannot install, update,
+repair, run arbitrary commands or lend its own rights to Velociraptor. A
+per-service virtual account is the account candidate for review, not an accepted
+privilege configuration; LocalSystem is not a fallback. Maintenance and future
+explicitly confirmed Elevated collection retain their separate authorities.
+
+Identification-only control IPC is not a launchable user token or proof of human
+intent. A separate authenticated token-acquisition route, exact confirmation,
+process/thread/token ownership and same-session stream handling require review
+together. No cross-session handle inheritance or automatic token/session
+substitution is assumed. Proposed limits and messages are design requirements,
+not a wire implementation or new schema. All TL/MMR gates remain Open; LS-001
+has product approval only, not technical acceptance. The current planner,
+historical records, source code, schemas and dependencies remain unchanged.
+
+### D-053: Bind exact displayed scope to broker-internal one-use launch admission
+
+On 2026-10-11 the user requested further design of protected launch confirmation,
+without installation or system changes. [LAUNCH-CONFIRMATION-DESIGN1](launch-confirmation-design.md)
+separates the ordinary UI, a proposed per-action confirmation component (CC)
+and the authority-owning broker. The broker independently freezes the operation,
+checks, data/effect scope, identities, policy/material, limits and presentation
+resources. CC derives the complete display and returns an exact decision only
+over its separate authenticated role channel. Public UI approval is not authority.
+
+The proposed launch permit is a private broker admission record, consumed with
+run/deployment ownership before backend creation. It is not a bearer file or
+client-signed bypass. Replay, changed scope, decline, expiry, cancellation races,
+lost acknowledgement and uncertain crash outcomes must not create a second
+execution or restore permission. One offer covers one action/backend invocation;
+distinct executions and consent domains cannot be folded into a reusable grant.
+
+This is design, not platform acceptance: authenticated IPC, a DisplayModel digest,
+a Hello result/signature or prior UAC does not independently prove exact protected
+display and human input. The Windows mechanism remains NotSelected, NativeApproval
+Disabled and all TL/MMR gates Open. No keys, new production schemas, native code,
+dependencies, installation or host configuration changes are authorized. Existing
+ConsentReceipt variants and optional separately confirmed Elevated work remain
+unchanged; Standard does not waive sensitive-data or other required consent.
+
+### D-054: Triage confirmation mechanisms without accepting a Windows boundary
+
+On 2026-11-06 the user asked to continue the documentation-only design. The
+[mechanism review](launch-confirmation-design.md#61-windows-mechanism-triage-2026-11-06)
+compares ordinary UI/UIPI, UAC, Hello, secure Credential UI and a private desktop
+against the existing same-user threat model and exact-scope protocol. It records
+official Microsoft API constraints and labels SecApp deductions separately.
+
+Ordinary same-integrity UI is not accepted as the sole human-input boundary.
+Credential UI offers a documented secure prompt but returns credential material,
+not SecApp's exact launch permit; no credential handling or provider installation
+is authorized. Prior UAC or a Hello result/signature remains insufficient alone.
+
+The author's next research priority is an explicitly secured private desktop
+with a protected in-session CC bootstrap. This is not user selection of that
+mechanism or technical acceptance. The review identifies nonexclusive desktop
+creation, parent-station/same-user rights, owner/handle authority, session-token
+placement and switch/input/recovery as unresolved. In particular, moving a
+service token between sessions must not silently add the excluded SeTcb right.
+One concrete access/bootstrap sequence must satisfy these constraints or the
+route must be rejected for an explicit revised architecture decision.
+
+DisplayInputProtection stays NotSelected, NativeApproval Disabled and all TL/MMR
+gates Open. The broker account/privilege budget, schemas, protocol authority,
+planner flags and optional separately confirmed Elevated path are unchanged.
+No code, native/API probe, input injection, installation, key/credential enrollment,
+service/desktop creation or host-setting/ACL modification is authorized here.
+
+### D-055: Do not advance the private-desktop candidate to implementation
+
+On 2026-11-06 the user asked to begin the minimum working-release plan. The
+next agreed task was to resolve launch feasibility without assuming installation
+or system-change permission. The [bounded bootstrap review](launch-confirmation-design.md#64-concrete-bootstrap-review-no-implementation-go-ahead)
+records NotAccepted / no implementation go-ahead under current evidence.
+
+Session 0 switching and the service-token session rewrite do not fit the chosen
+topology/privilege budget. Ordinary grants to the requesting user's shared SID
+do not distinguish CC from an in-scope hostile peer. Restricted tokens alone
+do not repair that distinction. OWNER RIGHTS can constrain implicit owner rights,
+so the review does not claim that every secured same-user construction is
+impossible. The retained-handle bootstrap alternative remains unproved at
+creation/attachment, genuine interaction and restoration after CC death.
+IMO_HARDWARE can also represent UIAccess-injected input; it is not by itself
+proof of a physical or informed user decision.
+
+The review is author analysis of official API contracts, not independent/native
+acceptance. It ends the current paper-only pass and requests a separate user
+decision on isolated, explicitly authorized native research versus a revised
+first-release assurance scope. No option is selected automatically, the same-user
+threat model is unchanged and D-052's service direction is not revoked.
+
+No service/CC implementation, host installation, VM/hypervisor setup, ACL/account/
+privilege change, UAC, key enrollment or backend/native execution is authorized
+by this disposition. DisplayInputProtection remains NotSelected, NativeApproval
+Disabled and all TL/MMR gates Open; source, schemas, dependencies, historical
+results and planner execution flags are unchanged.
+
+### D-056: Select a trusted-local MVP with a narrower Standard confirmation claim
+
+On 2026-11-06 the user chose the second path from D-055: a limited first working
+release for a trusted local session, without claiming same-user-malware-resistant
+confirmation. [TRUSTED-LOCAL-MVP1](trusted-local-mvp.md) records the exact scope,
+cost, proposed Standard intent protocol delta and retained safeguards.
+
+This permits an ordinary trusted-session UI to report one exact Standard intent
+to the broker, instead of requiring a separately protected CC/private desktop.
+The broker still owns scope derivation, prerequisite checks and single-use run
+admission; the UI cannot override readiness, verification or consent domains.
+The exception is to the human-intent guarantee under pre-existing session
+compromise, not to hostile input handling or compromises caused by SecApp itself.
+The target protection profile remains SensitiveSecurityData and needs the
+corresponding exact consent flow before collection.
+
+D-052's service direction stays selected for design. No portable/no-service
+architecture, privilege reduction criterion, weaker loader policy, plaintext
+storage fallback, installer or backend invocation is implicitly approved.
+Maintenance and the future optional Elevated path retain their stronger separate
+authorities. All nine TL records/planner gates and other MMR obligations remain
+Open; immutable schemas, source and historical results are not rewritten.
+
+The user separately authorized a read-only independent reviewer for this scoped
+revision. The reviewer accepted the documentation delta as AcceptedScopedDeltaOnly
+with no blocking findings, including the separately bound Standard sensitive-data
+consent distinction. This is not acceptance of the future collection flow or
+full runtime/native acceptance. Host changes, dependencies, keys,
+native compilation/tests, service installation, commits and pushes are not part
+of this pass. The current diagnostic planner stays non-executing.
+
+### D-057: Define the first diagnostic action without promoting launch readiness
+
+On 2026-11-06 the user authorized continuing to the Version/Help operation
+contract after D-056. [BACKEND-DIAGNOSTIC-CONTRACT1](backend-diagnostic-contract.md)
+specifies Version first, then Help only with a separate exact confirmation and
+current checks. Neither action is a collector or grants authority to collect.
+
+The contract separates current release/source review, pre-execution asset/image
+trust and post-execution reported-build compatibility. It retains exact argv and
+10-second/64-KiB-per-stream ceilings, requires release-specific output profiles,
+and accounts for the historical Help-on-stderr result. Counts/exit zero and
+version strings are not authentication or sufficient compatibility evidence.
+Startup/configuration side effects, private buffers and composed cleanup still
+need review even for these short diagnostic commands.
+
+This is a design proposal, not approval of a concrete runtime release or service
+implementation. Current release selection, all nine TL gates and remaining LS/MMR,
+offline/storage/consent requirements stay unresolved. No source/schema/dependency,
+historical fixture or execution flag changes. No upstream retrieval, asset
+download, native compilation/probe, installation, backend execution or Git
+mutation is authorized by this contract. Independent review accepted only this
+documentation as AcceptedDocumentaryDiagnosticContractOnly, with no remaining
+blocking findings; runtime/release/output-profile acceptance is still pending.
+
+The user subsequently authorized official Velociraptor documentation, release
+metadata and source reads only. [BACKEND-RELEASE-REVIEW1](backend-release-review.md)
+records the v0.77.3 candidate and exact source revision, compressed-asset metadata,
+and a pre-dispatch Windows event-source installation/logging call. Candidate
+admission remains Blocked; this is partial static review, not release selection,
+asset verification, a native test or permission to change Windows.
+
+### D-058: Rebaseline the first release for a trusted host and scoped installation
+
+On 2026-11-06 the user agreed to the proposed minimum permission envelope and
+broader trusted-local-environment MVP, rather than only relaxing confirmation.
+[TRUSTED-HOST-MVP1](trusted-host-mvp.md) is authoritative for current permissions,
+assumptions, exact TL/LS/MMR applicability and retained minimum acceptance gates.
+
+Ordinary implementation/builds, reviewed official backend/signature/key acquisition
+outside Git and bounded diagnostic/read-only integration are authorized subject
+to the applicable technical review and exact test/operation scope. Initial
+installation is allowed in principle only after a concrete owned-object mutation
+manifest is reviewed, displayed and explicitly confirmed; UAC is not requested
+in this pass. Missing tools still need a concrete agreed list. No dependency,
+service privilege, registry/ACL/PATH/security-policy or Git change is implied.
+
+The first release assumes a trusted Windows/session and does not claim resistance
+to pre-existing same-user malware across confirmation, processes/files/loading or
+local evidence. Initial-install confirmation has the same host-trust limitation
+while retaining package trust, exact scope and UAC. This does not excuse SecApp-
+introduced compromise, unsafe parsing/paths, other-user access, weak asset trust,
+elevation/consent confusion, unbounded execution, leaks or false success.
+
+The service direction remains. Stronger initial/future-module and mapped-image
+attestation, active same-user interference proofs and absent generic maintenance
+features are deferred, not marked Passed. Basic protected installation, effective
+Standard rights, fixed commands, safe working context, exact consent, offline/
+private storage and crash/cleanup/maintenance exclusion still need implementation
+and independent acceptance. Future Elevated collection remains separate.
+
+Replace "no Windows changes anywhere" with "do not alter audited security
+settings; permit only exact approved installation, owned working data and normal
+logging effects". The v0.77.3 event-source call is still a source finding and
+requires concrete effects review, not an elevated or unrestricted launch shortcut.
+
+Historical results, planner/schema contracts and pure tests remain unchanged.
+No runtime flags are enabled, assets acquired, code compiled, native probes run
+or Windows settings changed by this documentation pass. Independent review accepted
+the requirements delta as AcceptedRequirementsRebaselineOnly, with no remaining
+blocking findings. Retained technical gates and runtime remain unaccepted.
+
+### D-059: Record authenticated candidate bytes without runtime admission
+
+On 2026-11-06, [BACKEND-ACQUISITION-VERIFY1](backend-acquisition-verification.md)
+used D-058's reviewed acquisition permission to obtain the official v0.77.3
+Windows AMD64 gzip and detached signature outside Git. The measured compressed
+hash matches GitHub metadata; the extracted EXE hash matches the official
+downloads table. Detached RSA/SHA-512 verification succeeded under the currently
+published primary-key fingerprint, using an existing external public-key file.
+Wrong fingerprint/hash and wrong signed byte-domain checks were rejected.
+
+This is byte authentication only, not fresh-key/revocation or Authenticode
+acceptance, a safe-release conclusion, a protected installation, mapped-image
+proof or runtime pin change. Backend execution, Windows changes and installation
+did not occur. The source startup-effects finding and applicable MVP gates remain
+unresolved; no execution flag or historical contract is changed. The acquisition
+record states its remaining trust/release/launch review obligations explicitly.
+
+### D-060: Narrow the trust review and propose LocalService broker bootstrap
+
+On 2026-11-06, [BACKEND-TRUST-LAUNCH-SLICE1](backend-trust-launch-slice-review.md)
+cross-checked the acquired EXE with existing GnuPG in an isolated external home,
+using the previously acquired key. Static byte inspection established the actual
+highestAvailable manifest and Windows build dependency versions. CMS cryptography
+was checked without a Windows trust verdict. Current key revocation, full
+Authenticode, dependency reachability and runtime acceptance remain pending.
+
+The current technical proposal is LocalService, own-process/demand-start, with
+service-SID protection and removal-only privileges, replacing the earlier virtual-
+account preference as a candidate only. Its documented rights support studying
+CreateProcessAsUser for the user-session supervisor without adding user-rights,
+LocalSystem or SeTcb. This does not resolve the separate Standard supervisor's
+worker-creation path or preventive offline/effects boundary. No privilege/account
+change, installation, native probe, backend execution, runtime-code/schema change
+or Git mutation occurred. The record defines concrete remaining checks before a
+compile-only bootstrap slice; it does not issue an implementation-ready flag.
+
+### D-061: Permit scoped service-account rights in a future reviewed installation
+
+On 2026-11-06 the user explicitly agreed to allow necessary rights to be assigned
+only to the separate SecApp service in the design of a future installation.
+The exact rights list and installation itself must be reviewed and separately
+confirmed. This narrows D-058's no-service-grant restriction; it does not grant
+permission to assign rights or install anything now.
+
+For further account design, use a per-service virtual account rather than the
+shared LocalService candidate from D-060. The concrete candidate entitlement
+table and installation/removal boundaries are in
+[BROKER-BOOTSTRAP-CONTRACT1 section 8](broker-bootstrap-contract.md#8-d-061-scoped-service-account-rights-proposal).
+They remain a proposal, not an accepted installation manifest, proven token
+configuration or ready native implementation. Permission for this direction is
+not confirmation of each proposed right.
+
+Any future grant must target the exact owned service SID, never the requester,
+UI, supervisor/backend, LocalService, All Services or a broad local/domain group.
+No Administrator membership, LocalSystem fallback, SeTcb, SeDebug or expansion
+of the four-privilege candidate ceiling is authorized. Service logon eligibility
+is accounted for separately from token privileges. The runtime cannot grant,
+repair or broaden its rights.
+
+All retained gates still apply: initial object security, authenticated token
+handoff, exact Standard context, protected code, bounded lifetime, offline and
+private data handling. A distinct account does not prove these automatically.
+The account's machine-credential network behavior must remain in effects review.
+No Windows/LSA/registry/ACL/service/UAC action, native compilation/probe, backend
+execution, schema/code/dependency or Git-index change occurs in this pass.
+
+Independent review of this documentary permission/account delta:
+AcceptedDocumentaryServiceAccountRightsProposalOnly on 2026-11-06, after review
+of all seven documentation changes and correction of inventory/consent ordering.
+No blocking documentary findings remain. This is not runtime or installation
+acceptance.
 
 ## Open decisions before runtime
 
@@ -169,7 +1031,10 @@ it is not started by this decision.
 | O-010 | HTML renderer, localization, and CSP | Injection corpus and browser regression plan |
 | O-011 | Validator CI integration and independent recheck | Reproduce the installed pinned Draft 2020-12, discriminator-aware XOBJ-GRAPH1, and exact-ID JCS-DIGEST1 gates in deterministic CI, then perform ARCH-REVIEW6 |
 | O-012 | External integrity trust anchor | Protected stored digest or detached signature design and key lifecycle |
+| O-013 | Protected maintenance implementation; DEPLOY-001 approved for design | Independently reviewed helper authority/confirmation and MP cases, signed packaging, tested ownership/ACLs, durable admission, runtime leases, crash recovery and bounded retention |
+| O-014 | Narrow launch broker; D-052 approved for design only | LS-001/002/003 account/privilege, authenticated token handoff, object ownership, session/handle and exact-confirmation review; all remaining TL/MMR gates and independent native acceptance |
 
-Automatic Velociraptor execution remains forbidden by default. The permitted
-next product direction is the separately authorized `AUDIT-PACKAGE-IMPORT1`
-import-only workflow, not runtime launcher or adapter implementation.
+Direct-launch development is authorized under D-032 alongside the working
+import-only path. Automatic/background execution remains disabled, and actual
+execution remains blocked by unresolved technical gates, not by D-028's
+superseded development restriction.

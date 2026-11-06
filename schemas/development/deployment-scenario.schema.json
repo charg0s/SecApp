@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json",
+  "title": "SecApp synthetic maintenance scenario v1",
+  "description": "Development-only hypotheses, not a production maintenance request or authenticated consent. No paths, commands, installer properties or host evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model_kind", "privacy_class", "provenance", "simulated_at", "machine_id", "snapshot", "intent", "confirmation", "used_nonces", "events"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "model_kind": { "const": "DeploymentScenario" },
+    "privacy_class": { "const": "PublicSynthetic" },
+    "provenance": { "const": "SyntheticModelOnly" },
+    "simulated_at": { "$ref": "#/$defs/timestamp" },
+    "machine_id": { "$ref": "#/$defs/machine" },
+    "snapshot": { "$ref": "#/$defs/snapshot" },
+    "intent": { "$ref": "#/$defs/intent" },
+    "confirmation": {
+      "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/confirmation" }]
+    },
+    "used_nonces": {
+      "type": "array", "maxItems": 64, "uniqueItems": true,
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "events": {
+      "type": "array", "maxItems": 32,
+      "items": { "enum": ["Prepare", "Stage", "Verify", "BeginPublish", "Commit", "BeginCleanup", "Finish", "Cancel", "Fail", "Crash", "Busy", "TrustUnavailable", "RebootRequired", "RollbackUnavailable", "InconsistentState", "CleanupFailed"] }
+    }
+  },
+  "$defs": {
+    "integer": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "id": { "type": "string", "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])", "maxLength": 64 },
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$", "minLength": 64, "maxLength": 64 },
+    "timestamp": { "type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$", "minLength": 20, "maxLength": 20 },
+    "machine": { "enum": ["synthetic-machine-a", "synthetic-machine-b"] },
+    "operation": { "enum": ["Install", "Update", "EnrollBackend", "Repair", "Uninstall"] },
+    "tuple": {
+      "type": "object", "additionalProperties": false,
+      "required": ["app_id", "supervisor_id", "backend_id", "policy_id", "compatibility_id", "security_epoch", "manifest_digest", "policy_digest"],
+      "properties": {
+        "app_id": { "$ref": "#/$defs/id" },
+        "supervisor_id": { "$ref": "#/$defs/id" },
+        "backend_id": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/id" }] },
+        "policy_id": { "$ref": "#/$defs/id" },
+        "compatibility_id": { "$ref": "#/$defs/id" },
+        "security_epoch": { "$ref": "#/$defs/integer" },
+        "manifest_digest": { "$ref": "#/$defs/digest" },
+        "policy_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "selection": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/tuple" }] },
+    "snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generation", "security_floor", "selection"],
+      "properties": {
+        "generation": { "$ref": "#/$defs/integer" },
+        "security_floor": { "$ref": "#/$defs/integer" },
+        "selection": { "$ref": "#/$defs/selection" }
+      }
+    },
+    "intent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operation", "expected_generation", "next_generation", "desired"],
+      "properties": {
+        "operation": { "$ref": "#/$defs/operation" },
+        "expected_generation": { "$ref": "#/$defs/integer" },
+        "next_generation": { "$ref": "#/$defs/integer" },
+        "desired": { "$ref": "#/$defs/selection" }
+      }
+    },
+    "confirmation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "decision", "operation", "machine_id", "expected_generation", "binding_digest", "nonce", "issued_at", "expires_at"],
+      "properties": {
+        "kind": { "const": "SyntheticMaintenanceConfirmation" },
+        "decision": { "enum": ["Approved", "Declined"] },
+        "operation": { "$ref": "#/$defs/operation" },
+        "machine_id": { "$ref": "#/$defs/machine" },
+        "expected_generation": { "$ref": "#/$defs/integer" },
+        "binding_digest": { "$ref": "#/$defs/digest" },
+        "nonce": { "$ref": "#/$defs/id" },
+        "issued_at": { "$ref": "#/$defs/timestamp" },
+        "expires_at": { "$ref": "#/$defs/timestamp" }
+      }
+    }
+  }
+}

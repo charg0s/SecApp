@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "error_id": "90000000-0000-4000-8000-000000000001",
+  "code": "ImportError",
+  "stage": "Import",
+  "message": "Synthetic import fixture.",
+  "retryable": false,
+  "details_redacted": true,
+  "detail_codes": ["SYNTHETIC_FIXTURE"]
+}

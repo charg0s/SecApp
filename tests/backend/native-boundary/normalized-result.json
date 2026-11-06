@@ -1,0 +1,69 @@
+{
+  "stage": "NATIVE-BOUNDARY-EXPERIMENT1",
+  "compile": "Passed",
+  "source_sha256": {
+    "harness": "42c7516805f50a67db073e591a91fd00c011a4b464c22b4b0d93a9bea0f89c81",
+    "fixture": "f7d46bb1942c116755f616a5456daa0b1c2f8fb2d1c656439723ec9fcff8b59b",
+    "support": "799e5fa5996030dacad6f04818dfdc2b486c0d5e4eb885a5f6c5a388eb0b8876",
+    "manifest": "b9055f108616f55269e76e1a080170fb3a1361629e3a70461fa52cbe706945e1",
+    "runner": "c42f8fab1e08b833c4306293ad9eefbec04d1fcdf5f3ae30685798eda4468ffc",
+    "validator": "54758d9e0a703d9afb8dfabcf40850620f88cac54e9297b848aeab262702d1f1"
+  },
+  "observation": {
+    "stage": "NATIVE-BOUNDARY-EXPERIMENT1",
+    "production_ready": false,
+    "velociraptor_executed": false,
+    "cases": [
+      {
+        "id": "NB-001",
+        "status": "Observed",
+        "observation": "NameHashAgreeWriterDenied_NotMappedByteProof",
+        "error": "None",
+        "native_error": 0
+      },
+      {
+        "id": "NB-002",
+        "status": "Observed",
+        "observation": "InertManagedDllMapped",
+        "error": "None",
+        "native_error": 0
+      },
+      {
+        "id": "NB-003",
+        "status": "Observed",
+        "observation": "PreferSystem32DidNotBlockExplicitLocalMapping",
+        "error": "None",
+        "native_error": 0
+      },
+      {
+        "id": "NB-004",
+        "status": "Observed",
+        "observation": "MicrosoftOnlyBlockedFixtureAfterStartup",
+        "error": "None",
+        "native_error": 0
+      },
+      {
+        "id": "NB-005",
+        "status": "Observed",
+        "observation": "SameUserPeerDangerousRightsGranted_NoInjection",
+        "error": "None",
+        "native_error": 0
+      },
+      {
+        "id": "NB-006",
+        "status": "Observed",
+        "observation": "BoundedPipeRoundTripReplayDenied_NotPeerAuthentication",
+        "error": "None",
+        "native_error": 0
+      },
+      {
+        "id": "NB-007",
+        "status": "Observed",
+        "observation": "AbruptSupervisorExitReapedObservedLeaf_NotLeaseAtomicity",
+        "error": "None",
+        "native_error": 0
+      }
+    ]
+  },
+  "temporary_files_removed": true
+}

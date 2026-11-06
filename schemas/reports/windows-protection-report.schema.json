@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/reports/windows-protection-report.schema.json",
+  "title": "SecApp private imported Windows protection assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "report_kind", "profile_id", "profile_version", "profile_digest", "schema_digests", "policy_review", "privacy_class", "assessment_status", "run_id", "source_file_digest", "provenance_claim", "freshness_claim", "validation_scope", "ignored_observation_count", "counts", "checks", "limitations", "report_digest"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "report_kind": { "const": "WindowsProtectionAssessment" },
+    "profile_id": { "const": "windows-protection-v1" },
+    "profile_version": { "const": "1.0.0" },
+    "profile_digest": { "$ref": "#/$defs/digest" },
+    "schema_digests": {
+      "type": "object", "additionalProperties": false,
+      "required": ["urn:secapp:observation:defender-protection:1", "urn:secapp:observation:firewall-profiles:1", "urn:secapp:observation:bitlocker-os-volume:1", "urn:secapp:observation:secure-boot-state:1"],
+      "properties": {
+        "urn:secapp:observation:defender-protection:1": { "$ref": "#/$defs/digest" },
+        "urn:secapp:observation:firewall-profiles:1": { "$ref": "#/$defs/digest" },
+        "urn:secapp:observation:bitlocker-os-volume:1": { "$ref": "#/$defs/digest" },
+        "urn:secapp:observation:secure-boot-state:1": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "policy_review": { "const": "PendingIndependentReview" },
+    "privacy_class": { "const": "SensitiveSecurityData" },
+    "assessment_status": { "enum": ["Complete", "Partial", "NotTested"] },
+    "run_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] },
+    "source_file_digest": { "$ref": "#/$defs/digest" },
+    "provenance_claim": { "const": "NotEstablished" },
+    "freshness_claim": { "const": "NotEvaluated" },
+    "validation_scope": { "const": "ImportedObservationProfile" },
+    "ignored_observation_count": { "type": "integer", "minimum": 0, "maximum": 100000 },
+    "counts": {
+      "type": "object", "additionalProperties": false, "required": ["Concern", "NoConcernReported", "NotTested"],
+      "properties": {
+        "Concern": { "$ref": "#/$defs/count" },
+        "NoConcernReported": { "$ref": "#/$defs/count" },
+        "NotTested": { "$ref": "#/$defs/count" }
+      }
+    },
+    "checks": { "type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": { "$ref": "#/$defs/check" } },
+    "limitations": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/text" } },
+    "report_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "count": { "type": "integer", "minimum": 0, "maximum": 6 },
+    "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "check": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rule_id", "title", "area", "outcome", "severity", "confidence", "status", "reason", "explanation", "limitation"],
+      "properties": {
+        "rule_id": { "enum": ["rule:secapp.defender-realtime", "rule:secapp.firewall-domain", "rule:secapp.firewall-private", "rule:secapp.firewall-public", "rule:secapp.bitlocker-os-volume", "rule:secapp.secure-boot"] },
+        "title": { "$ref": "#/$defs/text" },
+        "area": { "enum": ["Defender", "Firewall", "BitLocker", "SecureBoot"] },
+        "outcome": { "enum": ["Concern", "NoConcernReported", "NotTested"] },
+        "severity": { "enum": ["Info", "Low", "Medium"] },
+        "confidence": { "enum": ["Possible", "Not detected", "Not tested"] },
+        "status": { "const": "Requires review" },
+        "reason": { "enum": ["ReportedState", "MissingObservation", "MissingOrUnsupportedState", "UnsupportedSchema", "CollectionNotSucceeded"] },
+        "explanation": { "$ref": "#/$defs/text" },
+        "limitation": { "$ref": "#/$defs/text" },
+        "source": {
+          "type": "object", "additionalProperties": false,
+          "required": ["observation_id", "observed_at", "object_digest"],
+          "properties": {
+            "observation_id": { "type": "string", "format": "uuid" },
+            "observed_at": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$" },
+            "object_digest": { "$ref": "#/$defs/digest" }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "type": "object", "required": ["outcome"], "properties": { "outcome": { "const": "NotTested" } } },
+          "then": { "type": "object", "properties": { "severity": { "const": "Info" }, "confidence": { "const": "Not tested" } } }
+        },
+        {
+          "if": { "type": "object", "required": ["outcome"], "properties": { "outcome": { "const": "Concern" } } },
+          "then": { "type": "object", "required": ["source"], "properties": { "source": true, "severity": { "enum": ["Low", "Medium"] }, "confidence": { "const": "Possible" } } }
+        },
+        {
+          "if": { "type": "object", "required": ["outcome"], "properties": { "outcome": { "const": "NoConcernReported" } } },
+          "then": { "type": "object", "required": ["source"], "properties": { "source": true, "severity": { "const": "Info" }, "confidence": { "const": "Not detected" } } }
+        }
+      ]
+    }
+  }
+}

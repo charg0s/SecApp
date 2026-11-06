@@ -2,6 +2,28 @@
 
 Status: design-stage threat model; controls are requirements, not tested implementation claims
 
+## First-release scope overlay: D-058
+
+The user approved [TRUSTED-HOST-MVP1](trusted-host-mvp.md) on 2026-11-06.
+The MVP assumes an independently uncompromised Windows installation/session and
+trusted SecApp code. It does not promise confirmation, process/file/loader or
+evidence integrity against pre-existing same-user malware or a compromised OS.
+This is broader than D-056's confirmation-only exception. There is no runtime
+`trusted_host` flag that can waive a failed applicable check.
+
+Malicious imports/backend output/report content and compromise caused by SecApp
+remain in scope, as do other-user access, backend authenticity, basic safe paths/
+loading, Standard privilege, offline/private storage, resource/cleanup limits,
+replay and exact disjoint consent. Initial installation still needs a trusted
+package, displayed exact mutation scope and explicit UAC where required. It does
+not claim a malware-resistant confirmation surface on a compromised session.
+Future Elevated collection is separate and not enabled by this decision.
+
+The register below preserves the broader research model; D-058 explicitly maps
+its stronger local-attacker proofs to deferred guarantees and retained MVP checks.
+Historical TL/LS/MMR findings and schemas are not rewritten to Passed. Requirements
+rebaseline review does not constitute implementation or runtime acceptance.
+
 ## Security goals
 
 - Default collection remains read-only, offline, bounded, and standard-user.

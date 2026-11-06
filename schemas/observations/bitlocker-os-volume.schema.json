@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:secapp:observation:bitlocker-os-volume:1",
+  "title": "Imported system-volume BitLocker state",
+  "description": "All fields are SensitiveSecurityData. Only the operating-system volume is in scope. No volume identifier, recovery key, or secret is accepted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "protection": { "type": "string", "enum": ["On", "Off", "Unknown", "Unsupported"] },
+    "encryption": { "type": "string", "enum": ["FullyEncrypted", "PartiallyEncrypted", "NotEncrypted", "Unknown", "Unsupported"] }
+  },
+  "examples": [{ "schema_version": "1.0.0", "protection": "On", "encryption": "FullyEncrypted" }]
+}

@@ -1,0 +1,1674 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/development/maintenance-scenario.schema.json",
+  "title": "Synthetic maintenance protocol scenario v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "model_kind",
+    "privacy_class",
+    "provenance",
+    "simulated_at",
+    "context",
+    "events"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "model_kind": {
+      "const": "MaintenanceProtocolScenario"
+    },
+    "privacy_class": {
+      "const": "PublicSynthetic"
+    },
+    "provenance": {
+      "const": "SyntheticModelOnly"
+    },
+    "simulated_at": {
+      "type": "string",
+      "format": "date-time",
+      "minLength": 20,
+      "maxLength": 20,
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "helper_instance",
+        "client_instance",
+        "helper_identity_digest",
+        "policy_digest",
+        "consent_text_digest",
+        "storage_status",
+        "store"
+      ],
+      "properties": {
+        "helper_instance": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+        },
+        "client_instance": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+        },
+        "helper_identity_digest": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policy_digest": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "consent_text_digest": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "storage_status": {
+          "enum": [
+            "Known",
+            "Unknown"
+          ]
+        },
+        "store": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "machine_id",
+            "counter",
+            "generation",
+            "security_floor",
+            "selection",
+            "journal",
+            "last_result"
+          ],
+          "properties": {
+            "machine_id": {
+              "enum": [
+                "synthetic-machine-a",
+                "synthetic-machine-b"
+              ]
+            },
+            "counter": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "security_floor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "selection": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                }
+              ]
+            },
+            "journal": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "origin_transaction_id",
+                    "phase",
+                    "highest_generation",
+                    "reserved_floor",
+                    "previous",
+                    "candidate",
+                    "lineage",
+                    "journal_digest"
+                  ],
+                  "properties": {
+                    "origin_transaction_id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                    },
+                    "phase": {
+                      "enum": [
+                        "Admitted",
+                        "PublishPending",
+                        "Committed"
+                      ]
+                    },
+                    "highest_generation": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "reserved_floor": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "previous": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                        }
+                      ]
+                    },
+                    "candidate": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                        }
+                      ]
+                    },
+                    "lineage": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 16,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "transaction_id",
+                          "counter",
+                          "offer_digest",
+                          "confirmation_digest"
+                        ],
+                        "properties": {
+                          "transaction_id": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                          },
+                          "counter": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 9007199254740991
+                          },
+                          "offer_digest": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "confirmation_digest": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^[0-9a-f]{64}$"
+                          }
+                        }
+                      }
+                    },
+                    "journal_digest": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64,
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                }
+              ]
+            },
+            "last_result": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "transaction_id",
+                    "counter",
+                    "offer_digest",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "transaction_id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                    },
+                    "counter": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9007199254740991
+                    },
+                    "offer_digest": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64,
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "outcome": {
+                      "enum": [
+                        "NotCommitted",
+                        "Unknown",
+                        "Uninstalled",
+                        "BackendNotEnrolled",
+                        "InstalledLaunchBlocked"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 8392,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "delivery",
+              "message"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Wire"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "delivery": {
+                "enum": [
+                  "Delivered",
+                  "Lost"
+                ]
+              },
+              "message": {
+                "$ref": "https://schemas.secapp.dev/v1/development/maintenance-message.schema.json"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "ObservePeers"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "verdict",
+                  "helper_instance",
+                  "client_instance"
+                ],
+                "properties": {
+                  "verdict": {
+                    "enum": [
+                      "Matched",
+                      "Mismatch",
+                      "Unavailable"
+                    ]
+                  },
+                  "helper_instance": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                  },
+                  "client_instance": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "ReviewOffer"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "verdict"
+                ],
+                "properties": {
+                  "verdict": {
+                    "enum": [
+                      "Allowed",
+                      "Revoked",
+                      "Unknown"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "Confirm"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "offer_digest",
+                  "approver_id",
+                  "decision"
+                ],
+                "properties": {
+                  "offer_digest": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64,
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "approver_id": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                  },
+                  "decision": {
+                    "enum": [
+                      "Approved",
+                      "Declined"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "Reserve"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "head_digest",
+                  "result"
+                ],
+                "properties": {
+                  "head_digest": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64,
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "result": {
+                    "enum": [
+                      "Durable",
+                      "NotWritten",
+                      "Unknown"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "VerifyPayload"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "verdict"
+                ],
+                "properties": {
+                  "verdict": {
+                    "enum": [
+                      "Allowed",
+                      "Rejected",
+                      "Unknown"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "BeginPublish"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "quiescence"
+                ],
+                "properties": {
+                  "quiescence": {
+                    "enum": [
+                      "Quiescent",
+                      "Busy",
+                      "Unknown"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "Commit"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "verdict"
+                ],
+                "properties": {
+                  "verdict": {
+                    "enum": [
+                      "Consistent",
+                      "Unknown"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "Cleanup"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "result"
+                ],
+                "properties": {
+                  "result": {
+                    "enum": [
+                      "Complete",
+                      "Failed"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "at_ms",
+              "action",
+              "data"
+            ],
+            "properties": {
+              "kind": {
+                "const": "Local"
+              },
+              "at_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "action": {
+                "const": "Interrupt"
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "enum": [
+                      "Disconnect",
+                      "Crash",
+                      "ClockUncertain",
+                      "TrustUnavailable",
+                      "PersistenceUncertain"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "helper_instance",
+        "client_instance",
+        "helper_identity_digest",
+        "policy_digest",
+        "consent_text_digest",
+        "storage_status",
+        "store"
+      ],
+      "properties": {
+        "helper_instance": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+        },
+        "client_instance": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+        },
+        "helper_identity_digest": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policy_digest": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "consent_text_digest": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "storage_status": {
+          "enum": [
+            "Known",
+            "Unknown"
+          ]
+        },
+        "store": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "machine_id",
+            "counter",
+            "generation",
+            "security_floor",
+            "selection",
+            "journal",
+            "last_result"
+          ],
+          "properties": {
+            "machine_id": {
+              "enum": [
+                "synthetic-machine-a",
+                "synthetic-machine-b"
+              ]
+            },
+            "counter": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "security_floor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "selection": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                }
+              ]
+            },
+            "journal": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "origin_transaction_id",
+                    "phase",
+                    "highest_generation",
+                    "reserved_floor",
+                    "previous",
+                    "candidate",
+                    "lineage",
+                    "journal_digest"
+                  ],
+                  "properties": {
+                    "origin_transaction_id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                    },
+                    "phase": {
+                      "enum": [
+                        "Admitted",
+                        "PublishPending",
+                        "Committed"
+                      ]
+                    },
+                    "highest_generation": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "reserved_floor": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "previous": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                        }
+                      ]
+                    },
+                    "candidate": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                        }
+                      ]
+                    },
+                    "lineage": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 16,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "transaction_id",
+                          "counter",
+                          "offer_digest",
+                          "confirmation_digest"
+                        ],
+                        "properties": {
+                          "transaction_id": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                          },
+                          "counter": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 9007199254740991
+                          },
+                          "offer_digest": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "confirmation_digest": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^[0-9a-f]{64}$"
+                          }
+                        }
+                      }
+                    },
+                    "journal_digest": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64,
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                }
+              ]
+            },
+            "last_result": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "transaction_id",
+                    "counter",
+                    "offer_digest",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "transaction_id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                    },
+                    "counter": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9007199254740991
+                    },
+                    "offer_digest": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64,
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "outcome": {
+                      "enum": [
+                        "NotCommitted",
+                        "Unknown",
+                        "Uninstalled",
+                        "BackendNotEnrolled",
+                        "InstalledLaunchBlocked"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "store": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "machine_id",
+        "counter",
+        "generation",
+        "security_floor",
+        "selection",
+        "journal",
+        "last_result"
+      ],
+      "properties": {
+        "machine_id": {
+          "enum": [
+            "synthetic-machine-a",
+            "synthetic-machine-b"
+          ]
+        },
+        "counter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "security_floor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "selection": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+            }
+          ]
+        },
+        "journal": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "origin_transaction_id",
+                "phase",
+                "highest_generation",
+                "reserved_floor",
+                "previous",
+                "candidate",
+                "lineage",
+                "journal_digest"
+              ],
+              "properties": {
+                "origin_transaction_id": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                },
+                "phase": {
+                  "enum": [
+                    "Admitted",
+                    "PublishPending",
+                    "Committed"
+                  ]
+                },
+                "highest_generation": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "reserved_floor": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "previous": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                    }
+                  ]
+                },
+                "candidate": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+                    }
+                  ]
+                },
+                "lineage": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 16,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "transaction_id",
+                      "counter",
+                      "offer_digest",
+                      "confirmation_digest"
+                    ],
+                    "properties": {
+                      "transaction_id": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                      },
+                      "counter": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9007199254740991
+                      },
+                      "offer_digest": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64,
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "confirmation_digest": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64,
+                        "pattern": "^[0-9a-f]{64}$"
+                      }
+                    }
+                  }
+                },
+                "journal_digest": {
+                  "type": "string",
+                  "minLength": 64,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
+            }
+          ]
+        },
+        "last_result": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "transaction_id",
+                "counter",
+                "offer_digest",
+                "outcome"
+              ],
+              "properties": {
+                "transaction_id": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                },
+                "counter": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "offer_digest": {
+                  "type": "string",
+                  "minLength": 64,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "outcome": {
+                  "enum": [
+                    "NotCommitted",
+                    "Unknown",
+                    "Uninstalled",
+                    "BackendNotEnrolled",
+                    "InstalledLaunchBlocked"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "journal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin_transaction_id",
+        "phase",
+        "highest_generation",
+        "reserved_floor",
+        "previous",
+        "candidate",
+        "lineage",
+        "journal_digest"
+      ],
+      "properties": {
+        "origin_transaction_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+        },
+        "phase": {
+          "enum": [
+            "Admitted",
+            "PublishPending",
+            "Committed"
+          ]
+        },
+        "highest_generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "reserved_floor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "previous": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+            }
+          ]
+        },
+        "candidate": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "https://schemas.secapp.dev/v1/development/deployment-scenario.schema.json#/$defs/tuple"
+            }
+          ]
+        },
+        "lineage": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "transaction_id",
+              "counter",
+              "offer_digest",
+              "confirmation_digest"
+            ],
+            "properties": {
+              "transaction_id": {
+                "type": "string",
+                "maxLength": 64,
+                "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+              },
+              "counter": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "offer_digest": {
+                "type": "string",
+                "minLength": 64,
+                "maxLength": 64,
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "confirmation_digest": {
+                "type": "string",
+                "minLength": 64,
+                "maxLength": 64,
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "journal_digest": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "event": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "delivery",
+            "message"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Wire"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "delivery": {
+              "enum": [
+                "Delivered",
+                "Lost"
+              ]
+            },
+            "message": {
+              "$ref": "https://schemas.secapp.dev/v1/development/maintenance-message.schema.json"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "ObservePeers"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "verdict",
+                "helper_instance",
+                "client_instance"
+              ],
+              "properties": {
+                "verdict": {
+                  "enum": [
+                    "Matched",
+                    "Mismatch",
+                    "Unavailable"
+                  ]
+                },
+                "helper_instance": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                },
+                "client_instance": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "ReviewOffer"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "verdict"
+              ],
+              "properties": {
+                "verdict": {
+                  "enum": [
+                    "Allowed",
+                    "Revoked",
+                    "Unknown"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "Confirm"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "offer_digest",
+                "approver_id",
+                "decision"
+              ],
+              "properties": {
+                "offer_digest": {
+                  "type": "string",
+                  "minLength": 64,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "approver_id": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^synthetic-[a-z0-9][a-z0-9-]{0,53}$(?![\\s\\S])"
+                },
+                "decision": {
+                  "enum": [
+                    "Approved",
+                    "Declined"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "Reserve"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "head_digest",
+                "result"
+              ],
+              "properties": {
+                "head_digest": {
+                  "type": "string",
+                  "minLength": 64,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "result": {
+                  "enum": [
+                    "Durable",
+                    "NotWritten",
+                    "Unknown"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "VerifyPayload"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "verdict"
+              ],
+              "properties": {
+                "verdict": {
+                  "enum": [
+                    "Allowed",
+                    "Rejected",
+                    "Unknown"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "BeginPublish"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "quiescence"
+              ],
+              "properties": {
+                "quiescence": {
+                  "enum": [
+                    "Quiescent",
+                    "Busy",
+                    "Unknown"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "Commit"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "verdict"
+              ],
+              "properties": {
+                "verdict": {
+                  "enum": [
+                    "Consistent",
+                    "Unknown"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "Cleanup"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "result"
+              ],
+              "properties": {
+                "result": {
+                  "enum": [
+                    "Complete",
+                    "Failed"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "at_ms",
+            "action",
+            "data"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Local"
+            },
+            "at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "action": {
+              "const": "Interrupt"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "enum": [
+                    "Disconnect",
+                    "Crash",
+                    "ClockUncertain",
+                    "TrustUnavailable",
+                    "PersistenceUncertain"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

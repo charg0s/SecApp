@@ -2,9 +2,15 @@
 
 Experiment: `VELOCIRAPTOR-ADAPTER-COMPAT1`
 
-Status: `compatibility_partial_blockers_remain`; trust-launch product path `Deferred`
+Status: `compatibility_partial_blockers_remain`; historical trust-launch checkpoint `Deferred`; direct-launch development subsequently reopened under D-032
 
 Date: 2026-07-19
+
+Current development status: the user later authorized direct-launch work.
+[D-032](decision-log.md) and [the launch design](backend-launch-design.md)
+supersede the work deferral below, without changing any historical result or
+declaring the nine blockers closed. No binary or native probe was run as part
+of `BACKEND-LAUNCH-PLAN1`.
 
 This document records a development-only compatibility spike against one
 verified Velociraptor release asset. It is not a production adapter, runtime

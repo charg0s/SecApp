@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v2/development/maintenance-recovery.schema.json",
+  "title": "Synthetic metadata recovery v2 (no host authority)",
+  "$ref": "#/$defs/scenario",
+  "$defs": {
+    "uint": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "id": { "type": "string", "pattern": "^synthetic-[a-z0-9-]{1,80}$" },
+    "time": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" },
+    "operation": { "enum": ["Maintenance", "RecoverPublication", "FinishCommittedCleanup", "RetireAdmittedCandidate", "CompactTerminalState", "ReconcileCheckpoint"] },
+    "selection": {
+      "anyOf": [ { "type": "null" }, {
+        "type": "object", "additionalProperties": false, "required": ["digest", "epoch"],
+        "properties": { "digest": { "$ref": "#/$defs/digest" }, "epoch": { "$ref": "#/$defs/uint" } }
+      } ]
+    },
+    "minimum": {
+      "type": "object", "additionalProperties": false, "required": ["counter", "generation", "security_floor"],
+      "properties": { "counter": { "$ref": "#/$defs/uint" }, "generation": { "$ref": "#/$defs/uint" }, "security_floor": { "$ref": "#/$defs/uint" } }
+    },
+    "terminal": {
+      "anyOf": [ { "type": "null" }, {
+        "type": "object", "additionalProperties": false, "required": ["transaction_id", "operation", "outcome", "terminal_digest"],
+        "properties": {
+          "transaction_id": { "$ref": "#/$defs/id" }, "operation": { "$ref": "#/$defs/operation" },
+          "outcome": { "enum": ["Completed", "CandidateRetired", "MetadataAuthorized"] }, "terminal_digest": { "$ref": "#/$defs/digest" }
+        }
+      } ]
+    },
+    "anchor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["machine_id", "sequence", "counter", "generation", "generation_floor", "security_floor", "selection", "terminal", "anchor_digest"],
+      "properties": {
+        "machine_id": { "$ref": "#/$defs/id" }, "sequence": { "$ref": "#/$defs/uint" }, "counter": { "$ref": "#/$defs/uint" },
+        "generation": { "$ref": "#/$defs/uint" }, "generation_floor": { "$ref": "#/$defs/uint" }, "security_floor": { "$ref": "#/$defs/uint" },
+        "selection": { "$ref": "#/$defs/selection" }, "terminal": { "$ref": "#/$defs/terminal" }, "anchor_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "optionalAnchor": { "anyOf": [ { "type": "null" }, { "$ref": "#/$defs/anchor" } ] },
+    "head": {
+      "type": "object", "additionalProperties": false,
+      "required": ["machine_id", "sequence", "counter", "generation", "generation_floor", "security_floor", "selection", "phase", "tail_digest", "head_digest"],
+      "properties": {
+        "machine_id": { "$ref": "#/$defs/id" }, "sequence": { "$ref": "#/$defs/uint" }, "counter": { "$ref": "#/$defs/uint" },
+        "generation": { "$ref": "#/$defs/uint" }, "generation_floor": { "$ref": "#/$defs/uint" }, "security_floor": { "$ref": "#/$defs/uint" },
+        "selection": { "$ref": "#/$defs/selection" }, "phase": { "enum": ["Stable", "Admitted", "Blocked", "Committed"] },
+        "tail_digest": { "$ref": "#/$defs/digest" }, "head_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "context": {
+      "type": "object", "additionalProperties": false,
+      "required": ["session_id", "peer_id", "approver_id", "challenge", "helper_digest", "policy_digest", "confirmation_version", "confirmation_text_digest"],
+      "properties": {
+        "session_id": { "$ref": "#/$defs/id" }, "peer_id": { "$ref": "#/$defs/id" }, "approver_id": { "$ref": "#/$defs/id" },
+        "challenge": { "$ref": "#/$defs/digest" }, "helper_digest": { "$ref": "#/$defs/digest" }, "policy_digest": { "$ref": "#/$defs/digest" },
+        "confirmation_version": { "const": "SyntheticMetadataConsent-v2" }, "confirmation_text_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "basis": {
+      "type": "object", "additionalProperties": false,
+      "required": ["anchor_digest", "records_digest", "head", "checkpoint_candidate", "obsolete_checkpoint", "minimum", "state_digest", "classification", "journal_bytes", "record_count"],
+      "properties": {
+        "anchor_digest": { "$ref": "#/$defs/digest" }, "records_digest": { "$ref": "#/$defs/digest" }, "head": { "$ref": "#/$defs/head" },
+        "checkpoint_candidate": { "$ref": "#/$defs/optionalAnchor" }, "obsolete_checkpoint": { "$ref": "#/$defs/optionalAnchor" },
+        "minimum": { "$ref": "#/$defs/minimum" }, "state_digest": { "$ref": "#/$defs/digest" },
+        "classification": { "enum": ["Stable", "Active", "CheckpointPending", "PreparedUnpublished", "PublishedUnretired"] },
+        "journal_bytes": { "$ref": "#/$defs/uint" }, "record_count": { "type": "integer", "minimum": 0, "maximum": 64 }
+      }
+    },
+    "offer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["format", "operation", "transaction_id", "origin_transaction_id", "candidate", "recovery_target", "effects_scope", "basis", "context", "required_records", "expires_at", "offer_digest"],
+      "properties": {
+        "format": { "const": "SyntheticRecovery-v2" }, "operation": { "$ref": "#/$defs/operation" }, "transaction_id": { "$ref": "#/$defs/id" },
+        "origin_transaction_id": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/id" }] }, "candidate": { "$ref": "#/$defs/selection" },
+        "recovery_target": { "enum": ["None", "FinalizeCandidate", "RestorePermittedPrevious"] },
+        "effects_scope": { "enum": ["SyntheticDeploymentOnly", "MetadataOnly"] }, "basis": { "$ref": "#/$defs/basis" }, "context": { "$ref": "#/$defs/context" },
+        "required_records": { "enum": [2, 4, 6] }, "expires_at": { "$ref": "#/$defs/time" }, "offer_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "confirmation": {
+      "type": "object", "additionalProperties": false, "required": ["decision", "offer_digest"],
+      "properties": { "decision": { "enum": ["ApprovedSynthetic", "Declined"] }, "offer_digest": { "$ref": "#/$defs/digest" } }
+    },
+    "authorization": {
+      "anyOf": [{ "type": "null" }, {
+        "type": "object", "additionalProperties": false, "required": ["offer", "confirmation"],
+        "properties": { "offer": { "$ref": "#/$defs/offer" }, "confirmation": { "$ref": "#/$defs/confirmation" } }
+      }]
+    },
+    "recordKind": { "enum": ["Admission", "Block", "Commit", "Complete", "Retire", "AuthorizeCheckpoint"] },
+    "record": {
+      "type": "object", "additionalProperties": false, "required": ["sequence", "record_kind", "transaction_id", "authorization", "previous_digest", "record_digest"],
+      "properties": {
+        "sequence": { "$ref": "#/$defs/uint" }, "record_kind": { "$ref": "#/$defs/recordKind" }, "transaction_id": { "$ref": "#/$defs/id" },
+        "authorization": { "$ref": "#/$defs/authorization" }, "previous_digest": { "$ref": "#/$defs/digest" }, "record_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "storage": {
+      "type": "object", "additionalProperties": false, "required": ["anchor", "records", "head", "checkpoint_candidate", "obsolete_checkpoint", "integrity"],
+      "properties": {
+        "anchor": { "$ref": "#/$defs/anchor" }, "records": { "type": "array", "maxItems": 64, "items": { "$ref": "#/$defs/record" } },
+        "head": { "$ref": "#/$defs/head" }, "checkpoint_candidate": { "$ref": "#/$defs/optionalAnchor" }, "obsolete_checkpoint": { "$ref": "#/$defs/optionalAnchor" },
+        "integrity": { "enum": ["Known", "Unknown"] }
+      }
+    },
+    "event": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["kind", "record_kind", "result"], "properties": {
+          "kind": { "const": "WriteRecord" }, "record_kind": { "$ref": "#/$defs/recordKind" }, "result": { "enum": ["Complete", "NotWritten", "Unknown"] }
+        } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "result"], "properties": {
+          "kind": { "enum": ["WriteHead", "WriteCheckpoint", "RetireJournal"] }, "result": { "enum": ["Complete", "NotWritten", "Unknown"] }
+        } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "target", "result"], "properties": {
+          "kind": { "const": "Flush" }, "target": { "enum": ["Record", "Head", "Checkpoint"] }, "result": { "enum": ["DurableHypothesis", "Unknown"] }
+        } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "target", "result"], "properties": {
+          "kind": { "const": "ReadBack" }, "target": { "enum": ["Record", "Head", "Checkpoint"] }, "result": { "enum": ["Matches", "Mismatch"] }
+        } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "counter"], "properties": {
+          "kind": { "const": "QueryStatus" }, "counter": { "$ref": "#/$defs/uint" }
+        } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "phase", "delivery"], "properties": {
+          "kind": { "const": "Acknowledge" }, "phase": { "enum": ["Admission", "Result"] }, "delivery": { "enum": ["Delivered", "Lost"] }
+        } },
+        { "type": "object", "additionalProperties": false, "required": ["kind"], "properties": { "kind": { "enum": ["Crash", "Cancel"] } } }
+      ]
+    },
+    "scenario": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "model_kind", "privacy_class", "provenance", "simulated_at", "storage", "minimum", "context", "evidence_trust", "coordinator", "quiescence", "authorization", "events"],
+      "properties": {
+        "schema_version": { "const": "2.0.0" }, "model_kind": { "const": "MaintenanceRecoveryScenario" }, "privacy_class": { "const": "PublicSynthetic" },
+        "provenance": { "const": "SyntheticModelOnly" }, "simulated_at": { "$ref": "#/$defs/time" }, "storage": { "$ref": "#/$defs/storage" },
+        "minimum": { "$ref": "#/$defs/minimum" }, "context": { "$ref": "#/$defs/context" }, "evidence_trust": { "enum": ["TrustedSynthetic", "Unknown"] },
+        "coordinator": { "enum": ["Held", "Busy", "Unknown"] }, "quiescence": { "enum": ["Quiescent", "Busy", "Unknown"] },
+        "authorization": { "$ref": "#/$defs/authorization" }, "events": { "type": "array", "maxItems": 128, "items": { "$ref": "#/$defs/event" } }
+      }
+    },
+    "projection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "model_kind", "privacy_class", "provenance", "simulated_at", "status", "reason", "classification", "storage", "minimum", "selection_known", "selection", "admission_ack", "result_ack", "last_status", "events_processed", "effects", "launcher_status", "launch_status", "scenario_digest", "result_digest"],
+      "properties": {
+        "schema_version": { "const": "2.0.0" }, "model_kind": { "const": "MaintenanceRecoveryProjection" }, "privacy_class": { "const": "PublicSynthetic" },
+        "provenance": { "const": "SyntheticModelOnly" }, "simulated_at": { "$ref": "#/$defs/time" },
+        "status": { "enum": ["Stable", "Active", "Completed", "RecoveryRequired"] },
+        "reason": { "enum": ["None", "DigestMismatch", "AnchorInvalid", "ActiveLineage", "MinimumConflict", "UnknownEvidence", "HeadMismatch", "CheckpointConflict", "CapacityInvalid", "CapacityExhausted", "CounterOrSequenceOverflow", "LineageFull", "OriginMismatch", "ScopeRejected", "PublicationUnresolved", "BelowFloor", "GenerationOverflow", "ConfirmationRequired", "ConfirmationRejected", "OfferChanged", "OrderRejected", "ChainInvalid", "Crash", "Cancel", "StatusRequired", "BusyOrUnknownQuiescence", "OfferExpired", "NotWritten", "WriteUncertain", "FlushUncertain", "ReadBackMismatch", "RetirementUnknown", "StatusRejected"] },
+        "classification": { "enum": ["Stable", "Active", "CheckpointPending", "PreparedUnpublished", "PublishedUnretired", "ConflictOrUnknown"] },
+        "storage": { "$ref": "#/$defs/storage" }, "minimum": { "$ref": "#/$defs/minimum" }, "selection_known": { "type": "boolean" }, "selection": { "$ref": "#/$defs/selection" },
+        "admission_ack": { "enum": ["NotSent", "Delivered", "Lost"] }, "result_ack": { "enum": ["NotSent", "Delivered", "Lost"] },
+        "last_status": { "enum": ["NotQueried", "RecoveryRequired", "Active", "Completed", "CandidateRetired", "Retired"] },
+        "events_processed": { "type": "integer", "minimum": 0, "maximum": 128 }, "launcher_status": { "const": "NotImplemented" }, "launch_status": { "const": "Blocked" },
+        "scenario_digest": { "$ref": "#/$defs/digest" }, "result_digest": { "$ref": "#/$defs/digest" },
+        "effects": {
+          "type": "object", "additionalProperties": false,
+          "required": ["filesystem_writes_enabled", "ipc_enabled", "installation_enabled", "backend_execution_enabled", "uac_enabled", "network_enabled", "reboot_enabled", "user_data_deletion_enabled", "automatic_recovery_enabled", "native_apis_enabled", "system_settings_changes_enabled"],
+          "properties": {
+            "filesystem_writes_enabled": { "const": false }, "ipc_enabled": { "const": false }, "installation_enabled": { "const": false },
+            "backend_execution_enabled": { "const": false }, "uac_enabled": { "const": false }, "network_enabled": { "const": false },
+            "reboot_enabled": { "const": false }, "user_data_deletion_enabled": { "const": false }, "automatic_recovery_enabled": { "const": false },
+            "native_apis_enabled": { "const": false }, "system_settings_changes_enabled": { "const": false }
+          }
+        }
+      }
+    },
+    "document": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "model_kind", "privacy_class", "provenance", "simulated_at", "usage", "execution_enabled", "storage", "minimum", "document_digest"],
+      "properties": {
+        "schema_version": { "const": "2.0.0" }, "model_kind": { "const": "MaintenanceRecoveryStoreDocument" }, "privacy_class": { "const": "PublicSynthetic" },
+        "provenance": { "const": "SyntheticModelOnly" }, "simulated_at": { "$ref": "#/$defs/time" }, "usage": { "const": "SyntheticReferenceOnly" },
+        "execution_enabled": { "const": false }, "storage": { "$ref": "#/$defs/storage" }, "minimum": { "$ref": "#/$defs/minimum" }, "document_digest": { "$ref": "#/$defs/digest" }
+      }
+    }
+  }
+}

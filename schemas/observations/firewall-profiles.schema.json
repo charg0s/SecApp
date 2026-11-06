@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:secapp:observation:firewall-profiles:1",
+  "title": "Imported Firewall profile state",
+  "description": "All fields are SensitiveSecurityData. Each field describes the reported configured profile state, not current reachability or effective policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "domain": { "$ref": "#/$defs/state" },
+    "private": { "$ref": "#/$defs/state" },
+    "public": { "$ref": "#/$defs/state" }
+  },
+  "$defs": { "state": { "type": "string", "enum": ["Enabled", "Disabled", "Unknown", "Unsupported"] } },
+  "examples": [{ "schema_version": "1.0.0", "domain": "Enabled", "private": "Enabled", "public": "Disabled" }]
+}

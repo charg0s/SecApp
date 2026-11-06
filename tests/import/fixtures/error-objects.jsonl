@@ -1,0 +1,2 @@
+{"schema_version":"1.0.0","error_id":"90000000-0000-4000-8000-000000000001","code":"ImportError","stage":"Import","message":"Synthetic import fixture one.","retryable":false,"details_redacted":true,"detail_codes":["SYNTHETIC_FIXTURE_ONE"]}
+{"schema_version":"1.0.0","error_id":"90000000-0000-4000-8000-000000000002","code":"ValidationError","stage":"Normalize","message":"Synthetic import fixture two.","retryable":false,"details_redacted":true,"detail_codes":["SYNTHETIC_FIXTURE_TWO"]}

@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.secapp.dev/v1/development/maintenance-persistence-projection.schema.json",
+  "title": "Synthetic maintenance persistence projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "privacy_class",
+    "provenance",
+    "simulated_at",
+    "model_kind",
+    "status",
+    "reason",
+    "watermarks",
+    "selection_known",
+    "selected_digest",
+    "pending_stage",
+    "storage",
+    "admission_ack",
+    "result_ack",
+    "last_status",
+    "events_processed",
+    "effects",
+    "launcher_status",
+    "launch_status",
+    "scenario_digest",
+    "result_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "privacy_class": {
+      "const": "PublicSynthetic"
+    },
+    "provenance": {
+      "const": "SyntheticModelOnly"
+    },
+    "simulated_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "model_kind": {
+      "const": "MaintenancePersistenceProjection"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Stable",
+        "InProgress",
+        "Admitted",
+        "PublicationBlocked",
+        "Committed",
+        "Completed",
+        "CleanupPending",
+        "Rejected",
+        "RecoveryRequired",
+        "Stopped"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "None",
+        "StorageUnknown",
+        "StorageInvalid",
+        "HeadMismatch",
+        "WatermarkRegression",
+        "CoordinatorUnavailable",
+        "OrderRejected",
+        "IntentRejected",
+        "ConfirmationRejected",
+        "CounterOverflow",
+        "GenerationOverflow",
+        "SequenceOverflow",
+        "ScopeRejected",
+        "EpochRejected",
+        "LineageFull",
+        "LimitExceeded",
+        "NotWritten",
+        "WriteUncertain",
+        "FlushUncertain",
+        "ReadBackMismatch",
+        "RuntimeBusy",
+        "Crash",
+        "CompactionUncertain",
+        "StatusRejected"
+      ]
+    },
+    "watermarks": {
+      "$ref": "https://schemas.secapp.dev/v1/development/maintenance-persistence-scenario.schema.json#/$defs/watermarks"
+    },
+    "selection_known": {
+      "type": "boolean"
+    },
+    "selected_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pending_stage": {
+      "type": "string",
+      "enum": [
+        "None",
+        "JournalWritten",
+        "JournalFlushed",
+        "HeadWritten",
+        "HeadFlushed",
+        "CheckpointWritten",
+        "CheckpointFlushed",
+        "CheckpointVerified",
+        "CheckpointPublished"
+      ]
+    },
+    "storage": {
+      "$ref": "https://schemas.secapp.dev/v1/development/maintenance-persistence-scenario.schema.json#/$defs/storage"
+    },
+    "admission_ack": {
+      "type": "string",
+      "enum": [
+        "NotSent",
+        "Delivered",
+        "Lost"
+      ]
+    },
+    "result_ack": {
+      "type": "string",
+      "enum": [
+        "NotSent",
+        "Delivered",
+        "Lost"
+      ]
+    },
+    "last_status": {
+      "type": "string",
+      "enum": [
+        "NotQueried",
+        "Active",
+        "Completed",
+        "Retired",
+        "RecoveryRequired"
+      ]
+    },
+    "events_processed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filesystem_writes_enabled",
+        "ipc_enabled",
+        "installation_enabled",
+        "backend_execution_enabled",
+        "uac_enabled",
+        "network_enabled",
+        "reboot_enabled",
+        "user_data_deletion_enabled",
+        "automatic_recovery_enabled",
+        "native_apis_enabled"
+      ],
+      "properties": {
+        "filesystem_writes_enabled": {
+          "const": false
+        },
+        "ipc_enabled": {
+          "const": false
+        },
+        "installation_enabled": {
+          "const": false
+        },
+        "backend_execution_enabled": {
+          "const": false
+        },
+        "uac_enabled": {
+          "const": false
+        },
+        "network_enabled": {
+          "const": false
+        },
+        "reboot_enabled": {
+          "const": false
+        },
+        "user_data_deletion_enabled": {
+          "const": false
+        },
+        "automatic_recovery_enabled": {
+          "const": false
+        },
+        "native_apis_enabled": {
+          "const": false
+        }
+      }
+    },
+    "launcher_status": {
+      "const": "NotImplemented"
+    },
+    "launch_status": {
+      "const": "Blocked"
+    },
+    "scenario_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "result_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "selection_known": {
+            "const": false
+          }
+        },
+        "required": [
+          "selection_known"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selected_digest": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "RecoveryRequired",
+              "PublicationBlocked",
+              "InProgress"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selection_known": {
+            "const": false
+          },
+          "selected_digest": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "Stable",
+              "Admitted",
+              "Committed",
+              "Completed",
+              "CleanupPending",
+              "Rejected",
+              "Stopped"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selection_known": {
+            "const": true
+          },
+          "pending_stage": {
+            "const": "None"
+          },
+          "storage": {
+            "type": "object",
+            "properties": {
+              "integrity": {
+                "const": "Known"
+              },
+              "checkpoint_candidate": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "integrity",
+              "checkpoint_candidate"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
